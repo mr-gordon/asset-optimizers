@@ -9,7 +9,7 @@
 
 A modern, high-performance, 100% client-side batch image compression & format conversion web application built with React 19, TypeScript, and Vite. Designed with an Apple/Corporate design system aesthetic, featuring real-time interactive previews, blink tests, and customizable compression profiles.
 
-**Repository:** [https://github.com/mr-gordon/image-compressor](https://github.com/mr-gordon/image-compressor)
+**Website:** [https://image.christopherwinker.de/](https://image.christopherwinker.de/)
 
 ---
 
