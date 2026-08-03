@@ -11,6 +11,8 @@ A modern, high-performance, 100% client-side batch image compression & format co
 
 **Website:** [https://image.christopherwinker.de/](https://image.christopherwinker.de/)
 
+<img src="https://www.christopherwinker.de/tools/data/screen-image-compressor.png" alt="Vorschau" width="100%">
+
 ---
 
 ## Key Features
