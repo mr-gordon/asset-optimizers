@@ -1,4 +1,4 @@
-# Image Compressor ⚡️
+# Image Compressor
 
 [![Version](https://img.shields.io/badge/version-v1.7.0-blue.svg)](https://github.com/mr-gordon/image-compressor)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
