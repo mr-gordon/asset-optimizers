@@ -1,6 +1,23 @@
 {
-  "name": "tools-monorepo",
+  "name": "asset-optimizers-monorepo",
+  "description": "Modern, 100% client-side batch image compressor, format converter & SVG vector optimizer (React 19, TypeScript, Vite).",
   "private": true,
+  "keywords": [
+    "image-compressor",
+    "svg-optimizer",
+    "svg-minifier",
+    "svg-recolor",
+    "svg-to-png",
+    "webp-converter",
+    "avif-converter",
+    "batch-compression",
+    "client-side",
+    "react19",
+    "typescript",
+    "vite",
+    "monorepo",
+    "turborepo"
+  ],
   "workspaces": [
     "apps/*",
     "packages/*"
