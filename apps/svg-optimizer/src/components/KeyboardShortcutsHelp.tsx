@@ -182,7 +182,7 @@ export const KeyboardShortcutsHelp: React.FC = () => {
             </h3>
 
             <p className="text-xs sm:text-sm font-normal mt-2" style={{ color: 'var(--c-text-secondary)' }}>
-              Version 1.6.5
+              Version 1.8.0
             </p>
 
             <div className="mt-4 flex flex-col items-center gap-1.5 text-xs sm:text-sm" style={{ color: 'var(--c-text-secondary)' }}>
