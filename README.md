@@ -1,4 +1,4 @@
-# Image Compressor und SVG Optimizer Monorepo
+# Image Compressor und SVG Optimizer
 
 [![Version](https://img.shields.io/badge/version-v1.8.0-blue.svg)](https://github.com/mr-gordon/asset-optimizers)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
