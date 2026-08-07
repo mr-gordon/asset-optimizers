@@ -1,7 +1,7 @@
 # SVG Optimizer App ⚡️
 
-[![Version](https://img.shields.io/badge/version-v1.6.5-blue.svg)](https://github.com/mr-gordon/image-compressor)
-[![100% Client-Side](https://img.shields.io/badge/Privacy-100%25%20Client--Side-emerald)](https://github.com/mr-gordon/image-compressor)
+[![Version](https://img.shields.io/badge/version-v1.6.5-blue.svg)](https://github.com/mr-gordon/asset-optimizers)
+[![100% Client-Side](https://img.shields.io/badge/Privacy-100%25%20Client--Side-emerald)](https://github.com/mr-gordon/asset-optimizers)
 
 Dedicated high-efficiency SVG vector icon optimization, recoloring, and PNG rendering web application.
 

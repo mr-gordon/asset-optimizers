@@ -1,12 +1,12 @@
 # Image Compressor und SVG Optimizer Monorepo
 
-[![Version](https://img.shields.io/badge/version-v1.8.0-blue.svg)](https://github.com/mr-gordon/image-compressor)
+[![Version](https://img.shields.io/badge/version-v1.8.0-blue.svg)](https://github.com/mr-gordon/asset-optimizers)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![React](https://img.shields.io/badge/React-19-blue)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-6.4-purple)](https://vitejs.dev/)
 [![TurboRepo](https://img.shields.io/badge/Monorepo-Turborepo-ef4444)](https://turbo.build/)
-[![100% Client-Side](https://img.shields.io/badge/Privacy-100%25%20Client--Side-emerald)](https://github.com/mr-gordon/image-compressor)
+[![100% Client-Side](https://img.shields.io/badge/Privacy-100%25%20Client--Side-emerald)](https://github.com/mr-gordon/asset-optimizers)
 
 A modern, high-performance monorepo featuring **Image Compressor v1.8.0** and **SVG Optimizer v1.6.5** web applications. Built with React 19, TypeScript 5.8, Tailwind CSS v4, and Vite 6.
 
@@ -70,8 +70,8 @@ All image and SVG operations happen 100% locally in your browser. **Your files a
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/mr-gordon/image-compressor.git
-   cd image-compressor
+   git clone https://github.com/mr-gordon/asset-optimizers.git
+   cd asset-optimizers
    ```
 
 2. **Install dependencies:**

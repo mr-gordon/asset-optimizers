@@ -1,7 +1,7 @@
 # Image Compressor App 🖼️
 
-[![Version](https://img.shields.io/badge/version-v1.8.0-blue.svg)](https://github.com/mr-gordon/image-compressor)
-[![100% Client-Side](https://img.shields.io/badge/Privacy-100%25%20Client--Side-emerald)](https://github.com/mr-gordon/image-compressor)
+[![Version](https://img.shields.io/badge/version-v1.8.0-blue.svg)](https://github.com/mr-gordon/asset-optimizers)
+[![100% Client-Side](https://img.shields.io/badge/Privacy-100%25%20Client--Side-emerald)](https://github.com/mr-gordon/asset-optimizers)
 
 High-performance, 100% client-side batch image compression & format conversion application built with React 19, TypeScript, and Vite.
 
