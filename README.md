@@ -1,4 +1,4 @@
-# Image Compressor & SVG Optimizer Monorepo ⚡️
+# Image Compressor & SVG Optimizer Monorepo
 
 [![Version](https://img.shields.io/badge/version-v1.8.0-blue.svg)](https://github.com/mr-gordon/image-compressor)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
@@ -16,41 +16,41 @@ A modern, high-performance monorepo featuring **Image Compressor v1.8.0** and **
 
 ---
 
-## 🚀 Workspace Architecture
+## Workspace Architecture
 
 This project is structured as a Turborepo monorepo:
 
-- 🖼️ **[`apps/image-compressor`](./apps/image-compressor)** (v1.8.0): Batch image compression, format conversion (JPEG, PNG, WebP, AVIF, GIF, SVG), split slider comparison, 2.5× loupe magnifier, EXIF policy controls, and ZIP bulk export.
-- ⚡️ **[`apps/svg-optimizer`](./apps/svg-optimizer)** (v1.6.5): SVG vector icon minification, recoloring (`currentColor` / custom hex), transparent PNG generation (1x–8x), dimension presets (`20, 24, 32, 48, 64, 96px`), and combined SVG + PNG ZIP export.
-- 📦 **[`packages/ui`](./packages/ui)**: Shared corporate UI design system tokens and styling.
-- ⚙️ **[`packages/tsconfig`](./packages/tsconfig)**: Shared TypeScript config definitions.
+- **[`apps/image-compressor`](./apps/image-compressor)** (v1.8.0): Batch image compression, format conversion (JPEG, PNG, WebP, AVIF, GIF, SVG), split slider comparison, 2.5× loupe magnifier, EXIF policy controls, and ZIP bulk export.
+- **[`apps/svg-optimizer`](./apps/svg-optimizer)** (v1.6.5): SVG vector icon minification, recoloring (`currentColor` / custom hex), transparent PNG generation (1x–8x), dimension presets (`20, 24, 32, 48, 64, 96px`), and combined SVG + PNG ZIP export.
+- **[`packages/ui`](./packages/ui)**: Shared corporate UI design system tokens and styling.
+- **[`packages/tsconfig`](./packages/tsconfig)**: Shared TypeScript config definitions.
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
-### 🔒 100% Private & Client-Side Processing
+### 100% Private & Client-Side Processing
 All image and SVG operations happen 100% locally in your browser. **Your files are never uploaded to any external server.**
 
-### 🎨 Sleek Corporate Design & Circular Actions
+### Sleek Corporate Design & Circular Actions
 - **Minimalist Icon Controls:** Sleek circular icon-only buttons for clearing items and saving ZIP archives.
 - **Inspector Modal & Inline Filename Editing:** Click `<h3>` titles inside Inspector modals to edit file names inline.
 - **Distortion-Free 2.5× Loupe Zoom:** Pixel-accurate magnifier loupe in Inspector Modal preserving original & compressed aspect ratios.
 
 ---
 
-## 📝 Changelog
+## Changelog
 
-### 🚀 Release v1.8.0 / v1.6.5 (Current)
+### Release v1.8.0 / v1.6.5 (Current)
 
-#### 🖼️ Image Compressor (v1.8.0)
+#### Image Compressor (v1.8.0)
 - **Fix Loupe Zoom Aspect Ratio Distortion:** Corrected calculation for object-contain images; loupe background position & sizing now preserve exact natural aspect ratios for both Original and Compressed images.
 - **Dynamic Natural Dimension Measurement:** Added automatic `naturalWidth` and `naturalHeight` measurement on image load for reliable rendering.
 - **Inline Filename Editing:** Click `<h3>` title in Inspector Modal to edit item filename directly.
 - **Circular Icon-Only Action Buttons:** Updated Clear and Save All batch buttons to sleek circular icon buttons.
 - **GitHub Repository Links & Info Modal Versioning:** Updated Info Modal with link to `https://github.com/mr-gordon` and version bump to `1.8.0`.
 
-#### ⚡️ SVG Optimizer (v1.6.5)
+#### SVG Optimizer (v1.6.5)
 - **Always Transparent PNG Exports:** Updated PNG renderer default background to `transparent` for single and bulk PNG exports.
 - **Combined ZIP Export (`Save all`):** The primary `Save all` action bundles both optimized `.svg` and transparent `.png` files together into a single ZIP archive.
 - **Updated Size Presets:** Replaced `16px` preset with `96px` (`20, 24, 32, 48, 64, 96px`).
@@ -60,7 +60,7 @@ All image and SVG operations happen 100% locally in your browser. **Your files a
 
 ---
 
-## 🛠️ Local Setup & Development
+## Local Setup & Development
 
 ### Prerequisites
 - **Node.js**: `v18.0.0` or higher
@@ -95,13 +95,13 @@ All image and SVG operations happen 100% locally in your browser. **Your files a
 
 ---
 
-## 📄 License
+## License
 
 Distributed under the MIT License. See `LICENSE` for more information.
 
 ---
 
-## 👤 Author
+## Author
 
 **Christopher Winker**
 - GitHub: [@mr-gordon](https://github.com/mr-gordon)
