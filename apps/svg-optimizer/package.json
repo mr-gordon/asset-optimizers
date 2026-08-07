@@ -1,7 +1,7 @@
 {
   "name": "@repo/svg-optimizer",
   "private": true,
-  "version": "1.8.0",
+  "version": "1.6.5",
   "type": "module",
   "scripts": {
     "dev": "vite --port=3001 --host=0.0.0.0",
