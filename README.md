@@ -10,7 +10,8 @@
 
 A modern, high-performance monorepo featuring **Image Compressor v1.8.0** and **SVG Optimizer v1.6.5** web applications. Built with React 19, TypeScript 5.8, Tailwind CSS v4, and Vite 6.
 
-**Website:** [https://image.christopherwinker.de/](https://image.christopherwinker.de/)
+**Image Compressor (1.8.0):** [https://image.christopherwinker.de/](https://image.christopherwinker.de/)
+**SVG Optimizer (1.6.5):** [https://svg.christopherwinker.de/](https://svg.christopherwinker.de/)
 
 <img src="https://www.christopherwinker.de/tools/data/screen-image-compressor.png" alt="Vorschau" width="100%">
 
