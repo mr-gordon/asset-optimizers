@@ -1,4 +1,4 @@
-# Asset Optimizers: Image Compressor, SVG Optimizer & Font Checker
+# Asset Optimizers
 
 [![Version](https://img.shields.io/badge/version-v1.8.0-blue.svg)](https://github.com/mr-gordon/asset-optimizers)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
