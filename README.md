@@ -14,9 +14,11 @@ A modern, high-performance web tooling suite and Turborepo monorepo featuring **
 - **SVG Optimizer (v1.6.5):** [https://svg.christopherwinker.de/](https://svg.christopherwinker.de/)
 - **Font Checker (v1.5.1):** [https://fonts.christopherwinker.de/](https://fonts.christopherwinker.de/)
 
-<img src="https://www.christopherwinker.de/tools/data/screen-image-compressor.png" alt="Vorschau Image Compressor" width="100%">
-<img src="https://www.christopherwinker.de/tools/data/screen-svg-optimizer.jpg" alt="Vorschau Image Compressor" width="100%">
-<img src="https://www.christopherwinker.de/tools/data/screen-font-checker.jpg" alt="Vorschau Image Compressor" width="100%">
+<div style="float: left;">
+<img src="https://www.christopherwinker.de/tools/data/screen-image-compressor.png" alt="Vorschau Image Compressor" width="33%">
+<img src="https://www.christopherwinker.de/tools/data/screen-svg-optimizer.jpg" alt="Vorschau Image Compressor" width="33%">
+<img src="https://www.christopherwinker.de/tools/data/screen-font-checker.jpg" alt="Vorschau Image Compressor" width="33%">
+</div>
 
 ---
 
