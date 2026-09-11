@@ -1,10 +1,14 @@
 {
   "name": "asset-optimizers-monorepo",
-  "description": "Modern, 100% client-side batch image compressor, format converter & SVG vector optimizer (React 19, TypeScript, Vite).",
+  "version": "1.9.0",
+  "description": "Modern, 100% client-side batch image compressor, SVG vector optimizer & WebFont inspector suite (React 19, TypeScript, Vite, Turborepo).",
   "private": true,
   "keywords": [
     "image-compressor",
     "svg-optimizer",
+    "font-checker",
+    "webfont-inspector",
+    "font-analysis",
     "svg-minifier",
     "svg-recolor",
     "svg-to-png",

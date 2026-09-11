@@ -1,6 +1,6 @@
 # Asset Optimizers
 
-[![Version](https://img.shields.io/badge/version-v1.8.0-blue.svg)](https://github.com/mr-gordon/asset-optimizers)
+[![Version](https://img.shields.io/badge/version-v1.9.0-blue.svg)](https://github.com/mr-gordon/asset-optimizers)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![React](https://img.shields.io/badge/React-19-blue)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue)](https://www.typescriptlang.org/)

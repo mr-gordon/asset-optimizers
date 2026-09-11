@@ -1,0 +1,3835 @@
+<!DOCTYPE html>
+<!--
+  Precision WebFont Inspector & Comparison Studio ("Font Studio Pro")
+  Version 1.5.1 - Corporate UI Alignment, Monorepo Integration & UX-Refinements
+  Dokumentation: README.md - Arbeitsprotokoll des Refactorings: session.md
+-->
+<html lang="de">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Font Checker by Christopher Winker</title>
+  <meta name="description"
+    content="Precision WebFont Inspector, Binary Metric Analyzer & Component Stress Test. 100% private & fast – files never leave your device.">
+  <meta name="theme-color" content="#34383c">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="./assets/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="./assets/favicon-96x96.png">
+
+  <!-- Apple Touch Icons -->
+  <link rel="apple-touch-icon" sizes="57x57" href="./assets/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="./assets/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="./assets/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="./assets/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="./assets/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="./assets/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="./assets/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="./assets/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="./assets/apple-icon-180x180.png">
+
+  <!-- Microsoft -->
+  <meta name="msapplication-TileColor" content="#34383c">
+  <meta name="msapplication-TileImage" content="./assets/ms-icon-144x144.png">
+  <meta name="msapplication-config" content="./assets/browserconfig.xml">
+
+  <!-- Web App Manifest -->
+  <link rel="manifest" href="./assets/manifest.json">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Font Checker by Christopher Winker">
+  <meta property="og:description"
+    content="Precision WebFont Inspector, Binary Metric Analyzer & Component Stress Test. 100% private – files never leave your device.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="./assets/android-icon-192x192.png">
+
+  <!-- Preload Inter Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS (CDN) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!--
+    FONTKIT & WAWOFF2 — 100% lokale Parsing-Engine & WOFF2-Fallback.
+    Vollständig offline und lauffähig über http(s):// und file://.
+  -->
+  <script src="./vendor/fontkit.umd.min.js"></script>
+  <script>
+    // Muss vor dem Emscripten-Bundle stehen: Es uebernimmt ein bereits
+    // vorhandenes globales  samt gesetzter Callbacks.
+    window.__woff2DecoderReady = false;
+    var Module = {
+      onRuntimeInitialized: function () { window.__woff2DecoderReady = true; }
+    };
+  </script>
+  <script src="./vendor/wawoff2.js"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            surface: { 950: '#F4F5F7', 900: '#FFFFFF', 850: '#FAFBFC', 800: '#E2E5EA', 700: '#D1D5DB' },
+            slate: {
+              50: '#FFFFFF',
+              100: '#1A1D23',
+              200: '#1A1D23',
+              300: '#34383C',
+              400: '#6B7280',
+              500: '#9CA3AF',
+              600: '#9CA3AF',
+              700: '#D1D5DB',
+              800: '#E2E5EA',
+              900: '#F4F5F7',
+              950: '#F4F5F7'
+            },
+            accent: {
+              blue: '#2563eb',
+              purple: '#7c3aed',
+              cyan: '#0284c7',
+              emerald: '#059669',
+              amber: '#d97706',
+              rose: '#dc2626'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'SF Mono', 'Menlo', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Corporate Design System Tokens */
+    :root {
+      --c-bg: #FAFBFC;
+      --c-surface: #FFFFFF;
+      --c-surface-alt: #F4F5F7;
+      --c-surface-glass: rgba(250, 251, 252, 0.75);
+      --c-border: #E2E5EA;
+      --c-border-light: #EDF0F3;
+      --c-text: #1A1D23;
+      --c-text-secondary: #6B7280;
+      --c-text-tertiary: #9CA3AF;
+      --c-accent: #34383c;
+      --c-accent-light: #EFF6FF;
+      --c-accent-hover: #25282a;
+      --c-hover: #F1F3F5;
+      --c-active: #E8ECEF;
+      --c-success: #059669;
+      --c-success-light: rgba(5, 150, 105, 0.08);
+      --c-warning: #D97706;
+      --c-danger: #DC2626;
+      --c-brand-yellow: #F6B83C;
+      --c-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
+      --c-shadow-md: 0 4px 12px rgba(0, 0, 0, 0.06);
+      --c-shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+      --control-height: 32px;
+      --radius-sm: 4px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --radius-xl: 20px;
+      --radius-full: 9999px;
+
+      --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
+      --duration-fast: 120ms;
+      --duration: 200ms;
+      --duration-slow: 300ms;
+    }
+
+    body {
+      font-family: var(--font);
+      font-size: 13px;
+      color: var(--c-text);
+      background: var(--c-bg);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.5;
+    }
+
+    ::selection {
+      background: var(--c-accent);
+      color: white;
+    }
+
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--c-border);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--c-text-tertiary);
+    }
+
+    .editable-text:focus {
+      outline: none;
+    }
+
+    .font-sample {
+      word-break: break-word;
+    }
+
+    .diff-blend {
+      mix-blend-mode: difference;
+    }
+
+    /* Corporate Range Slider Override */
+    input[type="range"] {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 3px;
+      background: var(--c-border);
+      outline: none;
+      cursor: pointer;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--c-accent);
+      border: 2px solid var(--c-surface);
+      box-shadow: var(--c-shadow-sm);
+      cursor: pointer;
+      transition: transform var(--duration-fast) var(--ease);
+    }
+
+    input[type="range"]::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--c-accent);
+      border: 2px solid var(--c-surface);
+      box-shadow: var(--c-shadow-sm);
+      cursor: pointer;
+    }
+
+    /* Corporate Select Dropdown */
+    select {
+      appearance: none !important;
+      -webkit-appearance: none !important;
+      -moz-appearance: none !important;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") !important;
+      background-repeat: no-repeat !important;
+      background-position: right 14px center !important;
+      padding-right: 34px !important;
+      padding-left: 14px !important;
+      cursor: pointer;
+    }
+
+    /* ── Unified Corporate UI Components ─────────────────────────── */
+    .ui-segmented {
+      display: inline-flex;
+      align-items: center;
+      height: var(--control-height);
+      background: var(--c-surface-alt);
+      border: 1px solid var(--c-border);
+      border-radius: var(--radius-full);
+      padding: 3px 4px;
+      gap: 2px;
+      box-sizing: border-box;
+      flex-shrink: 0;
+    }
+
+    .ui-segmented-btn {
+      height: 24px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--radius-full);
+      font-size: var(--fs-sm);
+      font-weight: 500;
+      color: var(--c-text-secondary);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease);
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .ui-segmented-btn:hover {
+      color: var(--c-text);
+    }
+
+    .ui-segmented-btn.active {
+      background: var(--c-surface);
+      color: var(--c-text);
+      font-weight: 600;
+      box-shadow: var(--c-shadow-sm);
+    }
+
+    /* ── Standardized Corporate Controls ── */
+    .ui-btn {
+      height: var(--control-height);
+      padding: 0 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border-radius: var(--radius-full);
+      font-size: var(--fs-xs);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease);
+      border: 1px solid var(--c-border);
+      background: var(--c-surface-alt);
+      color: var(--c-text);
+      box-sizing: border-box;
+      user-select: none;
+      white-space: nowrap;
+    }
+
+    .ui-btn:hover {
+      background: var(--c-hover);
+      color: var(--c-text);
+    }
+
+    .ui-btn:active {
+      transform: scale(0.98);
+      background: var(--c-active);
+    }
+
+    .ui-btn-primary {
+      background: var(--c-accent) !important;
+      color: #ffffff !important;
+      border-color: var(--c-accent) !important;
+      box-shadow: var(--c-shadow-sm);
+    }
+
+    .ui-btn-primary:hover {
+      background: var(--c-accent-hover) !important;
+      border-color: var(--c-accent-hover) !important;
+      opacity: 0.95;
+    }
+
+    .ui-btn-danger {
+      background: rgba(220, 38, 38, 0.08) !important;
+      color: var(--c-danger) !important;
+      border-color: rgba(220, 38, 38, 0.15) !important;
+    }
+
+    .ui-btn-danger:hover {
+      background: rgba(220, 38, 38, 0.14) !important;
+    }
+
+    .ui-btn-icon {
+      width: var(--control-height);
+      height: var(--control-height);
+      padding: 0;
+      border-radius: var(--radius-full);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .ui-segmented {
+      height: var(--control-height);
+      padding: 3px;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      border-radius: var(--radius-full);
+      background: var(--c-surface-alt);
+      border: 1px solid var(--c-border);
+      box-sizing: border-box;
+    }
+
+    .ui-segmented-btn {
+      height: 24px;
+      padding: 0 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--fs-xs);
+      font-weight: 500;
+      color: var(--c-text-secondary);
+      background: transparent;
+      border: none;
+      border-radius: var(--radius-full);
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease);
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    .ui-segmented-btn:hover {
+      color: var(--c-text);
+    }
+
+    .ui-segmented-btn.active {
+      background: var(--c-surface);
+      color: var(--c-text);
+      font-weight: 600;
+      box-shadow: var(--c-shadow-sm);
+    }
+
+    /* Corporate Pill Toggle Button (matching stripExif in Image Compressor) */
+    .ui-toggle-pill {
+      height: var(--control-height);
+      padding: 0 14px;
+      font-size: var(--fs-xs);
+      font-weight: 500;
+      border-radius: var(--radius-full);
+      background: var(--c-surface-alt);
+      border: 1px solid var(--c-border);
+      color: var(--c-text-secondary);
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      cursor: pointer;
+      transition: all var(--duration-fast) var(--ease);
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    .ui-toggle-pill:hover {
+      color: var(--c-text);
+      background: var(--c-hover);
+      border-color: var(--c-text-tertiary);
+    }
+
+    .ui-toggle-pill.is-active {
+      background: var(--c-success-light);
+      border-color: rgba(5, 150, 105, 0.25);
+      color: var(--c-success);
+      font-weight: 600;
+    }
+
+    .ui-toggle-pill .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--c-text-tertiary);
+      flex-shrink: 0;
+      transition: background-color var(--duration-fast) var(--ease);
+    }
+
+    .ui-toggle-pill.is-active .dot {
+      background: var(--c-success);
+    }
+
+    .ui-input {
+      height: var(--control-height);
+      padding: 0 14px;
+      border-radius: var(--radius-full);
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      font-size: var(--fs-sm);
+      color: var(--c-text);
+      outline: none;
+      transition: border-color var(--duration-fast) var(--ease);
+      box-sizing: border-box;
+    }
+
+    .ui-input:focus {
+      border-color: var(--c-accent);
+    }
+
+    .ui-select {
+      height: var(--control-height);
+      padding: 0 34px 0 14px !important;
+      border-radius: var(--radius-full);
+      background: var(--c-surface);
+      border: 1px solid var(--c-border);
+      font-size: var(--fs-sm);
+      font-weight: 500;
+      color: var(--c-text);
+      outline: none;
+      box-sizing: border-box;
+      cursor: pointer;
+    }
+
+    .ui-select:focus {
+      border-color: var(--c-accent);
+    }
+
+    /* Interaktive Legende: aktive/inaktive Guide-Chips */
+    .guide-chip {
+      transition: opacity .15s ease, background-color .15s ease;
+    }
+
+    .guide-chip[aria-pressed="false"] {
+      opacity: .4;
+    }
+
+    .guide-chip[aria-pressed="false"] .guide-swatch {
+      background: var(--c-border) !important;
+    }
+
+    /* Bit-Grid für fsSelection */
+    .bit-cell {
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Unified Drop Zones */
+    .dropzone-slot {
+      transition: background-color var(--duration-fast) var(--ease), box-shadow var(--duration-fast) var(--ease);
+    }
+
+    #dropZoneA:hover {
+      background-color: rgba(59, 130, 246, 0.06);
+    }
+
+    #dropZoneB:hover {
+      background-color: rgba(168, 85, 247, 0.06);
+    }
+
+    #dropZoneA.drag-active {
+      background-color: rgba(59, 130, 246, 0.1) !important;
+      box-shadow: inset 0 0 0 2px #3b82f6;
+    }
+
+    #dropZoneB.drag-active {
+      background-color: rgba(168, 85, 247, 0.1) !important;
+      box-shadow: inset 0 0 0 2px #a855f7;
+    }
+
+    /* macOS / iOS Style Context Menu */
+    @keyframes ctxMenuPop {
+      0% {
+        opacity: 0;
+        transform: scale(0.93);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .ctx-menu-enter {
+      animation: ctxMenuPop 110ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+  </style>
+</head>
+
+<body class="min-h-screen flex flex-col font-sans antialiased" style="background: var(--c-bg); color: var(--c-text);">
+
+  <!-- ============================ HEADER ============================ -->
+  <header class="sticky top-0 z-40 transition-all" style="
+      background: rgba(250, 251, 252, 0.75);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border-bottom: 1px solid var(--c-border-light);
+      padding-top: 0.875rem;
+      padding-bottom: 0.875rem;
+    ">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-10 gap-4">
+
+        <!-- Brand Logo & App Name -->
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 flex items-center justify-center shrink-0" style="
+              border-radius: var(--radius-md);
+              background: var(--c-accent);
+              color: white;
+              box-shadow: var(--c-shadow-sm);
+            ">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="4 7 4 4 20 4 20 7"></polyline>
+              <line x1="9" y1="20" x2="15" y2="20"></line>
+              <line x1="12" y1="4" x2="12" y2="20"></line>
+            </svg>
+          </div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base font-semibold tracking-tight" style="color: var(--c-text); letter-spacing: -0.02em;">
+              Font Checker
+            </h1>
+            <span class="text-[10px] font-mono font-medium px-1.5 py-0.5 rounded-full"
+              style="background: var(--c-surface-alt); color: var(--c-text-secondary); border: 1px solid var(--c-border);">v1.5.1</span>
+          </div>
+        </div>
+
+        <!-- Controls Slot & Privacy Badge -->
+        <div class="flex items-center gap-2.5">
+          <!-- Split / Overlay View Toggle -->
+          <div class="ui-segmented">
+            <button id="btnViewSplit" type="button" class="ui-segmented-btn active">Side-by-Side</button>
+            <button id="btnViewOverlay" type="button" class="ui-segmented-btn">Overlay Diff</button>
+          </div>
+
+          <button id="btnToggleAnatomy" type="button" class="ui-btn"
+            title="Typografische Hilfslinien (Ascender, Cap, Waist, Baseline, Descender) einblenden">
+            <svg class="w-3.5 h-3.5 text-[var(--c-text-secondary)]" fill="none" stroke="currentColor"
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+            </svg>
+            <span class="hidden sm:inline">Anatomy Guides</span>
+          </button>
+
+          <!-- Privacy Badge -->
+          <div class="hidden sm:inline-flex items-center justify-center gap-1.5 px-3 h-8 text-xs font-medium shrink-0"
+            title="100% Client-Side Privacy" style="
+              border-radius: var(--radius-full);
+              background: var(--c-success-light);
+              color: var(--c-success);
+              border: 1px solid rgba(5, 150, 105, 0.15);
+            ">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+            <span class="text-[11px]">Private</span>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Engine-Fehlerbanner (nur bei Ausfall sichtbar) -->
+  <div id="engineError" class="hidden border-b border-red-200 bg-red-50 text-red-700 text-xs px-6 py-2.5">
+    Der eingebettete fontkit-Parser hat sich nicht initialisiert — vermutlich ist die Datei beschädigt oder
+    unvollständig kopiert. Vorschau und Stress-Test laufen über die native FontFace-API weiter, die Binär-Analyse ist
+    deaktiviert.
+  </div>
+
+  <!-- ============================ MAIN ============================ -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full flex-1 pt-6 pb-16 flex flex-col gap-6">
+
+    <!-- Render-Fehler Banner (nur im Fehlerfall sichtbar) -->
+    <div id="stErrorWrap"
+      class="hidden rounded-xl border border-red-200 bg-red-50 text-red-700 text-xs px-4 py-3 font-medium flex items-center gap-2">
+      <svg class="w-4 h-4 text-red-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="10" />
+        <line x1="12" y1="8" x2="12" y2="12" />
+        <line x1="12" y1="16" x2="12.01" y2="16" />
+      </svg>
+      <span>Render-Fehler: <strong id="stError"></strong></span>
+    </div>
+
+    <!-- CONTROL TOOLBAR (BatchControlBar Style) -->
+    <section class="space-y-4 transition-all" style="
+        background: var(--c-surface);
+        border-radius: var(--radius-xl);
+        border: 1px solid var(--c-border);
+        padding: 16px 20px;
+        box-shadow: var(--c-shadow-sm);
+      ">
+      <!-- Top Header Row of Controls -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3"
+        style="border-bottom: 1px solid var(--c-border-light);">
+        <div class="flex items-center gap-2">
+          <svg class="w-4 h-4 text-[var(--c-text-tertiary)]" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          <h2 class="text-sm font-semibold" style="color: var(--c-text);">Live-Steuerung &amp; Typografie-Parameter</h2>
+        </div>
+
+        <!-- Action Buttons Top Right -->
+        <div class="flex items-center gap-2">
+          <!-- Swap Fonts -->
+          <button id="btnSwapFonts" type="button"
+            class="h-8 px-3.5 text-xs font-semibold rounded-full bg-[var(--c-surface-alt)] border border-[var(--c-border)] text-[var(--c-text)] hover:bg-[var(--c-hover)] transition-all cursor-pointer inline-flex items-center gap-1.5"
+            title="Font A und Font B tauschen">
+            <svg class="w-3.5 h-3.5 text-[var(--c-text-secondary)]" fill="none" stroke="currentColor"
+              viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+            </svg>
+            <span>Swap (A ↔ B)</span>
+          </button>
+
+          <!-- Reset / Clear Button (Circular Danger 32x32) -->
+          <button id="btnResetFonts" type="button"
+            class="w-8 h-8 inline-flex items-center justify-center rounded-full shrink-0 cursor-pointer hover:opacity-80 transition-all"
+            style="background: rgba(220, 38, 38, 0.08); color: var(--c-danger); border: 1px solid rgba(220, 38, 38, 0.15);"
+            title="Zurücksetzen">
+            <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 6h18" />
+              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+            </svg>
+          </button>
+
+          <!-- Export Report Button (Primary Pill 32px) -->
+          <button id="btnExportClipboard" type="button"
+            class="h-8 px-3.5 inline-flex items-center justify-center gap-1.5 rounded-full bg-[var(--c-accent)] text-white hover:opacity-90 font-semibold text-xs shadow-xs cursor-pointer transition-all"
+            title="Kompletten Analyse-Report als Markdown in die Zwischenablage kopieren">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+            <span>Report kopieren</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Grid: 4 Columns -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 text-xs">
+
+        <!-- Col 1: Font Size & Line Height -->
+        <div class="space-y-3">
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center h-5">
+              <label
+                style="font-size: var(--fs-xs); font-weight: 600; color: var(--c-text-secondary); display: flex; align-items: center; gap: 4px;">
+                <svg class="w-3.5 h-3.5 text-[var(--c-text-tertiary)]" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="4 7 4 4 20 4 20 7"></polyline>
+                  <line x1="9" y1="20" x2="15" y2="20"></line>
+                  <line x1="12" y1="4" x2="12" y2="20"></line>
+                </svg>
+                Schriftgröße
+              </label>
+              <span class="font-mono font-semibold text-xs" style="color: var(--c-text);" id="valFontSize">56px</span>
+            </div>
+            <div class="h-8 flex items-center">
+              <input type="range" id="sliderFontSize" min="12" max="140" value="56" class="w-full">
+            </div>
+          </div>
+
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center h-5">
+              <label
+                style="font-size: var(--fs-xs); font-weight: 600; color: var(--c-text-secondary); display: flex; align-items: center; gap: 4px;">
+                <svg class="w-3.5 h-3.5 text-[var(--c-text-tertiary)]" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="21" y1="10" x2="7" y2="10"></line>
+                  <line x1="21" y1="6" x2="3" y2="6"></line>
+                  <line x1="21" y1="14" x2="3" y2="14"></line>
+                  <line x1="21" y1="18" x2="7" y2="18"></line>
+                </svg>
+                Line-Height
+              </label>
+              <span class="font-mono font-semibold text-xs" style="color: var(--c-text);" id="valLineHeight">1.4</span>
+            </div>
+            <div class="h-8 flex items-center">
+              <input type="range" id="sliderLineHeight" min="0.8" max="2.5" step="0.05" value="1.4" class="w-full">
+            </div>
+          </div>
+        </div>
+
+        <!-- Col 2: Letter Spacing & Alignment -->
+        <div class="space-y-3">
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center h-5">
+              <label
+                style="font-size: var(--fs-xs); font-weight: 600; color: var(--c-text-secondary); display: flex; align-items: center; gap: 4px;">
+                <svg class="w-3.5 h-3.5 text-[var(--c-text-tertiary)]" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="4" y1="12" x2="20" y2="12"></line>
+                  <polyline points="8 8 4 12 8 16"></polyline>
+                  <polyline points="16 8 20 12 16 16"></polyline>
+                </svg>
+                Letter-Spacing
+              </label>
+              <span class="font-mono font-semibold text-xs" style="color: var(--c-text);"
+                id="valLetterSpacing">0.00em</span>
+            </div>
+            <div class="h-8 flex items-center">
+              <input type="range" id="sliderLetterSpacing" min="-0.08" max="0.3" step="0.01" value="0" class="w-full">
+            </div>
+          </div>
+
+          <div class="space-y-1.5">
+            <label
+              style="font-size: var(--fs-xs); font-weight: 600; color: var(--c-text-secondary); display: flex; align-items: center; gap: 4px; height: 20px;">
+              <svg class="w-3.5 h-3.5 text-[var(--c-text-tertiary)]" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="17" y1="10" x2="3" y2="10"></line>
+                <line x1="21" y1="6" x2="3" y2="6"></line>
+                <line x1="21" y1="14" x2="3" y2="14"></line>
+                <line x1="17" y1="18" x2="3" y2="18"></line>
+              </svg>
+              Ausrichtung
+            </label>
+            <div class="ui-segmented w-full">
+              <button type="button" data-align="left" class="btn-align ui-segmented-btn active flex-1">L</button>
+              <button type="button" data-align="center" class="btn-align ui-segmented-btn flex-1">C</button>
+              <button type="button" data-align="right" class="btn-align ui-segmented-btn flex-1">R</button>
+              <button type="button" data-align="justify" class="btn-align ui-segmented-btn flex-1">J</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Col 3: Text Presets & Typo Toggles -->
+        <div class="space-y-3">
+          <div class="space-y-1.5">
+            <label
+              style="font-size: var(--fs-xs); font-weight: 600; color: var(--c-text-secondary); display: flex; align-items: center; gap: 4px; height: 20px;"
+              for="selectPreset">
+              <svg class="w-3.5 h-3.5 text-[var(--c-text-tertiary)]" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                <polyline points="14 2 14 8 20 8"></polyline>
+                <line x1="16" y1="13" x2="8" y2="13"></line>
+                <line x1="16" y1="17" x2="8" y2="17"></line>
+                <polyline points="10 9 9 9 8 9"></polyline>
+              </svg>
+              Text-Preset
+            </label>
+            <select id="selectPreset" class="ui-select w-full">
+              <option value="anatomy">Anatomy: Ascending to Better Typography</option>
+              <option value="pangram-de">Pangram (DE): Zwölf Boxkämpfer…</option>
+              <option value="pangram-en">Pangram (EN): The quick brown fox…</option>
+              <option value="numbers">Ziffern &amp; Währung: 0123456789 €$£%</option>
+              <option value="editorial">Editorial / Fließtext</option>
+              <option value="ui">UI Strings (Buttons, Menüs)</option>
+              <option value="custom">Freie Texteingabe</option>
+            </select>
+          </div>
+
+          <div class="space-y-1.5">
+            <label
+              style="font-size: var(--fs-xs); font-weight: 600; color: var(--c-text-secondary); display: flex; align-items: center; gap: 4px; height: 20px;">
+              <svg class="w-3.5 h-3.5 text-[var(--c-text-tertiary)]" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+                <line x1="3" y1="15" x2="21" y2="15"></line>
+                <line x1="9" y1="3" x2="9" y2="21"></line>
+                <line x1="15" y1="3" x2="15" y2="21"></line>
+              </svg>
+              Typo-Features
+            </label>
+            <div class="flex items-center gap-2">
+              <button type="button" id="btnToggleMetrics" class="ui-toggle-pill flex-1"
+                title="Baseline-Raster ein-/ausblenden">
+                <span>Raster</span>
+                <span class="dot"></span>
+              </button>
+              <input type="checkbox" id="toggleMetrics" class="hidden">
+
+              <button type="button" id="btnToggleLiga" class="ui-toggle-pill is-active flex-1"
+                title="OpenType-Ligaturen ein-/ausblenden">
+                <span>Ligaturen</span>
+                <span class="dot"></span>
+              </button>
+              <input type="checkbox" id="toggleLiga" checked class="hidden">
+            </div>
+          </div>
+        </div>
+
+        <!-- Col 4: Overlay Controls & Diff Mode -->
+        <div id="overlayControlCard" class="space-y-3 opacity-50 pointer-events-none transition">
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center h-5">
+              <label
+                style="font-size: var(--fs-xs); font-weight: 600; color: var(--c-text-secondary); display: flex; align-items: center; gap: 4px;">
+                <svg class="w-3.5 h-3.5 text-[var(--c-text-tertiary)]" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 2a10 10 0 0 1 0 20z"></path>
+                </svg>
+                Overlay Deckkraft (B)
+              </label>
+              <span class="font-mono font-semibold text-xs" style="color: var(--c-text);" id="valOpacityB">50%</span>
+            </div>
+            <div class="h-8 flex items-center">
+              <input type="range" id="sliderOpacityB" min="0" max="100" value="50" class="w-full">
+            </div>
+          </div>
+
+          <div class="space-y-1.5">
+            <label
+              style="font-size: var(--fs-xs); font-weight: 600; color: var(--c-text-secondary); display: flex; align-items: center; gap: 4px; height: 20px;">
+              <svg class="w-3.5 h-3.5 text-[var(--c-text-tertiary)]" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="9"></circle>
+                <path d="m4.93 4.93 14.14 14.14"></path>
+              </svg>
+              Diff Blend
+            </label>
+            <button type="button" id="btnToggleDiffBlend" class="ui-toggle-pill w-full"
+              title="mix-blend-mode: difference ein-/ausschalten">
+              <span>Difference Mode</span>
+              <span class="dot"></span>
+            </button>
+            <input type="checkbox" id="toggleDiffBlend" class="hidden">
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- UNIFIED DROP ZONE (SLOT A & SLOT B) -->
+    <section class="bg-[var(--c-surface)] border border-[var(--c-border)] rounded-2xl overflow-hidden shadow-xs">
+      <div class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[var(--c-border)]">
+
+        <!-- Slot A Dropzone -->
+        <div id="dropZoneA" class="dropzone-slot group relative p-5 cursor-pointer">
+          <input type="file" id="fileInputA" accept=".woff,.woff2,.ttf,.otf,.ttc" class="hidden">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-center gap-3 text-left min-w-0">
+              <div
+                class="w-10 h-10 shrink-0 rounded-xl bg-blue-50 text-blue-600 border border-blue-200 flex items-center justify-center font-mono font-bold text-sm transition-transform group-hover:scale-105">
+                A</div>
+              <div class="min-w-0">
+                <div class="text-xs uppercase tracking-wider text-[var(--c-text-secondary)] font-medium">Primäre Schrift
+                  (A)</div>
+                <div id="fontNameA" class="font-semibold text-[var(--c-text)] truncate max-w-[260px]">Inter / System UI
+                </div>
+                <div id="fontMetaA" class="text-[11px] font-mono text-[var(--c-text-tertiary)] mt-0.5">— kein File
+                  geladen —</div>
+                <div id="weightControlA" class="mt-2 flex items-center gap-2 text-xs font-mono"
+                  onclick="event.stopPropagation()">
+                  <span class="text-[var(--c-text-secondary)]">Weight:</span>
+                  <span id="weightDisplayA"
+                    class="px-2.5 py-0.5 rounded-full bg-[var(--c-surface-alt)] text-blue-600 border border-[var(--c-border)] font-medium">400</span>
+                </div>
+              </div>
+            </div>
+            <span
+              class="text-[11px] text-[var(--c-text-tertiary)] group-hover:text-blue-600 transition-colors font-mono shrink-0 font-medium">Drop
+              .woff2/.ttf</span>
+          </div>
+        </div>
+
+        <!-- Slot B Dropzone -->
+        <div id="dropZoneB" class="dropzone-slot group relative p-5 cursor-pointer">
+          <input type="file" id="fileInputB" accept=".woff,.woff2,.ttf,.otf,.ttc" class="hidden">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex items-center gap-3 text-left min-w-0">
+              <div
+                class="w-10 h-10 shrink-0 rounded-xl bg-purple-50 text-purple-600 border border-purple-200 flex items-center justify-center font-mono font-bold text-sm transition-transform group-hover:scale-105">
+                B</div>
+              <div class="min-w-0">
+                <div class="text-xs uppercase tracking-wider text-[var(--c-text-secondary)] font-medium">
+                  Vergleichsschrift (B)</div>
+                <div id="fontNameB" class="font-semibold text-[var(--c-text)] truncate max-w-[260px]">Georgia / System
+                  Serif</div>
+                <div id="fontMetaB" class="text-[11px] font-mono text-[var(--c-text-tertiary)] mt-0.5">— kein File
+                  geladen —</div>
+                <div id="weightControlB" class="mt-2 flex items-center gap-2 text-xs font-mono"
+                  onclick="event.stopPropagation()">
+                  <span class="text-[var(--c-text-secondary)]">Weight:</span>
+                  <span id="weightDisplayB"
+                    class="px-2.5 py-0.5 rounded-full bg-[var(--c-surface-alt)] text-purple-600 border border-[var(--c-border)] font-medium">400</span>
+                </div>
+              </div>
+            </div>
+            <span
+              class="text-[11px] text-[var(--c-text-tertiary)] group-hover:text-purple-600 transition-colors font-mono shrink-0 font-medium">Drop
+              .woff2/.ttf</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PREVIEW STAGE -->
+    <section
+      class="bg-[var(--c-surface)] border border-[var(--c-border)] rounded-2xl overflow-hidden shadow-xs relative min-h-[380px]">
+      <div id="viewSplit"
+        class="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[var(--c-border)]">
+        <div class="p-8 relative min-h-[340px] flex flex-col justify-between overflow-hidden">
+          <span
+            class="absolute top-3 right-4 font-mono text-[10px] font-medium text-blue-700 bg-blue-50 px-2 py-0.5 rounded-full border border-blue-200 z-20">Font
+            A</span>
+          <div id="stageA" class="relative w-full flex-1">
+            <svg id="svgGuidesA" class="absolute inset-0 w-full h-full pointer-events-none hidden z-0"></svg>
+            <div id="targetA" contenteditable="true" spellcheck="false"
+              class="editable-text font-sample text-[var(--c-text)] relative z-10">Ascending to Better Typography</div>
+          </div>
+          <div id="legendMetricsA"
+            class="hidden mt-4 pt-3 border-t border-[var(--c-border)] text-[10px] font-mono text-[var(--c-text-secondary)] flex flex-wrap gap-2 z-10">
+          </div>
+        </div>
+        <div class="p-8 relative min-h-[340px] flex flex-col justify-between overflow-hidden">
+          <span
+            class="absolute top-3 right-4 font-mono text-[10px] font-medium text-purple-700 bg-purple-50 px-2 py-0.5 rounded-full border border-purple-200 z-20">Font
+            B</span>
+          <div id="stageB" class="relative w-full flex-1">
+            <svg id="svgGuidesB" class="absolute inset-0 w-full h-full pointer-events-none hidden z-0"></svg>
+            <div id="targetB" contenteditable="true" spellcheck="false"
+              class="editable-text font-sample text-[var(--c-text)] relative z-10">Ascending to Better Typography</div>
+          </div>
+          <div id="legendMetricsB"
+            class="hidden mt-4 pt-3 border-t border-[var(--c-border)] text-[10px] font-mono text-[var(--c-text-secondary)] flex flex-wrap gap-2 z-10">
+          </div>
+        </div>
+      </div>
+
+      <div id="viewOverlay" class="hidden p-8 relative min-h-[360px]">
+        <div class="relative w-full h-full">
+          <div id="overlayTargetA" class="font-sample text-blue-600 select-none">Ascending to Better Typography</div>
+          <div id="overlayTargetB" class="font-sample text-purple-600 absolute top-0 left-0 w-full select-none">
+            Ascending to Better Typography</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STRESS TEST -->
+    <section class="bg-[var(--c-surface)] border border-[var(--c-border)] rounded-2xl p-6 space-y-6 shadow-xs">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <h2
+            class="text-xs font-semibold uppercase tracking-wider text-[var(--c-text-secondary)] flex items-center gap-2">
+            <svg class="w-4 h-4 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+            UI Component Stress-Test: Input Overflow &amp; Baseline Drift
+          </h2>
+          <p class="text-xs text-[var(--c-text-secondary)] mt-1">Prüft starre Höhen (40px Text-Input) auf inneres
+            Scrollen (<code class="font-mono text-[var(--c-text)] font-semibold">scrollHeight &gt; clientHeight</code>)
+            und – aus den fontkit-Metriken berechnet – auf Descender-Clipping.</p>
+        </div>
+        <div id="metricShiftBadge"
+          class="hidden font-mono text-[11px] px-3 py-1.5 rounded-full border border-amber-300 bg-amber-50 text-amber-800 font-medium">
+          Effective-Height Shift (B vs. A): <span id="valHeightDelta" class="font-bold">0%</span>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-5 border-t border-[var(--c-border)]">
+        <div class="space-y-3">
+          <div class="flex justify-between items-center text-xs gap-2 flex-wrap">
+            <span class="font-semibold text-blue-600 font-mono">Font A: Input (Border-Box 40px)</span>
+            <span class="flex items-center gap-1.5">
+              <span id="clipBadgeA"
+                class="hidden text-[10px] font-mono font-medium px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">CLIPPING
+                RISK</span>
+              <span id="overflowBadgeA"
+                class="hidden text-[10px] font-mono font-medium px-2 py-0.5 rounded-full bg-red-100 text-red-700 border border-red-300">OVERFLOW
+                DETECTED</span>
+            </span>
+          </div>
+          <input type="text" id="stressInputA" value="Typografie Agpjq 123"
+            class="w-full h-10 px-3.5 rounded-lg bg-[var(--c-surface-alt)] border border-[var(--c-border)] text-[var(--c-text)] text-base focus:outline-none focus:border-[var(--c-accent)] focus:ring-1 focus:ring-[var(--c-accent)] transition">
+          <div class="flex justify-between text-[11px] font-mono text-[var(--c-text-secondary)] pt-1 gap-3 flex-wrap">
+            <span>scrollHeight: <strong id="shA" class="text-[var(--c-text)]">40px</strong></span>
+            <span>clientHeight: <strong id="chA" class="text-[var(--c-text)]">40px</strong></span>
+            <span>benötigte Textbox: <strong id="reqA" class="text-[var(--c-text)]">–</strong></span>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <div class="flex justify-between items-center text-xs gap-2 flex-wrap">
+            <span class="font-semibold text-purple-600 font-mono">Font B: Input (Border-Box 40px)</span>
+            <span class="flex items-center gap-1.5">
+              <span id="clipBadgeB"
+                class="hidden text-[10px] font-mono font-medium px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-300">CLIPPING
+                RISK</span>
+              <span id="overflowBadgeB"
+                class="hidden text-[10px] font-mono font-medium px-2 py-0.5 rounded-full bg-red-100 text-red-700 border border-red-300">OVERFLOW
+                DETECTED</span>
+            </span>
+          </div>
+          <input type="text" id="stressInputB" value="Typografie Agpjq 123"
+            class="w-full h-10 px-3.5 rounded-lg bg-[var(--c-surface-alt)] border border-[var(--c-border)] text-[var(--c-text)] text-base focus:outline-none focus:border-[var(--c-accent)] focus:ring-1 focus:ring-[var(--c-accent)] transition">
+          <div class="flex justify-between text-[11px] font-mono text-[var(--c-text-secondary)] pt-1 gap-3 flex-wrap">
+            <span>scrollHeight: <strong id="shB" class="text-[var(--c-text)]">40px</strong></span>
+            <span>clientHeight: <strong id="chB" class="text-[var(--c-text)]">40px</strong></span>
+            <span>benötigte Textbox: <strong id="reqB" class="text-[var(--c-text)]">–</strong></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- fsSelection BIT AUDIT -->
+    <section class="bg-[var(--c-surface)] border border-[var(--c-border)] rounded-2xl p-6 space-y-4 shadow-xs">
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h2 class="text-xs font-semibold uppercase tracking-wider text-[var(--c-text-secondary)]">OS/2 · fsSelection
+            Bit-Audit</h2>
+          <p class="text-xs text-[var(--c-text-secondary)] mt-1">Bit 7 (<code
+              class="font-mono text-[var(--c-text)] font-semibold">USE_TYPO_METRICS</code>, Maske <code
+              class="font-mono text-[var(--c-text)] font-semibold">0x80</code>) entscheidet, ob Browser die sTypo-Werte
+            statt der Windows-Bounds für die Zeilenhöhe verwenden.</p>
+        </div>
+      </div>
+      <div id="fsBitAudit" class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-4 border-t border-[var(--c-border)]"></div>
+    </section>
+
+    <!-- METRICS DEEP DIVE -->
+    <section class="space-y-4">
+      <div class="flex items-center justify-between flex-wrap gap-2">
+        <h2
+          class="text-xs font-semibold uppercase tracking-wider text-[var(--c-text-secondary)] flex items-center gap-2">
+          <svg class="w-4 h-4 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+          </svg>
+          Technischer Deep Dive &amp; Metriken-Vergleich
+        </h2>
+        <span class="text-[11px] text-[var(--c-text-tertiary)] font-mono">Parsed via fontkit (SFNT / CFF / WOFF /
+          WOFF2)</span>
+      </div>
+      <div class="bg-[var(--c-surface)] border border-[var(--c-border)] rounded-2xl overflow-hidden shadow-xs">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs">
+            <thead
+              class="bg-[var(--c-surface-alt)] text-[var(--c-text-secondary)] uppercase font-mono text-[10px] border-b border-[var(--c-border)]">
+              <tr>
+                <th class="py-3 px-5 font-semibold w-1/3">Eigenschaft / Tabelle</th>
+                <th class="py-3 px-5 font-semibold text-blue-600 w-1/3">Font A</th>
+                <th class="py-3 px-5 font-semibold text-purple-600 w-1/3">Font B</th>
+              </tr>
+            </thead>
+            <tbody id="metricsTableBody" class="divide-y divide-[var(--c-border)] font-mono">
+              <tr>
+                <td colspan="3" class="py-8 text-center text-[var(--c-text-tertiary)]">Lade Schriftdateien per Drag
+                  &amp; Drop, um binäre Metadaten zu parsen.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ZEICHENSATZ-ANALYSE: Glyphen-Explorer, Ligaturen, Sprachabdeckung -->
+    <section class="bg-[var(--c-surface)] border border-[var(--c-border)] rounded-2xl overflow-hidden shadow-xs">
+
+      <div class="p-6 pb-0 flex flex-wrap items-start justify-between gap-4">
+        <div>
+          <h2
+            class="text-xs font-semibold uppercase tracking-wider text-[var(--c-text-secondary)] flex items-center gap-2">
+            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+            </svg>
+            Zeichensatz-Analyse
+          </h2>
+          <p class="text-xs text-[var(--c-text-secondary)] mt-1">Glyphenbestand, OpenType-Ligaturen und Sprachabdeckung
+            der ausgewählten Schrift.</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="text-[11px] text-[var(--c-text-secondary)] font-mono font-medium">Analysiere:</span>
+          <div class="ui-segmented">
+            <button id="caSlotA" type="button" class="ui-segmented-btn active">Font A</button>
+            <button id="caSlotB" type="button" class="ui-segmented-btn">Font B</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="px-6 pt-4">
+        <div class="ui-segmented">
+          <button data-catab="glyphs" type="button" class="ca-tab ui-segmented-btn active">Glyphen-Explorer</button>
+          <button data-catab="ligatures" type="button" class="ca-tab ui-segmented-btn">Ligaturen</button>
+          <button data-catab="languages" type="button" class="ca-tab ui-segmented-btn">Sprachabdeckung</button>
+        </div>
+      </div>
+
+      <div class="p-6 pt-5">
+
+        <!-- ---------- Glyphen-Explorer ---------- -->
+        <div id="caPanelGlyphs">
+          <div class="flex flex-wrap gap-3 items-center mb-4">
+            <input id="caSearch" type="search" autocomplete="off"
+              placeholder="Zeichen, U+0041, 0041 oder Glyph-Name (z. B. adieresis)"
+              class="ui-input flex-1 min-w-[240px] placeholder-[var(--c-text-tertiary)]">
+            <select id="caBlock" class="ui-select"></select>
+            <span id="caGlyphCount" class="text-[11px] font-mono text-[var(--c-text-secondary)]"></span>
+          </div>
+          <div id="caGrid" class="grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));">
+          </div>
+          <div id="caMore" class="mt-5 text-center"></div>
+        </div>
+
+        <!-- ---------- Ligaturen ---------- -->
+        <div id="caPanelLigatures" class="hidden"></div>
+
+        <!-- ---------- Sprachabdeckung ---------- -->
+        <div id="caPanelLanguages" class="hidden"></div>
+
+      </div>
+    </section>
+
+    <!-- CSS GENERATOR -->
+    <section class="bg-[var(--c-surface)] border border-[var(--c-border)] rounded-2xl p-6 space-y-4 shadow-xs">
+      <div class="flex items-center justify-between flex-wrap gap-3">
+        <div>
+          <h3 class="text-sm font-semibold text-[var(--c-text)]">Zero-CLS Fallback &amp; @font-face Kompensation</h3>
+          <p class="text-xs text-[var(--c-text-secondary)]">Berechnete <code
+              class="font-mono text-[var(--c-text)] font-semibold">size-adjust</code>, <code
+              class="font-mono text-[var(--c-text)] font-semibold">ascent-override</code>, <code
+              class="font-mono text-[var(--c-text)] font-semibold">descent-override</code> zur Eliminierung von
+            Cumulative Layout Shift</p>
+        </div>
+        <button id="btnCopyCss" type="button" class="ui-btn">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+          </svg>
+          <span>CSS kopieren</span>
+        </button>
+      </div>
+      <pre id="cssOutput"
+        class="bg-[var(--c-surface-alt)] p-4 rounded-xl border border-[var(--c-border)] text-[var(--c-text)] font-mono text-xs overflow-x-auto whitespace-pre">/* Lade beide Schriften, um @font-face Kompensations-CSS zu berechnen */</pre>
+    </section>
+
+    <div class="pb-6"></div>
+  </main>
+
+  <!-- GLYPHEN-DETAIL (Modal) -->
+  <div id="glyphModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div id="glyphModalBackdrop" class="absolute inset-0 bg-black/40 backdrop-blur-sm"></div>
+    <div
+      class="relative bg-[var(--c-surface)] border border-[var(--c-border)] rounded-2xl shadow-xl w-full max-w-3xl max-h-[88vh] overflow-y-auto">
+      <div id="glyphModalContent" class="p-6"></div>
+    </div>
+  </div>
+
+  <!-- GLYPH CONTEXT MENU (macOS / iOS Style) -->
+  <div id="glyphContextMenu"
+    class="hidden fixed z-50 min-w-[210px] max-w-[260px] p-1.5 rounded-2xl bg-white/95 backdrop-blur-2xl border border-[var(--c-border)] shadow-2xl text-xs select-none"
+    style="box-shadow: 0 16px 36px -4px rgba(0, 0, 0, 0.16), 0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.04); transform-origin: top left;"
+    onclick="event.stopPropagation()">
+  </div>
+
+  <!-- Floating Bottom Right Action Group -->
+  <div class="fixed bottom-4 right-4 z-20 flex items-center gap-2">
+    <!-- Circular Info Button -->
+    <button id="btnOpenInfo" type="button"
+      class="w-8 h-8 inline-flex items-center justify-center shrink-0 transition-transform active:scale-95 cursor-pointer rounded-full bg-[var(--c-surface)] text-[var(--c-text-secondary)] border border-[var(--c-border)] shadow-sm hover:bg-[var(--c-surface-alt)]"
+      title="About &amp; App Info">
+      <svg class="w-4 h-4 text-[var(--c-text-tertiary)]" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"></circle>
+        <line x1="12" y1="16" x2="12" y2="12"></line>
+        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+      </svg>
+    </button>
+
+    <!-- Shortcuts Button -->
+    <button id="btnOpenShortcuts" type="button"
+      class="px-4 h-8 flex items-center gap-2 shrink-0 transition-transform active:scale-95 cursor-pointer rounded-full bg-[var(--c-surface)] text-[var(--c-text-secondary)] border border-[var(--c-border)] shadow-sm hover:bg-[var(--c-surface-alt)] text-xs font-semibold"
+      title="View Keyboard Shortcuts">
+      <svg class="w-4 h-4 text-[var(--c-text-tertiary)]" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+        <line x1="6" y1="8" x2="6.01" y2="8"></line>
+        <line x1="10" y1="8" x2="10.01" y2="8"></line>
+        <line x1="14" y1="8" x2="14.01" y2="8"></line>
+        <line x1="18" y1="8" x2="18.01" y2="8"></line>
+        <line x1="6" y1="12" x2="6.01" y2="12"></line>
+        <line x1="10" y1="12" x2="10.01" y2="12"></line>
+        <line x1="14" y1="12" x2="14.01" y2="12"></line>
+        <line x1="18" y1="12" x2="18.01" y2="12"></line>
+        <line x1="8" y1="16" x2="16" y2="16"></line>
+      </svg>
+      <span class="hidden sm:inline">Shortcuts</span>
+    </button>
+  </div>
+
+  <!-- 1. KEYBOARD SHORTCUTS MODAL -->
+  <div id="shortcutsModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 cursor-pointer"
+    style="background: rgba(0, 0, 0, 0.55); backdrop-filter: blur(8px);">
+    <div id="shortcutsModalCard"
+      class="max-w-md w-full space-y-4 cursor-default bg-[var(--c-surface)] rounded-2xl border border-[var(--c-border)] p-6 shadow-2xl"
+      onclick="event.stopPropagation()">
+      <div class="flex items-center justify-between pb-3 border-b border-[var(--c-border)]">
+        <h3 class="font-semibold flex items-center gap-2 text-sm sm:text-base text-[var(--c-text)]">
+          <svg class="w-5 h-5 text-[var(--c-text-tertiary)]" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+            <line x1="6" y1="8" x2="6.01" y2="8"></line>
+            <line x1="10" y1="8" x2="10.01" y2="8"></line>
+            <line x1="14" y1="8" x2="14.01" y2="8"></line>
+            <line x1="18" y1="8" x2="18.01" y2="8"></line>
+            <line x1="6" y1="12" x2="6.01" y2="12"></line>
+            <line x1="10" y1="12" x2="10.01" y2="12"></line>
+            <line x1="14" y1="12" x2="14.01" y2="12"></line>
+            <line x1="18" y1="12" x2="18.01" y2="12"></line>
+            <line x1="8" y1="16" x2="16" y2="16"></line>
+          </svg>
+          Keyboard Shortcuts
+        </h3>
+        <button id="btnCloseShortcuts" type="button"
+          class="w-8 h-8 inline-flex items-center justify-center rounded-full text-[var(--c-text-tertiary)] hover:text-[var(--c-text)] transition-colors cursor-pointer"
+          aria-label="Schließen">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="space-y-2 text-xs">
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-[var(--c-surface-alt)]">
+          <span class="text-[var(--c-text-secondary)]">Close Inspector / Modal</span>
+          <kbd
+            class="px-2 py-0.5 rounded bg-[var(--c-surface)] border border-[var(--c-border)] font-semibold text-[11px] text-[var(--c-text-secondary)]">Esc</kbd>
+        </div>
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-[var(--c-surface-alt)]">
+          <span class="text-[var(--c-text-secondary)]">Toggle Anatomy Guides</span>
+          <kbd
+            class="px-2 py-0.5 rounded bg-[var(--c-surface)] border border-[var(--c-border)] font-semibold text-[11px] text-[var(--c-text-secondary)]">G</kbd>
+        </div>
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-[var(--c-surface-alt)]">
+          <span class="text-[var(--c-text-secondary)]">Switch View (Split / Diff)</span>
+          <kbd
+            class="px-2 py-0.5 rounded bg-[var(--c-surface)] border border-[var(--c-border)] font-semibold text-[11px] text-[var(--c-text-secondary)]">V</kbd>
+        </div>
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-[var(--c-surface-alt)]">
+          <span class="text-[var(--c-text-secondary)]">Swap Slots (A ↔ B)</span>
+          <kbd
+            class="px-2 py-0.5 rounded bg-[var(--c-surface)] border border-[var(--c-border)] font-semibold text-[11px] text-[var(--c-text-secondary)]">X</kbd>
+        </div>
+        <div class="flex items-center justify-between p-2.5 rounded-xl bg-[var(--c-surface-alt)]">
+          <span class="text-[var(--c-text-secondary)]">Show Shortcuts Help</span>
+          <kbd
+            class="px-2 py-0.5 rounded bg-[var(--c-surface)] border border-[var(--c-border)] font-semibold text-[11px] text-[var(--c-text-secondary)]">?</kbd>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. APP INFO DIALOG MODAL -->
+  <div id="infoModal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4 cursor-pointer"
+    style="background: rgba(0, 0, 0, 0.55); backdrop-filter: blur(8px);">
+    <div id="infoModalCard"
+      class="relative max-w-xs sm:max-w-sm w-full text-center cursor-default bg-[var(--c-surface)] rounded-2xl border border-[var(--c-border)] p-8 shadow-2xl"
+      onclick="event.stopPropagation()">
+      <!-- Close Button -->
+      <button id="btnCloseInfo" type="button"
+        class="absolute top-3.5 right-3.5 w-8 h-8 inline-flex items-center justify-center rounded-full text-[var(--c-text-tertiary)] hover:text-[var(--c-text)] transition-colors cursor-pointer"
+        aria-label="Schließen">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+
+      <!-- App Icon Squircle -->
+      <div class="flex justify-center mb-5">
+        <div class="w-20 h-20 flex items-center justify-center rounded-[22px] bg-[#34383c] shadow-lg shadow-black/20">
+          <svg class="w-10 h-10 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="4 7 4 4 20 4 20 7"></polyline>
+            <line x1="9" y1="20" x2="15" y2="20"></line>
+            <line x1="12" y1="4" x2="12" y2="20"></line>
+          </svg>
+        </div>
+      </div>
+
+      <!-- App Title & Version Info -->
+      <h3 class="text-xl font-bold tracking-tight text-[var(--c-text)]" style="letter-spacing: -0.02em;">
+        Font Checker
+      </h3>
+
+      <p class="text-xs sm:text-sm font-normal mt-2 text-[var(--c-text-secondary)]">
+        Version 1.5.1
+      </p>
+
+      <!-- Engine Info Chip -->
+      <div
+        class="mt-3 inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[var(--c-surface-alt)] border border-[var(--c-border)] text-xs text-[var(--c-text-secondary)]">
+        <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+        <span id="infoEngineText">fontkit 1.1.1 + wawoff2</span>
+      </div>
+
+      <div class="mt-4 flex flex-col items-center gap-1.5 text-xs sm:text-sm text-[var(--c-text-secondary)]">
+        <p>Copyright © 2026 Christopher Winker.</p>
+        <a href="https://github.com/mr-gordon" target="_blank" rel="noopener noreferrer"
+          class="inline-flex items-center gap-1.5 text-[var(--c-accent)] hover:underline font-semibold">
+          <svg class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4">
+            </path>
+            <path d="M9 18c-4.51 2-5-2-7-2"></path>
+          </svg>
+          <span>github.com/mr-gordon</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================ ENGINE ============================ -->
+  <script>
+      (function () {
+        'use strict';
+
+        // =====================================================================
+        // 1) STATE
+        // =====================================================================
+        const SYSTEM_A = { label: 'Inter (System)', family: 'system-ui, sans-serif' };
+        const SYSTEM_B = { label: 'Georgia (System)', family: 'Georgia, serif' };
+
+        function emptySlot(preset) {
+          return {
+            name: preset.label,
+            file: null,       // File-Objekt
+            font: null,       // fontkit-Font
+            sfnt: null,       // via wawoff2 entpacktes SFNT (nur wenn nötig)
+            usedFallback: false,   // Analyse lief über wawoff2
+            renderFallback: false, // Vorschau lief über wawoff2
+            fontFace: null,
+            family: preset.family,
+            format: null,
+            fileSize: 0,
+            weight: 400,
+            isVariable: false,
+            wghtAxis: null,
+            parseError: null
+          };
+        }
+
+        const state = {
+          fontA: emptySlot(SYSTEM_A),
+          fontB: emptySlot(SYSTEM_B),
+          fontSize: 56,
+          lineHeight: 1.4,
+          letterSpacing: 0,
+          textAlign: 'left',
+          viewMode: 'split',
+          opacityB: 0.5,
+          diffBlend: false,
+          showMetrics: false,
+          showAnatomy: false,
+          ligatures: true,
+          guides: { ascender: true, cap: true, waist: true, baseline: true, descender: true }
+        };
+
+        const GUIDES = [
+          { key: 'ascender', label: 'Ascender Line', color: '#38bdf8' },
+          { key: 'cap', label: 'Cap Line', color: '#a855f7' },
+          { key: 'waist', label: 'Waist Line (x-Height)', color: '#34d399' },
+          { key: 'baseline', label: 'Baseline', color: '#f43f5e' },
+          { key: 'descender', label: 'Descender Line', color: '#f59e0b' }
+        ];
+
+        const presets = {
+          'anatomy': 'Ascending to Better Typography',
+          'pangram-de': 'Zwölf Boxkämpfer jagen Viktor quer über den großen Sylter Deich. 1234567890',
+          'pangram-en': 'The quick brown fox jumps over the lazy dog and feels calm. 1234567890',
+          'numbers': '0123456789 € $ £ ¥ % + - = * / # @ &',
+          'editorial': 'Typografie ist die Kunst und Technik der visuellen Gestaltung von Schriftzeichen. Ein ausgewogener Grauwert und präzise Metriken sind das Fundament responsiver Layouts.',
+          'ui': 'Dashboard • Settings • Abbrechen • Bestätigen ($129.00) • Fehlgeschlagen',
+          'custom': 'Hier eigenen Text eintippen…'
+        };
+
+        const $ = (id) => document.getElementById(id);
+
+        const targetA = $('targetA'), targetB = $('targetB');
+        const overlayTargetA = $('overlayTargetA'), overlayTargetB = $('overlayTargetB');
+        const viewSplit = $('viewSplit'), viewOverlay = $('viewOverlay');
+        const overlayControlCard = $('overlayControlCard');
+        const metricsTableBody = $('metricsTableBody');
+        const cssOutput = $('cssOutput');
+        const stressInputA = $('stressInputA'), stressInputB = $('stressInputB');
+
+        const SLOT_KEY = { fontA: 'A', fontB: 'B' };
+
+        // =====================================================================
+        // 2) FONTKIT - PARSING
+        // =====================================================================
+        const hasFontkit = typeof window.fontkit !== 'undefined' && typeof window.fontkit.create === 'function';
+
+        (function checkEngine() {
+          if (!hasFontkit) {
+            $('engineError').classList.remove('hidden');
+          }
+        })();
+
+        /** Container-Format aus der 4-Byte-Signatur ableiten. */
+        function detectFormat(uint8) {
+          if (!uint8 || uint8.length < 4) return 'unbekannt';
+          const tag = String.fromCharCode(uint8[0], uint8[1], uint8[2], uint8[3]);
+          if (tag === 'wOF2') return 'WOFF2';
+          if (tag === 'wOFF') return 'WOFF';
+          if (tag === 'OTTO') return 'OpenType (CFF)';
+          if (tag === 'ttcf') return 'TrueType Collection';
+          if (tag === 'true') return 'TrueType (glyf)';
+          if (uint8[0] === 0 && uint8[1] === 1 && uint8[2] === 0 && uint8[3] === 0) return 'TrueType (glyf)';
+          return 'SFNT';
+        }
+
+        /**
+         * Kernstück des Refactorings: Datei -> Uint8Array -> fontkit.create().
+         * fontkit dekomprimiert WOFF2 (Brotli) und WOFF (zlib) in reinem JS -
+         * kein WebAssembly, keine Nachladung von Binärdateien, kein CORS.
+         */
+        function parseWithFontkit(uint8) {
+          if (!hasFontkit) throw new Error('fontkit ist nicht verfügbar.');
+          let font = window.fontkit.create(uint8);
+          // TrueType-Collections liefern ein Collection-Objekt -> erstes Face verwenden
+          if (font && !font.unitsPerEm && Array.isArray(font.fonts) && font.fonts.length) font = font.fonts[0];
+          if (!font || !font.unitsPerEm) throw new Error('Kein lesbares Font-Face in der Datei gefunden.');
+          return font;
+        }
+
+        /**
+         * WOFF2-Fallback nach dem Vorbild von fontdrop.info.
+         *
+         * fontkit entpackt WOFF2 selbst (Brotli in JavaScript) und schafft das in aller
+         * Regel. Scheitert es doch an einer Datei, übernimmt wawoff2 — Googles
+         * C++-Referenzdecoder als WebAssembly — und liefert unkomprimiertes SFNT,
+         * das fontkit anschliessend problemlos liest.
+         *
+         * `Module.decompress` entsteht erst, wenn die WASM-Laufzeit initialisiert ist.
+         * Deshalb wird darauf gewartet statt blind zuzugreifen.
+         */
+        function woff2DecoderBereit() {
+          return typeof window.Module !== 'undefined' && typeof window.Module.decompress === 'function';
+        }
+
+        function warteAufWoff2Decoder(maxMs) {
+          const ende = Date.now() + (maxMs || 5000);
+          return new Promise(resolve => {
+            (function pruefen() {
+              if (woff2DecoderBereit()) return resolve(true);
+              if (Date.now() > ende) return resolve(false);
+              setTimeout(pruefen, 40);
+            })();
+          });
+        }
+
+        async function entpackeWoff2(uint8) {
+          if (detectFormat(uint8) !== 'WOFF2') return null;   // nur WOFF2 ist komprimiert
+          if (!(await warteAufWoff2Decoder(5000))) {
+            console.warn('wawoff2: Decoder nicht betriebsbereit.');
+            return null;
+          }
+          try {
+            const roh = window.Module.decompress(uint8.buffer);
+            const sfnt = Uint8Array.from(roh);
+            return sfnt.length ? sfnt : null;
+          } catch (err) {
+            console.warn('wawoff2-Fallback fehlgeschlagen:', err);
+            return null;
+          }
+        }
+
+        // =====================================================================
+        // 3) METRIKEN AUS DEM FONTKIT-OBJEKT
+        // =====================================================================
+        /**
+         * fontkit dekodiert OS/2.fsSelection zu einem Flag-Objekt. Für das geforderte
+         * Bit-Audit wird daraus der numerische Bitvektor rekonstruiert, damit die
+         * Prüfung exakt als (fsSelection & 0x80) erfolgen kann. Liefert eine Engine
+         * den Rohwert bereits als Zahl, wird dieser direkt verwendet.
+         */
+        const FS_BITS = [
+          { bit: 0, key: 'italic', name: 'ITALIC' },
+          { bit: 1, key: 'underscore', name: 'UNDERSCORE' },
+          { bit: 2, key: 'negative', name: 'NEGATIVE' },
+          { bit: 3, key: 'outlined', name: 'OUTLINED' },
+          { bit: 4, key: 'strikeout', name: 'STRIKEOUT' },
+          { bit: 5, key: 'bold', name: 'BOLD' },
+          { bit: 6, key: 'regular', name: 'REGULAR' },
+          { bit: 7, key: 'useTypoMetrics', name: 'USE_TYPO_METRICS' },
+          { bit: 8, key: 'wws', name: 'WWS' },
+          { bit: 9, key: 'oblique', name: 'OBLIQUE' }
+        ];
+
+        function readFsSelection(os2) {
+          const raw = os2 ? os2.fsSelection : null;
+          if (raw == null) return { value: null, useTypoMetrics: false, bits: [] };
+
+          let value;
+          if (typeof raw === 'number') {
+            value = raw;
+          } else {
+            value = 0;
+            FS_BITS.forEach(b => { if (raw[b.key]) value |= (1 << b.bit); });
+          }
+          return {
+            value: value,
+            useTypoMetrics: Boolean(value & 0x80), // Bit 7 = USE_TYPO_METRICS
+            bits: FS_BITS.map(b => ({ bit: b.bit, name: b.name, set: Boolean(value & (1 << b.bit)) }))
+          };
+        }
+
+        /**
+         * Jeder Zugriff auf fontkit-Getter kann werfen: Die Getter lesen erst beim
+         * Aufruf aus den Tabellen, und unvollständige oder ungewöhnliche Fonts lassen
+         * sie ins Leere greifen (z. B. wirft font.namedVariations bei Variable Fonts,
+         * deren Instanz-Namen nicht auflösbar sind: "reading 'en' of undefined").
+         * Ohne Absicherung reisst ein einziges solches Feld die komplette Auswertung
+         * mit - keine Hilfslinien, keine Legende, keine Tabelle. Deshalb wird jeder
+         * Lesezugriff einzeln gekapselt.
+         */
+        function safeRead(fn, fallback) {
+          try {
+            const value = fn();
+            return (value === undefined || value === null) ? fallback : value;
+          } catch (err) {
+            return fallback;
+          }
+        }
+
+        /** Flag-Objekte von fontkit (z. B. OS/2.fsType) in lesbaren Text übersetzen. */
+        function describeFlags(value, emptyLabel) {
+          if (value === null || value === undefined) return null;
+          if (typeof value === 'number') return String(value);
+          if (typeof value === 'object') {
+            const on = Object.keys(value).filter(k => value[k] === true);
+            return on.length ? on.join(', ') : (emptyLabel || 'keine');
+          }
+          return String(value);
+        }
+
+        /** x-Height / Cap-Height notfalls aus den Glyph-Bounding-Boxes messen. */
+        function measureGlyphHeight(font, char) {
+          try {
+            const run = font.layout(char);
+            const glyph = run && run.glyphs && run.glyphs[0];
+            if (glyph && glyph.bbox && isFinite(glyph.bbox.maxY)) return Math.round(glyph.bbox.maxY);
+          } catch (err) { /* CFF-Sonderfälle ignorieren */ }
+          return null;
+        }
+
+        /** Alle relevanten Metriken eines Slots in einer flachen Struktur. */
+        function metricsOf(slot) {
+          const rec = state[slot];
+          // Metriken stammen immer aus der Default-Instanz: getVariation() liefert in
+          // diesem fontkit-Build bei WOFF2 kein benutzbares Face zurueck, und ohne
+          // MVAR-Tabelle sind die vertikalen Metriken über alle Instanzen identisch.
+          const font = rec.font;
+          if (!font) return null;
+
+          const os2 = safeRead(() => font['OS/2'], null);
+          const hhea = safeRead(() => font.hhea, null);
+          const head = safeRead(() => font.head, null);
+          const post = safeRead(() => font.post, null);
+
+          const upm = safeRead(() => font.unitsPerEm, null) || (head && head.unitsPerEm) || 1000;
+          const fs = readFsSelection(os2);
+
+          const typoAsc = os2 ? os2.typoAscender : null;
+          const typoDesc = os2 ? os2.typoDescender : null;
+          const typoGap = os2 ? os2.typoLineGap : null;
+          const winAsc = os2 ? os2.winAscent : null;
+          const winDesc = os2 ? os2.winDescent : null;
+
+          const hheaAsc = hhea ? hhea.ascent : null;
+          const hheaDesc = hhea ? hhea.descent : null;
+          const hheaGap = hhea ? hhea.lineGap : null;
+
+          const typoTotal = (typoAsc != null && typoDesc != null)
+            ? typoAsc + Math.abs(typoDesc) + (typoGap || 0) : null;
+          const winTotal = (winAsc != null && winDesc != null)
+            ? winAsc + Math.abs(winDesc) : null;
+
+          // Metriken, die der Browser tatsaechlich für die Zeilenbox heranzieht:
+          // Bit 7 gesetzt -> sTypo*, sonst hhea (macOS/Chrome) bzw. usWin* (Windows-Legacy).
+          const useTypo = fs.useTypoMetrics && typoTotal != null;
+          const usedAsc = useTypo ? typoAsc : (hheaAsc != null ? hheaAsc : (font.ascent || Math.round(upm * 0.8)));
+          const usedDesc = Math.abs(useTypo ? typoDesc : (hheaDesc != null ? hheaDesc : (font.descent || -Math.round(upm * 0.2))));
+          const usedGap = (useTypo ? typoGap : hheaGap) || 0;
+
+          const effectiveHeight = useTypo
+            ? typoTotal
+            : (winTotal != null ? winTotal : usedAsc + usedDesc + usedGap);
+
+          const os2XHeight = os2 && os2.xHeight ? os2.xHeight : null;
+          const os2CapHeight = os2 && os2.capHeight ? os2.capHeight : null;
+          const xHeight = os2XHeight || safeRead(() => font.xHeight, null) || measureGlyphHeight(font, 'x') || Math.round(upm * 0.5);
+          const capHeight = os2CapHeight || safeRead(() => font.capHeight, null) || measureGlyphHeight(font, 'H') || Math.round(upm * 0.7);
+
+          return {
+            upm: upm,
+            hasMVAR: safeRead(() => Boolean(font.MVAR), false),
+            numGlyphs: safeRead(() => font.numGlyphs, null),
+            charCount: safeRead(() => font.characterSet.length, null),
+            postscriptName: safeRead(() => font.postscriptName, null) || '-',
+            familyName: safeRead(() => font.familyName, null) || '-',
+            subfamilyName: safeRead(() => font.subfamilyName, null) || '-',
+            fullName: safeRead(() => font.fullName, null) || '-',
+            version: safeRead(() => String(font.version).trim(), null) || '-',
+            copyright: safeRead(() => String(font.copyright).split('\n')[0], null) || '-',
+            ascent: safeRead(() => font.ascent, null),
+            descent: safeRead(() => font.descent, null),
+            lineGap: safeRead(() => font.lineGap, null),
+            xHeight: xHeight,
+            capHeight: capHeight,
+            xHeightFromOS2: Boolean(os2XHeight),
+            capHeightFromOS2: Boolean(os2CapHeight),
+            italicAngle: post ? post.italicAngle : null,
+            underlinePosition: post ? post.underlinePosition : null,
+            underlineThickness: post ? post.underlineThickness : null,
+            isFixedPitch: post ? Boolean(post.isFixedPitch) : false,
+            bbox: safeRead(() => font.bbox, null),
+            typoAsc: typoAsc, typoDesc: typoDesc, typoGap: typoGap,
+            winAsc: winAsc, winDesc: winDesc,
+            typoTotal: typoTotal, winTotal: winTotal,
+            hheaAsc: hheaAsc, hheaDesc: hheaDesc, hheaGap: hheaGap,
+            usedAsc: usedAsc, usedDesc: usedDesc, usedGap: usedGap, useTypo: useTypo,
+            effectiveHeight: effectiveHeight,
+            fs: fs,
+            usWeightClass: os2 ? os2.usWeightClass : null,
+            usWidthClass: os2 ? os2.usWidthClass : null,
+            os2Version: os2 ? os2.version : null,
+            vendorID: os2 && os2.vendorID ? String(os2.vendorID).trim() : null,
+            fsType: os2 ? describeFlags(os2.fsType, 'Installable Embedding (0)') : null,
+            xAvgCharWidth: os2 ? os2.xAvgCharWidth : null,
+            variationAxes: safeRead(() => font.variationAxes, {}) || {},
+            // Wirft bei manchen mehrachsigen Variable Fonts - daher gekapselt.
+            namedVariations: safeRead(() => Object.keys(font.namedVariations), null) || [],
+            namedVariationsLesbar: safeRead(() => { Object.keys(font.namedVariations); return true; }, false),
+            features: safeRead(() => font.availableFeatures, []) || []
+          };
+        }
+
+        // =====================================================================
+        // 4) DATEI-HANDLING (Drag and Drop / File-Input)
+        // =====================================================================
+        let anatomyAutoShown = false;   // Hilfslinien nur einmal automatisch einschalten
+
+        async function handleFontFile(file, slot) {
+          if (!file) return;
+          const key = SLOT_KEY[slot];
+          const rec = state[slot];
+
+          const buffer = await file.arrayBuffer();
+          const uint8 = new Uint8Array(buffer);
+
+          rec.file = file;
+          rec.fileSize = file.size;
+          rec.name = file.name.replace(/\.[^/.]+$/, '');
+          rec.format = detectFormat(uint8);
+          rec.parseError = null;
+          rec.font = null;
+          rec.sfnt = null;
+          rec.usedFallback = false;
+          rec.renderFallback = false;
+
+          // --- a) Binär-Analyse via fontkit, bei Bedarf über wawoff2 -----------
+          try {
+            rec.font = parseWithFontkit(uint8);
+          } catch (err) {
+            const ersterFehler = err && err.message ? err.message : String(err);
+            console.warn('fontkit-Parsing fehlgeschlagen, versuche wawoff2:', err);
+
+            const sfnt = await entpackeWoff2(uint8);
+            if (sfnt) {
+              try {
+                rec.font = parseWithFontkit(sfnt);
+                rec.sfnt = sfnt;
+                rec.usedFallback = true;
+              } catch (zweiterFehler) {
+                rec.parseError = ersterFehler + ' | auch nach wawoff2: ' +
+                  (zweiterFehler && zweiterFehler.message ? zweiterFehler.message : String(zweiterFehler));
+              }
+            } else {
+              rec.parseError = ersterFehler;
+            }
+          }
+
+          // --- b) Parallele Registrierung über die native FontFace-API -------
+          const uniqueFamily = 'FK_' + key + '_' + Date.now();
+          try {
+            const descriptors = {};
+            const axes = rec.font && rec.font.variationAxes;
+            if (axes && axes.wght) {
+              descriptors.weight = Math.round(axes.wght.min) + ' ' + Math.round(axes.wght.max);
+            } else if (rec.font && rec.font['OS/2'] && rec.font['OS/2'].usWeightClass) {
+              descriptors.weight = String(rec.font['OS/2'].usWeightClass);
+            }
+            if (rec.font && rec.font.post && rec.font.post.italicAngle) descriptors.style = 'italic';
+
+            let fontFace;
+            try {
+              fontFace = new FontFace(uniqueFamily, buffer, descriptors);
+              await fontFace.load();
+            } catch (ladeFehler) {
+              // Lehnt der Browser die WOFF2-Datei ab, das entpackte SFNT anbieten.
+              const sfnt = rec.sfnt || await entpackeWoff2(uint8);
+              if (!sfnt) throw ladeFehler;
+              rec.sfnt = sfnt;
+              fontFace = new FontFace(uniqueFamily, sfnt.buffer, descriptors);
+              await fontFace.load();
+              rec.renderFallback = true;
+              console.info('Vorschau über wawoff2-entpacktes SFNT registriert.');
+            }
+            document.fonts.add(fontFace);
+            rec.fontFace = fontFace;
+            rec.family = '"' + uniqueFamily + '"';
+          } catch (err) {
+            console.warn('FontFace-Registrierung fehlgeschlagen:', err);
+            rec.parseError = (rec.parseError ? rec.parseError + ' / ' : '') + 'Browser konnte die Datei nicht als WebFont laden.';
+          }
+
+          $('fontName' + key).textContent = file.name;
+          updateSlotMeta(slot);
+          setupWeightControls(slot);
+          renderAll();
+
+          // Die Hilfslinien sind standardmäßig aus. Beim ersten erfolgreich geparsten
+          // Font einmalig einschalten, damit das Kernfeature nicht unsichtbar bleibt.
+          if (rec.font && !state.showAnatomy && !anatomyAutoShown) {
+            anatomyAutoShown = true;
+            setAnatomy(true);
+          }
+        }
+
+        function updateSlotMeta(slot) {
+          const rec = state[slot];
+          const el = $('fontMeta' + SLOT_KEY[slot]);
+          if (!el) return;
+          if (!rec.file) {
+            el.textContent = '— kein File geladen —';
+            el.className = 'text-[11px] font-mono text-[var(--c-text-tertiary)] mt-0.5';
+            return;
+          }
+          const kb = (rec.fileSize / 1024).toFixed(1) + ' KB';
+          if (rec.font) {
+            el.textContent = rec.format + ' · ' + kb + ' · ' + rec.font.numGlyphs + ' Glyphen · ' + rec.font.unitsPerEm + ' UPM'
+              + (rec.usedFallback ? ' · via wawoff2 entpackt' : '');
+            el.className = 'text-[11px] font-mono text-[var(--c-text-tertiary)] mt-0.5';
+          } else {
+            el.textContent = rec.format + ' · ' + kb + ' · Parse-Fehler: ' + (rec.parseError || 'unbekannt');
+            el.className = 'text-[11px] font-mono text-red-600 mt-0.5 font-medium';
+          }
+        }
+
+        // =====================================================================
+        // 5) FONT-WEIGHT UND VARIABLE ACHSEN
+        // =====================================================================
+        function setupWeightControls(slot) {
+          const key = SLOT_KEY[slot];
+          const container = $('weightControl' + key);
+          const rec = state[slot];
+          if (!container) return;
+
+          const axes = rec.font && rec.font.variationAxes;
+          const wght = axes && axes.wght ? axes.wght : null;
+
+          if (wght) {
+            rec.isVariable = true;
+            rec.wghtAxis = wght;
+            const minW = Math.round(wght.min);
+            const maxW = Math.round(wght.max);
+            rec.weight = Math.min(maxW, Math.max(minW, Math.round((wght.default || 400) / 10) * 10));
+
+            container.innerHTML =
+              '<span class="text-[var(--c-text-secondary)] font-medium">wght (' + minW + '–' + maxW + '):</span>' +
+              '<input type="range" id="sliderWeight' + key + '" min="' + minW + '" max="' + maxW + '" step="10" value="' + rec.weight + '" class="w-24 cursor-pointer">' +
+              '<span id="weightDisplay' + key + '" class="font-mono font-bold text-[var(--c-text)]">' + rec.weight + '</span>' +
+              '<span class="px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 text-[10px] font-semibold">VARIABLE</span>';
+
+            const slider = $('sliderWeight' + key);
+            slider.addEventListener('input', function (e) {
+              rec.weight = Number(e.target.value);
+              $('weightDisplay' + key).textContent = rec.weight;
+              renderTypography();
+            });
+            // Tabelle, Audit und Report erst beim Loslassen aktualisieren
+            slider.addEventListener('change', function () {
+              renderAll();
+            });
+          } else {
+            rec.isVariable = false;
+            rec.wghtAxis = null;
+            const staticWeight = (rec.font && rec.font['OS/2'] && rec.font['OS/2'].usWeightClass) || 400;
+            rec.weight = staticWeight;
+
+            container.innerHTML =
+              '<span class="text-[var(--c-text-secondary)] font-medium">Weight:</span>' +
+              '<span id="weightDisplay' + key + '" class="px-2.5 py-0.5 rounded-full bg-[var(--c-surface-alt)] ' + (key === 'A' ? 'text-blue-600' : 'text-purple-600') + ' border border-[var(--c-border)] font-bold">' +
+              staticWeight + (rec.font ? ' (statisch)' : '') + '</span>';
+          }
+        }
+
+
+        // =====================================================================
+        // 6) RENDERING - Typografie, Guides, Stress-Test
+        // =====================================================================
+        function setSampleText(text) {
+          [targetA, targetB, overlayTargetA, overlayTargetB].forEach(el => { el.innerText = text; });
+        }
+
+        function fontStyleFor(slot) {
+          const rec = state[slot];
+          const style = {
+            fontFamily: rec.family,
+            fontWeight: String(rec.weight)
+          };
+          style.fontVariationSettings = rec.isVariable ? ("'wght' " + rec.weight) : 'normal';
+          return style;
+        }
+
+        function renderTypography() {
+          const shared = {
+            fontSize: state.fontSize + 'px',
+            lineHeight: String(state.lineHeight),
+            letterSpacing: state.letterSpacing + 'em',
+            textAlign: state.textAlign,
+            fontVariantLigatures: state.ligatures ? 'normal' : 'none'
+          };
+
+          [targetA, targetB, overlayTargetA, overlayTargetB].forEach(el => Object.assign(el.style, shared));
+          Object.assign(targetA.style, fontStyleFor('fontA'));
+          Object.assign(overlayTargetA.style, fontStyleFor('fontA'));
+          Object.assign(targetB.style, fontStyleFor('fontB'));
+          Object.assign(overlayTargetB.style, fontStyleFor('fontB'));
+
+          overlayTargetB.style.opacity = state.diffBlend ? '1' : String(state.opacityB);
+          overlayTargetB.classList.toggle('diff-blend', state.diffBlend);
+
+          // Baseline-Raster
+          const bgStyle = state.showMetrics
+            ? 'linear-gradient(to bottom, transparent calc(100% - 1px), rgba(239, 68, 68, 0.4) calc(100% - 1px))'
+            : 'none';
+          [targetA, targetB].forEach(el => {
+            el.style.backgroundImage = bgStyle;
+            el.style.backgroundSize = '100% ' + (state.fontSize * state.lineHeight) + 'px';
+          });
+
+          renderAnatomyLines('fontA', targetA, $('svgGuidesA'), $('legendMetricsA'));
+          renderAnatomyLines('fontB', targetB, $('svgGuidesB'), $('legendMetricsB'));
+          renderStressTest();
+          renderStatusStrip();
+        }
+
+        /**
+         * Misst die tatsaechliche Baseline-Position der ersten Zeile im Browser.
+         * Ein inline-block der Höhe 0 sitzt mit seiner Unterkante exakt auf der
+         * Baseline - genauer als jede Berechnung aus den Font-Metriken, weil so
+         * auch die Half-Leading-Verteilung der Engine berücksichtigt wird.
+         */
+        function measureFirstBaseline(el) {
+          try {
+            const cs = getComputedStyle(el);
+            const probe = document.createElement('div');
+            probe.setAttribute('aria-hidden', 'true');
+            probe.style.cssText = 'position:absolute;left:0;top:0;visibility:hidden;pointer-events:none;white-space:nowrap;margin:0;padding:0;border:0;';
+            ['fontFamily', 'fontSize', 'fontWeight', 'fontStyle', 'lineHeight', 'letterSpacing', 'fontVariationSettings', 'fontFeatureSettings', 'fontVariantLigatures']
+              .forEach(p => { probe.style[p] = cs[p]; });
+
+            const marker = document.createElement('span');
+            marker.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline;';
+            probe.appendChild(marker);
+            probe.appendChild(document.createTextNode('Hxg'));
+
+            const host = el.parentNode;
+            host.appendChild(probe);
+            const y = marker.getBoundingClientRect().bottom - probe.getBoundingClientRect().top;
+            host.removeChild(probe);
+            return isFinite(y) ? y : null;
+          } catch (err) {
+            return null;
+          }
+        }
+
+        function renderAnatomyLines(slot, textEl, svgEl, legendEl) {
+          if (!svgEl || !legendEl) return;
+
+          if (!state.showAnatomy) {
+            svgEl.classList.add('hidden');
+            legendEl.classList.add('hidden');
+            return;
+          }
+          svgEl.classList.remove('hidden');
+          legendEl.classList.remove('hidden');
+
+          const m = metricsOf(slot);
+          if (!m) {
+            svgEl.innerHTML = '';
+            legendEl.innerHTML = '<span class="text-[var(--c-text-secondary)]">Keine Binär-Metriken – bitte eine Font-Datei in Slot ' + SLOT_KEY[slot] + ' laden.</span>';
+            return;
+          }
+
+          const scale = state.fontSize / m.upm;
+          let base = measureFirstBaseline(textEl);
+          if (base == null) {
+            // Fallback: Half-Leading aus den Metriken rechnen
+            const box = state.fontSize * state.lineHeight;
+            const content = (m.usedAsc + m.usedDesc + m.usedGap) * scale;
+            base = (box - content) / 2 + (m.usedAsc + m.usedGap / 2) * scale;
+          }
+
+          const lines = {
+            ascender: { y: base - m.usedAsc * scale, units: m.usedAsc, px: m.usedAsc * scale, dash: '3,3', width: 1, labelX: 8, dy: -4 },
+            cap: { y: base - m.capHeight * scale, units: m.capHeight, px: m.capHeight * scale, dash: '', width: 1, labelX: 100, dy: -4 },
+            waist: { y: base - m.xHeight * scale, units: m.xHeight, px: m.xHeight * scale, dash: '', width: 1, labelX: 200, dy: -4 },
+            baseline: { y: base, units: 0, px: 0, dash: '', width: 1.5, labelX: 8, dy: 11 },
+            descender: { y: base + m.usedDesc * scale, units: -m.usedDesc, px: -m.usedDesc * scale, dash: '3,3', width: 1, labelX: 90, dy: 11 }
+          };
+
+          svgEl.innerHTML = GUIDES.filter(g => state.guides[g.key]).map(g => {
+            const l = lines[g.key];
+            const dash = l.dash ? ' stroke-dasharray="' + l.dash + '"' : '';
+            return '<line x1="0" y1="' + l.y.toFixed(2) + '" x2="100%" y2="' + l.y.toFixed(2) + '" stroke="' + g.color + '" stroke-width="' + l.width + '"' + dash + '/>' +
+              '<text x="' + l.labelX + '" y="' + (l.y + l.dy).toFixed(2) + '" fill="' + g.color + '" font-size="9" font-family="monospace" ' +
+              'stroke="#ffffff" stroke-width="3" stroke-linejoin="round" style="paint-order:stroke fill">' + g.label + '</text>';
+          }).join('');
+
+          legendEl.innerHTML = GUIDES.map(g => {
+            const l = lines[g.key];
+            const val = g.key === 'baseline'
+              ? '0px (0u)'
+              : l.px.toFixed(1) + 'px (' + Math.round(l.units) + 'u)';
+            return '<button type="button" class="guide-chip flex items-center gap-1.5 px-2.5 py-1 rounded-full border border-[var(--c-border)] bg-[var(--c-surface)] hover:bg-[var(--c-surface-alt)] shadow-2xs text-[11px] font-medium transition cursor-pointer" ' +
+              'data-guide="' + g.key + '" aria-pressed="' + (state.guides[g.key] ? 'true' : 'false') + '" ' +
+              'title="Guide ein-/ausblenden">' +
+              '<span class="guide-swatch inline-block w-2 h-2 rounded-full" style="background:' + g.color + '"></span>' +
+              '<span style="color:' + g.color + '">' + g.label.replace(' Line', '') + '</span>' +
+              '<span class="text-[var(--c-text-secondary)] font-mono">' + val + '</span>' +
+              '</button>';
+          }).join('') +
+            '<span class="px-2 py-1 text-[var(--c-text-tertiary)]">Quelle: ' + (m.useTypo ? 'OS/2 sTypo* (Bit 7 gesetzt)' : 'hhea') +
+            ' · UPM ' + m.upm + ' · ' + state.fontSize + 'px</span>';
+        }
+
+        /** Welcher Weg hat die Datei geöffnet - fontkit direkt oder über wawoff2? */
+        function parserPfad(slot) {
+          const rec = state[slot];
+          if (!rec.font) return null;
+          if (rec.usedFallback) return 'wawoff2 → fontkit (Fallback)';
+          if (rec.renderFallback) return 'fontkit direkt (Vorschau über wawoff2)';
+          return 'fontkit direkt';
+        }
+
+        /** Diagnoseleiste: Engine-, Parse- und Guide-Zustand in Klartext. */
+        function slotStatus(slot) {
+          const rec = state[slot];
+          if (!rec.file) return { text: 'keine Datei', cls: 'text-[var(--c-text-tertiary)]' };
+          if (rec.parseError) return { text: 'FEHLER: ' + rec.parseError, cls: 'text-red-600' };
+          if (!rec.font) return { text: 'nicht geparst', cls: 'text-red-600' };
+          const weg = rec.usedFallback ? ' · via wawoff2' : (rec.renderFallback ? ' · Vorschau via wawoff2' : '');
+          return { text: 'geparst · ' + rec.format + ' · ' + rec.font.numGlyphs + ' Glyphen' + weg, cls: rec.usedFallback ? 'text-amber-600' : 'text-emerald-600' };
+        }
+
+        function renderStatusStrip() {
+          const decoder = woff2DecoderBereit() ? ' + wawoff2 bereit' : ' (wawoff2 startet noch)';
+          const engineText = hasFontkit ? 'fontkit 1.1.1 eingebettet' + decoder : 'nicht verfügbar';
+
+          const infoEl = $('infoEngineText');
+          if (infoEl) {
+            infoEl.textContent = hasFontkit ? 'fontkit 1.1.1' + decoder : 'Parser nicht verfügbar';
+          }
+
+          const eng = $('stEngine');
+          if (eng) {
+            eng.textContent = engineText;
+            eng.className = hasFontkit ? 'text-emerald-600 font-semibold' : 'text-red-600 font-semibold';
+          }
+
+          [['fontA', 'stA'], ['fontB', 'stB']].forEach(pair => {
+            const el = $(pair[1]);
+            if (!el) return;
+            const st = slotStatus(pair[0]);
+            el.textContent = st.text;
+            el.className = st.cls;
+          });
+
+          const g = $('stGuides');
+          if (g) {
+            if (state.showAnatomy) {
+              const n = GUIDES.filter(x => state.guides[x.key]).length;
+              g.textContent = 'an (' + n + '/5 Linien)';
+              g.className = 'text-emerald-400';
+            } else {
+              g.textContent = 'aus — Schalter "Anatomy Guides" oben rechts';
+              g.className = 'text-amber-400';
+            }
+          }
+        }
+
+        function renderStressTest() {
+          const cfg = [
+            { slot: 'fontA', input: stressInputA, sh: 'shA', ch: 'chA', req: 'reqA', of: 'overflowBadgeA', clip: 'clipBadgeA' },
+            { slot: 'fontB', input: stressInputB, sh: 'shB', ch: 'chB', req: 'reqB', of: 'overflowBadgeB', clip: 'clipBadgeB' }
+          ];
+
+          cfg.forEach(c => {
+            if (!c.input) return;
+            Object.assign(c.input.style, fontStyleFor(c.slot));
+          });
+
+          // Erst nach dem Style-Update messen. requestAnimationFrame pausiert in
+          // Hintergrund-Tabs, deshalb dort auf einen Makrotask ausweichen.
+          const afterLayout = (fn) => (document.visibilityState === 'visible')
+            ? requestAnimationFrame(fn)
+            : setTimeout(fn, 0);
+
+          afterLayout(() => {
+            cfg.forEach(c => {
+              if (!c.input) return;
+              const sh = c.input.scrollHeight;
+              const ch = c.input.clientHeight;
+              $(c.sh).textContent = sh + 'px';
+              $(c.ch).textContent = ch + 'px';
+              $(c.of).classList.toggle('hidden', sh <= ch);
+
+              // Metrisch berechneter Platzbedarf der Textbox bei der Input-Schriftgröße
+              const m = metricsOf(c.slot);
+              if (m) {
+                const px = parseFloat(getComputedStyle(c.input).fontSize) || 16;
+                const needed = (m.usedAsc + m.usedDesc + m.usedGap) / m.upm * px;
+                $(c.req).textContent = needed.toFixed(1) + 'px';
+                const risk = needed > ch;
+                $(c.clip).classList.toggle('hidden', !risk);
+                $(c.req).className = risk ? 'text-amber-600 font-semibold' : 'text-[var(--c-text)]';
+              } else {
+                $(c.req).textContent = '-';
+                $(c.clip).classList.add('hidden');
+              }
+            });
+          });
+        }
+
+        // =====================================================================
+        // 7) fsSelection BIT-AUDIT
+        // =====================================================================
+        function renderFsAudit() {
+          const host = $('fsBitAudit');
+          host.innerHTML = ['fontA', 'fontB'].map(slot => {
+            const key = SLOT_KEY[slot];
+            const accent = key === 'A' ? 'text-blue-600' : 'text-purple-600';
+            const m = metricsOf(slot);
+
+            if (!m || m.fs.value == null) {
+              return '<div class="space-y-2">' +
+                '<div class="text-xs font-mono ' + accent + ' mb-2 font-semibold">Font ' + key + '</div>' +
+                '<p class="text-xs text-[var(--c-text-secondary)]">Keine OS/2-Tabelle geladen.</p></div>';
+            }
+
+            const bin = m.fs.value.toString(2).padStart(10, '0').split('').reverse().join('');
+            const cells = m.fs.bits.map(b => {
+              const isSeven = b.bit === 7;
+              const on = b.set;
+              const cls = on
+                ? (isSeven ? 'bg-emerald-50 text-emerald-700 border-emerald-300 font-bold shadow-2xs' : 'bg-[var(--c-surface)] text-[var(--c-text)] border-[var(--c-border)] font-semibold shadow-2xs')
+                : (isSeven ? 'bg-red-50 text-red-700 border-red-200' : 'bg-[var(--c-surface-alt)] text-[var(--c-text-tertiary)] border-[var(--c-border)]/50');
+              return '<div class="bit-cell rounded-lg border px-1.5 py-1 text-center ' + cls + '" title="' + b.name + '">' +
+                '<div class="text-[9px] opacity-70">' + b.bit + '</div>' +
+                '<div class="font-bold">' + (on ? '1' : '0') + '</div></div>';
+            }).join('');
+
+            const verdict = m.fs.useTypoMetrics
+              ? '<span class="text-emerald-600 font-medium">Bit 7 gesetzt – Browser verwenden die sTypo-Metriken (Summe ' + m.typoTotal + 'u).</span>'
+              : '<span class="text-amber-600 font-medium">Bit 7 nicht gesetzt – es gelten hhea (' + (m.hheaAsc + Math.abs(m.hheaDesc)) + 'u) bzw. usWin* (' + m.winTotal + 'u).</span>';
+
+            return '<div class="space-y-3">' +
+              '<div class="flex items-center justify-between gap-2 flex-wrap">' +
+              '<span class="text-xs font-mono ' + accent + ' font-semibold">Font ' + key + '</span>' +
+              '<span class="text-[11px] font-mono text-[var(--c-text-secondary)]">fsSelection = 0x' + m.fs.value.toString(16).toUpperCase().padStart(2, '0') +
+              ' (' + m.fs.value + ') · ' + m.fs.value + ' &amp; 0x80 = ' + (m.fs.value & 0x80) + '</span>' +
+              '</div>' +
+              '<div class="grid grid-cols-10 gap-1 font-mono text-[11px]">' + cells + '</div>' +
+              '<p class="text-[11px] font-mono">' + verdict + '</p>' +
+              '<p class="text-[11px] font-mono text-[var(--c-text-secondary)]">Effektive Zeilenhöhe: ' + m.effectiveHeight + 'u = ' +
+              (m.effectiveHeight / m.upm).toFixed(4) + ' em</p>' +
+              '</div>';
+          }).join('');
+        }
+
+        // =====================================================================
+        // 8) METRIKEN-TABELLE
+        // =====================================================================
+        function fmt(v, suffix) {
+          if (v === null || v === undefined || v === '' || (typeof v === 'number' && !isFinite(v))) return 'N/A';
+          return suffix ? v + suffix : String(v);
+        }
+
+        function namedInstancesText(m) {
+          if (m.namedVariations.length) return m.namedVariations.join(', ');
+          return m.namedVariationsLesbar ? 'keine' : 'vorhanden, aber nicht lesbar (defekte Namenseinträge)';
+        }
+
+        function renderMetricsTable() {
+          const mA = metricsOf('fontA');
+          const mB = metricsOf('fontB');
+
+          // Delta-Badge für die effektive Zeilenhöhe (relativ, in Prozent)
+          const badge = $('metricShiftBadge');
+          if (mA && mB && mA.effectiveHeight > 0) {
+            const relA = mA.effectiveHeight / mA.upm;
+            const relB = mB.effectiveHeight / mB.upm;
+            const delta = ((relB - relA) / relA) * 100;
+            $('valHeightDelta').textContent = (delta > 0 ? '+' : '') + delta.toFixed(2) + '%';
+            badge.classList.remove('hidden');
+          } else {
+            badge.classList.add('hidden');
+          }
+
+          const axesStr = (m) => {
+            if (!m) return 'N/A';
+            const keys = Object.keys(m.variationAxes);
+            if (!keys.length) return 'statisch (keine fvar-Achsen)';
+            return keys.map(k => {
+              const a = m.variationAxes[k];
+              return k + ' ' + Math.round(a.min) + '-' + Math.round(a.max) + ' (def ' + Math.round(a.default) + ')';
+            }).join(', ');
+          };
+
+          const rows = [
+            { section: 'Identität & Datei' },
+            { label: 'Dateiname', a: state.fontA.file ? state.fontA.file.name : 'System Font', b: state.fontB.file ? state.fontB.file.name : 'System Font' },
+            { label: 'Container-Format', a: state.fontA.format || 'N/A', b: state.fontB.format || 'N/A' },
+            { label: 'Dateigröße', a: state.fontA.file ? (state.fontA.fileSize / 1024).toFixed(1) + ' KB' : 'N/A', b: state.fontB.file ? (state.fontB.fileSize / 1024).toFixed(1) + ' KB' : 'N/A' },
+            { label: 'Parser-Pfad', a: parserPfad('fontA'), b: parserPfad('fontB') },
+            { label: 'PostScript-Name', a: mA && mA.postscriptName, b: mB && mB.postscriptName },
+            { label: 'Font-Family / Subfamily', a: mA && (mA.familyName + ' / ' + mA.subfamilyName), b: mB && (mB.familyName + ' / ' + mB.subfamilyName) },
+            { label: 'Version', a: mA && mA.version, b: mB && mB.version },
+            { label: 'Units per Em (UPM)', a: mA && mA.upm, b: mB && mB.upm },
+            { label: 'Glyphen-Anzahl (numGlyphs)', a: mA && mA.numGlyphs, b: mB && mB.numGlyphs },
+            { label: 'Zeichenumfang (cmap)', a: mA && mA.charCount, b: mB && mB.charCount },
+
+            { section: 'Typografische Metriken (fontkit)' },
+            { label: 'font.ascent', a: mA && fmt(mA.ascent, ' u'), b: mB && fmt(mB.ascent, ' u') },
+            { label: 'font.descent', a: mA && fmt(mA.descent, ' u'), b: mB && fmt(mB.descent, ' u') },
+            { label: 'font.lineGap', a: mA && fmt(mA.lineGap, ' u'), b: mB && fmt(mB.lineGap, ' u') },
+            { label: 'font.xHeight (Waist Line)', a: mA && (mA.xHeight + ' u' + (mA.xHeightFromOS2 ? '' : ' (gemessen)')), b: mB && (mB.xHeight + ' u' + (mB.xHeightFromOS2 ? '' : ' (gemessen)')) },
+            { label: 'font.capHeight (Versalhöhe)', a: mA && (mA.capHeight + ' u' + (mA.capHeightFromOS2 ? '' : ' (gemessen)')), b: mB && (mB.capHeight + ' u' + (mB.capHeightFromOS2 ? '' : ' (gemessen)')) },
+            { label: 'x-Height / UPM', a: mA && (mA.xHeight / mA.upm).toFixed(4), b: mB && (mB.xHeight / mB.upm).toFixed(4) },
+            { label: 'Italic Angle / Fixed Pitch', a: mA && (fmt(mA.italicAngle) + ' / ' + (mA.isFixedPitch ? 'ja' : 'nein')), b: mB && (fmt(mB.italicAngle) + ' / ' + (mB.isFixedPitch ? 'ja' : 'nein')) },
+            { label: 'Glyph-BBox (xMin yMin xMax yMax)', a: mA && mA.bbox ? [mA.bbox.minX, mA.bbox.minY, mA.bbox.maxX, mA.bbox.maxY].join(' ') : null, b: mB && mB.bbox ? [mB.bbox.minX, mB.bbox.minY, mB.bbox.maxX, mB.bbox.maxY].join(' ') : null },
+
+            { section: 'OS/2 & Windows-Bounds Audit' },
+            { label: 'OS/2 Version / Vendor', a: mA && (fmt(mA.os2Version) + ' / ' + fmt(mA.vendorID)), b: mB && (fmt(mB.os2Version) + ' / ' + fmt(mB.vendorID)) },
+            { label: 'USE_TYPO_METRICS (fsSelection Bit 7)', a: mA && (mA.fs.useTypoMetrics ? 'aktiviert (0x80 gesetzt)' : 'deaktiviert'), b: mB && (mB.fs.useTypoMetrics ? 'aktiviert (0x80 gesetzt)' : 'deaktiviert') },
+            { label: 'sTypoAscender / sTypoDescender / sTypoLineGap', a: mA && (fmt(mA.typoAsc) + ' / ' + fmt(mA.typoDesc) + ' / ' + fmt(mA.typoGap) + ' = ' + fmt(mA.typoTotal)), b: mB && (fmt(mB.typoAsc) + ' / ' + fmt(mB.typoDesc) + ' / ' + fmt(mB.typoGap) + ' = ' + fmt(mB.typoTotal)) },
+            { label: 'usWinAscent / usWinDescent', a: mA && (fmt(mA.winAsc) + ' / ' + fmt(mA.winDesc) + ' = ' + fmt(mA.winTotal)), b: mB && (fmt(mB.winAsc) + ' / ' + fmt(mB.winDesc) + ' = ' + fmt(mB.winTotal)) },
+            { label: 'hhea ascent / descent / lineGap', a: mA && (fmt(mA.hheaAsc) + ' / ' + fmt(mA.hheaDesc) + ' / ' + fmt(mA.hheaGap)), b: mB && (fmt(mB.hheaAsc) + ' / ' + fmt(mB.hheaDesc) + ' / ' + fmt(mB.hheaGap)) },
+            { label: 'Effektive Zeilenhöhe (Units)', a: mA && (mA.effectiveHeight + ' u  [' + (mA.useTypo ? 'sTypo' : 'win/hhea') + ']'), b: mB && (mB.effectiveHeight + ' u  [' + (mB.useTypo ? 'sTypo' : 'win/hhea') + ']') },
+            { label: 'Effektive Zeilenhöhe (em)', a: mA && (mA.effectiveHeight / mA.upm).toFixed(4), b: mB && (mB.effectiveHeight / mB.upm).toFixed(4) },
+            { label: 'fsType (Embedding)', a: mA && fmt(mA.fsType), b: mB && fmt(mB.fsType) },
+
+            { section: 'Weight & Variable Achsen' },
+            { label: 'usWeightClass / usWidthClass', a: mA && (fmt(mA.usWeightClass) + ' / ' + fmt(mA.usWidthClass)), b: mB && (fmt(mB.usWeightClass) + ' / ' + fmt(mB.usWidthClass)) },
+            { label: 'Variable Achsen (fvar)', a: axesStr(mA), b: axesStr(mB) },
+            { label: 'MVAR (instanzabhängige Metriken)', a: mA && (mA.hasMVAR ? 'vorhanden' : 'nicht vorhanden'), b: mB && (mB.hasMVAR ? 'vorhanden' : 'nicht vorhanden') },
+            { label: 'Named Instances', a: mA && namedInstancesText(mA), b: mB && namedInstancesText(mB) },
+            { label: 'Aktives Gewicht (Rendering)', a: state.fontA.weight + (state.fontA.isVariable ? ' (variabel)' : ''), b: state.fontB.weight + (state.fontB.isVariable ? ' (variabel)' : '') },
+            { label: 'OpenType Features', a: mA && (mA.features.length ? mA.features.join(' ') : 'keine'), b: mB && (mB.features.length ? mB.features.join(' ') : 'keine') }
+          ];
+
+          metricsTableBody.innerHTML = rows.map(r => {
+            if (r.section) {
+              return '<tr class="bg-[var(--c-surface-alt)]"><td colspan="3" class="py-2 px-5 text-[10px] uppercase tracking-wider text-[var(--c-text-secondary)] font-sans font-semibold border-t border-b border-[var(--c-border)]">' + r.section + '</td></tr>';
+            }
+            const a = (r.a === null || r.a === undefined || r.a === false) ? 'N/A' : String(r.a);
+            const b = (r.b === null || r.b === undefined || r.b === false) ? 'N/A' : String(r.b);
+            const isDiff = a !== 'N/A' && b !== 'N/A' && a !== b;
+            return '<tr class="hover:bg-[var(--c-hover)] transition align-top">' +
+              '<td class="py-2.5 px-5 text-[var(--c-text-secondary)] font-sans">' + r.label + '</td>' +
+              '<td class="py-2.5 px-5 break-all ' + (isDiff ? 'text-blue-600 font-semibold' : 'text-[var(--c-text)]') + '">' + a + '</td>' +
+              '<td class="py-2.5 px-5 break-all ' + (isDiff ? 'text-purple-600 font-semibold' : 'text-[var(--c-text)]') + '">' + b + '</td>' +
+              '</tr>';
+          }).join('');
+        }
+
+        // =====================================================================
+        // 9) ZERO-CLS CSS-GENERATOR
+        // =====================================================================
+        /**
+         * size-adjust gleicht die mittlere Glyphenbreite an (xAvgCharWidth, ersatzweise
+         * x-Height). ascent-/descent-/line-gap-override beziehen sich laut CSS-Spec auf
+         * die BEREITS size-adjusted em-Größe - daher die Division durch das Verhältnis.
+         */
+        function computeOverrides() {
+          const mA = metricsOf('fontA');
+          const mB = metricsOf('fontB');
+          if (!mA) return null;
+
+          let sizeAdjust = 1;
+          let basis = 'kein Vergleichsfont geladen (size-adjust = 100%)';
+          if (mB) {
+            const widthA = mA.xAvgCharWidth ? mA.xAvgCharWidth / mA.upm : null;
+            const widthB = mB.xAvgCharWidth ? mB.xAvgCharWidth / mB.upm : null;
+            if (widthA && widthB) {
+              sizeAdjust = widthA / widthB;
+              basis = 'OS/2.xAvgCharWidth (' + mA.xAvgCharWidth + '/' + mA.upm + ' vs. ' + mB.xAvgCharWidth + '/' + mB.upm + ')';
+            } else {
+              sizeAdjust = (mA.xHeight / mA.upm) / (mB.xHeight / mB.upm);
+              basis = 'x-Height-Verhältnis (Fallback, kein xAvgCharWidth)';
+            }
+          }
+
+          return {
+            mA: mA,
+            mB: mB,
+            basis: basis,
+            sizeAdjust: sizeAdjust * 100,
+            ascentOverride: (mA.usedAsc / mA.upm) / sizeAdjust * 100,
+            descentOverride: (mA.usedDesc / mA.upm) / sizeAdjust * 100,
+            lineGapOverride: (mA.usedGap / mA.upm) / sizeAdjust * 100
+          };
+        }
+
+        function renderCssOverrides() {
+          const o = computeOverrides();
+          if (!o) {
+            cssOutput.textContent = '/* Lade mindestens Font A, um @font-face Kompensations-CSS zu berechnen. */\n' +
+              '/* Font B liefert zusätzlich das size-adjust-Verhältnis für den Fallback. */';
+            return;
+          }
+
+          const nameA = state.fontA.name;
+          const fileA = state.fontA.file ? state.fontA.file.name : 'font-a.woff2';
+          const fallbackSrc = state.fontB.file
+            ? "local('" + (metricsOf('fontB') ? metricsOf('fontB').familyName : state.fontB.name) + "')"
+            : "local('Georgia'), local('Arial')";
+
+          cssOutput.textContent =
+            '/* ============================================================\n' +
+            '   Zero-CLS Setup für ' + nameA + '\n' +
+            '   Basis des size-adjust: ' + o.basis + '\n' +
+            '   Metrik-Quelle: ' + (o.mA.useTypo ? 'OS/2 sTypo* (USE_TYPO_METRICS gesetzt)' : 'hhea (Bit 7 nicht gesetzt)') + '\n' +
+            '   ============================================================ */\n' +
+            '@font-face {\n' +
+            "  font-family: '" + nameA + "';\n" +
+            "  src: url('" + fileA + "') format('" + (state.fontA.format === 'WOFF' ? 'woff' : 'woff2') + "');\n" +
+            '  font-weight: ' + (state.fontA.isVariable && state.fontA.wghtAxis
+              ? Math.round(state.fontA.wghtAxis.min) + ' ' + Math.round(state.fontA.wghtAxis.max)
+              : (o.mA.usWeightClass || 400)) + ';\n' +
+            '  font-display: swap;\n' +
+            '}\n\n' +
+            '/* Metrisch kompensierter Fallback: hält exakt denselben vertikalen\n' +
+            '   Platz frei wie ' + nameA + ' -> kein Layout-Shift beim Font-Swap. */\n' +
+            '@font-face {\n' +
+            "  font-family: '" + nameA + " Fallback';\n" +
+            '  src: ' + fallbackSrc + ';\n' +
+            '  size-adjust: ' + o.sizeAdjust.toFixed(2) + '%;\n' +
+            '  ascent-override: ' + o.ascentOverride.toFixed(2) + '%;\n' +
+            '  descent-override: ' + o.descentOverride.toFixed(2) + '%;\n' +
+            '  line-gap-override: ' + o.lineGapOverride.toFixed(2) + '%;\n' +
+            '}\n\n' +
+            'body {\n' +
+            "  font-family: '" + nameA + "', '" + nameA + " Fallback', sans-serif;\n" +
+            '}';
+        }
+
+        // =====================================================================
+        // 10) MARKDOWN-REPORT
+        // =====================================================================
+        function slotSummary(slot) {
+          const rec = state[slot];
+          const m = metricsOf(slot);
+          if (!m) return (rec.file ? rec.file.name + ' (nicht parsebar)' : 'System Font / kein File');
+          return rec.file ? rec.file.name : rec.name;
+        }
+
+        function generateFullReport() {
+          const mA = metricsOf('fontA');
+          const mB = metricsOf('fontB');
+          const o = computeOverrides();
+
+          const deltaStr = (mA && mB)
+            ? (((mB.effectiveHeight / mB.upm) - (mA.effectiveHeight / mA.upm)) / (mA.effectiveHeight / mA.upm) * 100).toFixed(2) + ' %'
+            : 'N/A';
+
+          const shA = stressInputA.scrollHeight, chA = stressInputA.clientHeight;
+          const shB = stressInputB.scrollHeight, chB = stressInputB.clientHeight;
+          const reqA = $('reqA').textContent, reqB = $('reqB').textContent;
+
+          const cell = (m, fn) => m ? fn(m) : 'N/A';
+          const axes = (m) => {
+            if (!m) return 'N/A';
+            const keys = Object.keys(m.variationAxes);
+            if (!keys.length) return 'statisch (usWeightClass ' + (m.usWeightClass || '?') + ')';
+            return keys.map(k => k + ' ' + Math.round(m.variationAxes[k].min) + '–' + Math.round(m.variationAxes[k].max) + ' (default ' + Math.round(m.variationAxes[k].default) + ')').join(', ');
+          };
+
+          return '# WebFont Comparison & Technical Inspection Report\n' +
+            '\n' +
+            '_Erzeugt am ' + new Date().toLocaleString('de-DE') + ' · Parsing-Engine: fontkit (native WOFF2, kein WASM)_\n' +
+            '\n' +
+            '## 1. Übersicht & Dateien\n' +
+            '\n' +
+            '| | Font A | Font B |\n' +
+            '| :--- | :--- | :--- |\n' +
+            '| **Datei** | ' + slotSummary('fontA') + ' | ' + slotSummary('fontB') + ' |\n' +
+            '| **Format** | ' + (state.fontA.format || 'N/A') + ' | ' + (state.fontB.format || 'N/A') + ' |\n' +
+            '| **Größe** | ' + (state.fontA.file ? (state.fontA.fileSize / 1024).toFixed(1) + ' KB' : 'N/A') + ' | ' + (state.fontB.file ? (state.fontB.fileSize / 1024).toFixed(1) + ' KB' : 'N/A') + ' |\n' +
+            '| **Parser-Pfad** | ' + (parserPfad('fontA') || 'N/A') + ' | ' + (parserPfad('fontB') || 'N/A') + ' |\n' +
+            '| **PostScript-Name** | ' + cell(mA, m => m.postscriptName) + ' | ' + cell(mB, m => m.postscriptName) + ' |\n' +
+            '| **Family** | ' + cell(mA, m => m.familyName) + ' | ' + cell(mB, m => m.familyName) + ' |\n' +
+            '| **UPM** | ' + cell(mA, m => m.upm) + ' | ' + cell(mB, m => m.upm) + ' |\n' +
+            '| **Glyphen** | ' + cell(mA, m => m.numGlyphs) + ' | ' + cell(mB, m => m.numGlyphs) + ' |\n' +
+            '| **Aktives Gewicht** | ' + state.fontA.weight + ' | ' + state.fontB.weight + ' |\n' +
+            '| **Achsen** | ' + axes(mA) + ' | ' + axes(mB) + ' |\n' +
+            '\n' +
+            '**Relative Abweichung der effektiven Zeilenhöhe (B vs. A):** ' + deltaStr + '\n' +
+            '\n' +
+            '## 2. Vertikale Metriken & OS/2 Audit\n' +
+            '\n' +
+            '| Metrik | Font A | Font B |\n' +
+            '| :--- | :--- | :--- |\n' +
+            '| **fsSelection (Rohwert)** | ' + cell(mA, m => '0x' + (m.fs.value || 0).toString(16).toUpperCase() + ' (' + m.fs.value + ')') + ' | ' + cell(mB, m => '0x' + (m.fs.value || 0).toString(16).toUpperCase() + ' (' + m.fs.value + ')') + ' |\n' +
+            '| **USE_TYPO_METRICS (Bit 7, & 0x80)** | ' + cell(mA, m => m.fs.useTypoMetrics ? 'aktiviert' : 'deaktiviert') + ' | ' + cell(mB, m => m.fs.useTypoMetrics ? 'aktiviert' : 'deaktiviert') + ' |\n' +
+            '| **sTypoAscender / Descender / LineGap** | ' + cell(mA, m => m.typoAsc + ' / ' + m.typoDesc + ' / ' + m.typoGap + ' (Σ ' + m.typoTotal + ')') + ' | ' + cell(mB, m => m.typoAsc + ' / ' + m.typoDesc + ' / ' + m.typoGap + ' (Σ ' + m.typoTotal + ')') + ' |\n' +
+            '| **usWinAscent / usWinDescent** | ' + cell(mA, m => m.winAsc + ' / ' + m.winDesc + ' (Σ ' + m.winTotal + ')') + ' | ' + cell(mB, m => m.winAsc + ' / ' + m.winDesc + ' (Σ ' + m.winTotal + ')') + ' |\n' +
+            '| **hhea ascent / descent / lineGap** | ' + cell(mA, m => m.hheaAsc + ' / ' + m.hheaDesc + ' / ' + m.hheaGap) + ' | ' + cell(mB, m => m.hheaAsc + ' / ' + m.hheaDesc + ' / ' + m.hheaGap) + ' |\n' +
+            '| **Effektive Zeilenhöhe** | ' + cell(mA, m => m.effectiveHeight + ' u = ' + (m.effectiveHeight / m.upm).toFixed(4) + ' em') + ' | ' + cell(mB, m => m.effectiveHeight + ' u = ' + (m.effectiveHeight / m.upm).toFixed(4) + ' em') + ' |\n' +
+            '| **x-Height (Waist Line)** | ' + cell(mA, m => m.xHeight + ' u') + ' | ' + cell(mB, m => m.xHeight + ' u') + ' |\n' +
+            '| **Cap-Height (Versalhöhe)** | ' + cell(mA, m => m.capHeight + ' u') + ' | ' + cell(mB, m => m.capHeight + ' u') + ' |\n' +
+            '| **font.ascent / descent / lineGap** | ' + cell(mA, m => m.ascent + ' / ' + m.descent + ' / ' + m.lineGap) + ' | ' + cell(mB, m => m.ascent + ' / ' + m.descent + ' / ' + m.lineGap) + ' |\n' +
+            '\n' +
+            '## 3. UI Component Stress-Test (Input mit fixer Border-Box von 40px)\n' +
+            '\n' +
+            '- **Font A:** scrollHeight ' + shA + 'px / clientHeight ' + chA + 'px → ' + (shA > chA ? '**OVERFLOW DETECTED**' : 'OK') + ' · benötigte Textbox ' + reqA + '\n' +
+            '- **Font B:** scrollHeight ' + shB + 'px / clientHeight ' + chB + 'px → ' + (shB > chB ? '**OVERFLOW DETECTED**' : 'OK') + ' · benötigte Textbox ' + reqB + '\n' +
+            '\n' +
+            '## 4. Render-Setup\n' +
+            '\n' +
+            '- Schriftgröße: ' + state.fontSize + 'px · Line-Height: ' + state.lineHeight + ' · Letter-Spacing: ' + state.letterSpacing + 'em\n' +
+            '- Ansicht: ' + (state.viewMode === 'split' ? 'Side-by-Side' : 'Overlay Diff' + (state.diffBlend ? ' (mix-blend-mode: difference)' : ' (Deckkraft B: ' + Math.round(state.opacityB * 100) + '%)')) + '\n' +
+            '\n' +
+            '## 5. Berechnete CSS-Overrides\n' +
+            '\n' +
+            '```css\n' + cssOutput.textContent + '\n```\n';
+        }
+
+        // =====================================================================
+        // 11) CLIPBOARD
+        // =====================================================================
+        async function copyText(text) {
+          try {
+            if (navigator.clipboard && window.isSecureContext) {
+              await navigator.clipboard.writeText(text);
+              return true;
+            }
+          } catch (err) { /* Fallback unten */ }
+          try {
+            const ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.cssText = 'position:fixed;top:-1000px;opacity:0;';
+            document.body.appendChild(ta);
+            ta.select();
+            const ok = document.execCommand('copy');
+            document.body.removeChild(ta);
+            return ok;
+          } catch (err) {
+            return false;
+          }
+        }
+
+        function flashButton(btn, label, isOk) {
+          const original = btn.innerHTML;
+          const baseClass = btn.className;
+          btn.innerHTML = label;
+          if (isOk) {
+            btn.classList.add('border-emerald-300', 'bg-emerald-50', 'text-emerald-700');
+          } else {
+            btn.classList.add('border-red-300', 'bg-red-50', 'text-red-700');
+          }
+          setTimeout(() => {
+            btn.className = baseClass;
+            btn.innerHTML = original;
+          }, 1800);
+        }
+
+        // =====================================================================
+        // 12) RENDER-ORCHESTRIERUNG
+        // =====================================================================
+        function renderAll() {
+          const errWrap = $('stErrorWrap');
+          try {
+            renderTypography();
+            renderFsAudit();
+            renderMetricsTable();
+            renderCssOverrides();
+            renderCharAnalysis();   // asynchron, blockiert den Durchlauf nicht
+            if (errWrap) errWrap.classList.add('hidden');
+          } catch (err) {
+            // Sichtbar scheitern statt stumm: Ohne diesen Netz-Fang bliebe bei einem
+            // Fehler einfach alles leer - keine Linien, keine Legende, keine Tabelle.
+            const msg = (err && err.message) ? err.message : String(err);
+            console.error('Render-Fehler:', err);
+            const errEl = $('stError');
+            if (errEl) errEl.textContent = msg;
+            if (errWrap) errWrap.classList.remove('hidden');
+            try { renderStatusStrip(); } catch (ignored) { /* Anzeige darf nie werfen */ }
+          }
+        }
+
+        // =====================================================================
+        // 13) EVENTS
+        // =====================================================================
+        function setupDropZone(dropZoneId, fileInputId, slot) {
+          const dropZone = $(dropZoneId);
+          const fileInput = $(fileInputId);
+
+          dropZone.addEventListener('click', () => fileInput.click());
+
+          ['dragenter', 'dragover'].forEach(ev => {
+            dropZone.addEventListener(ev, (e) => {
+              e.preventDefault();
+              dropZone.classList.add('drag-active');
+            });
+          });
+          ['dragleave', 'drop'].forEach(ev => {
+            dropZone.addEventListener(ev, (e) => {
+              e.preventDefault();
+              dropZone.classList.remove('drag-active');
+            });
+          });
+
+          dropZone.addEventListener('drop', (e) => {
+            const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+            if (file) handleFontFile(file, slot);
+          });
+          fileInput.addEventListener('change', (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (file) handleFontFile(file, slot);
+            e.target.value = '';
+          });
+        }
+
+        // Text-Synchronisierung zwischen den beiden editierbaren Feldern
+        [targetA, targetB].forEach(el => {
+          el.addEventListener('input', () => {
+            const text = el.innerText;
+            [targetA, targetB, overlayTargetA, overlayTargetB].forEach(t => { if (t !== el) t.innerText = text; });
+            renderTypography();
+          });
+        });
+
+        $('sliderFontSize').addEventListener('input', (e) => {
+          state.fontSize = Number(e.target.value);
+          $('valFontSize').textContent = state.fontSize + 'px';
+          renderTypography();
+        });
+
+        $('sliderLineHeight').addEventListener('input', (e) => {
+          state.lineHeight = Number(e.target.value);
+          $('valLineHeight').textContent = state.lineHeight.toFixed(2);
+          renderTypography();
+        });
+
+        $('sliderLetterSpacing').addEventListener('input', (e) => {
+          state.letterSpacing = Number(e.target.value);
+          $('valLetterSpacing').textContent = state.letterSpacing.toFixed(2) + 'em';
+          renderTypography();
+        });
+
+        $('sliderOpacityB').addEventListener('input', (e) => {
+          state.opacityB = Number(e.target.value) / 100;
+          $('valOpacityB').textContent = e.target.value + '%';
+          renderTypography();
+        });
+
+        function bindPillToggle(btnId, chkId, stateKey) {
+          const btn = $(btnId), chk = $(chkId);
+          if (!btn || !chk) return;
+          btn.addEventListener('click', () => {
+            chk.checked = !chk.checked;
+            btn.classList.toggle('is-active', chk.checked);
+            state[stateKey] = chk.checked;
+            renderTypography();
+          });
+          chk.addEventListener('change', () => {
+            btn.classList.toggle('is-active', chk.checked);
+            state[stateKey] = chk.checked;
+            renderTypography();
+          });
+        }
+
+        bindPillToggle('btnToggleMetrics', 'toggleMetrics', 'showMetrics');
+        bindPillToggle('btnToggleLiga', 'toggleLiga', 'ligatures');
+        bindPillToggle('btnToggleDiffBlend', 'toggleDiffBlend', 'diffBlend');
+
+        $('selectPreset').addEventListener('change', (e) => {
+          setSampleText(presets[e.target.value] || presets.anatomy);
+          renderTypography();
+        });
+
+        document.querySelectorAll('.btn-align').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.btn-align').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.textAlign = btn.dataset.align;
+            renderTypography();
+          });
+        });
+
+        function setAnatomy(on) {
+          state.showAnatomy = on;
+          const btn = $('btnToggleAnatomy');
+          btn.classList.toggle('ui-btn-primary', on);
+          renderTypography();
+        }
+
+        $('btnToggleAnatomy').addEventListener('click', () => setAnatomy(!state.showAnatomy));
+
+        // Interaktive Legende: einzelne Guides zu-/abschalten
+        ['legendMetricsA', 'legendMetricsB'].forEach(id => {
+          $(id).addEventListener('click', (e) => {
+            const chip = e.target.closest('[data-guide]');
+            if (!chip) return;
+            const key = chip.dataset.guide;
+            state.guides[key] = !state.guides[key];
+            renderTypography();
+          });
+        });
+
+        const btnViewSplit = $('btnViewSplit'), btnViewOverlay = $('btnViewOverlay');
+        btnViewSplit.addEventListener('click', () => {
+          state.viewMode = 'split';
+          btnViewSplit.classList.add('active');
+          btnViewOverlay.classList.remove('active');
+          viewSplit.classList.remove('hidden');
+          viewOverlay.classList.add('hidden');
+          overlayControlCard.classList.add('opacity-50', 'pointer-events-none');
+          renderTypography();
+        });
+        btnViewOverlay.addEventListener('click', () => {
+          state.viewMode = 'overlay';
+          btnViewOverlay.classList.add('active');
+          btnViewSplit.classList.remove('active');
+          viewSplit.classList.add('hidden');
+          viewOverlay.classList.remove('hidden');
+          overlayControlCard.classList.remove('opacity-50', 'pointer-events-none');
+          renderTypography();
+        });
+
+        $('btnSwapFonts').addEventListener('click', () => {
+          const tmp = state.fontA;
+          state.fontA = state.fontB;
+          state.fontB = tmp;
+
+          ['fontA', 'fontB'].forEach(slot => {
+            const key = SLOT_KEY[slot];
+            const rec = state[slot];
+            const keptWeight = rec.weight;
+
+            $('fontName' + key).textContent = rec.file ? rec.file.name : rec.name;
+            updateSlotMeta(slot);
+            setupWeightControls(slot);
+
+            // Vom Nutzer eingestelltes Gewicht über den Swap hinweg erhalten
+            if (rec.isVariable && rec.wghtAxis && keptWeight >= rec.wghtAxis.min && keptWeight <= rec.wghtAxis.max) {
+              rec.weight = keptWeight;
+              const slider = $('sliderWeight' + key);
+              if (slider) slider.value = keptWeight;
+              $('weightDisplay' + key).textContent = keptWeight;
+            }
+          });
+
+          renderAll();
+        });
+
+        $('btnResetFonts').addEventListener('click', () => {
+          ['fontA', 'fontB'].forEach(slot => {
+            const rec = state[slot];
+            if (rec.fontFace) { try { document.fonts.delete(rec.fontFace); } catch (err) { /* egal */ } }
+          });
+
+          state.fontA = emptySlot(SYSTEM_A);
+          state.fontB = emptySlot(SYSTEM_B);
+
+          ['fontA', 'fontB'].forEach(slot => {
+            const key = SLOT_KEY[slot];
+            $('fontName' + key).textContent = state[slot].name;
+            updateSlotMeta(slot);
+            setupWeightControls(slot);
+          });
+
+          renderAll();
+        });
+
+        $('btnCopyCss').addEventListener('click', async (e) => {
+          const btn = e.currentTarget;
+          const ok = await copyText(cssOutput.textContent);
+          flashButton(btn,
+            '<svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>' + (ok ? 'CSS kopiert' : 'Kopieren fehlgeschlagen') + '</span>',
+            ok);
+        });
+
+        $('btnExportClipboard').addEventListener('click', async (e) => {
+          const btn = e.currentTarget;
+          const ok = await copyText(generateFullReport());
+          flashButton(btn,
+            '<svg class="w-3.5 h-3.5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg><span>' + (ok ? 'Report kopiert' : 'Fehlgeschlagen') + '</span>',
+            ok);
+        });
+
+        let resizeTimer = null;
+        window.addEventListener('resize', () => {
+          clearTimeout(resizeTimer);
+          resizeTimer = setTimeout(renderTypography, 120);
+        });
+
+
+        // =====================================================================
+        // 15) ZEICHENSATZ-ANALYSE
+        //     a) Glyphen-Explorer  b) Ligaturen-Inspektor  c) Sprachabdeckung
+        //
+        //     Bewusst ohne Web Worker: fontkit-Objekte sind nicht strukturiert
+        //     klonbar, und der Parser müsste im Worker ein zweites Mal geladen
+        //     werden (+758 KB). Stattdessen laufen die teuren Schleifen in
+        //     Häppchen mit Rückgabe an den Event-Loop - das UI bleibt bedienbar.
+        //     Messung: 4027 Glyphen-Namen ~60 ms, 200 Pfade ~4 ms.
+        // =====================================================================
+
+        const CA_CHUNK = 200;          // Kacheln pro Nachladeschritt
+        const LIG_CHUNK = 60;          // Ligatur-Karten pro Feature-Gruppe
+        const CA_YIELD_ALLE = 1500;    // nach so vielen Glyphen kurz abgeben
+
+        const caState = {
+          slot: 'fontA',
+          tab: 'glyphs',
+          suche: '',
+          block: 'alle',
+          sichtbar: CA_CHUNK,
+          treffer: [],
+          sprachTab: 'voll',
+          sprachDetail: null,
+          ligLimit: {},
+          schwelle: 80,
+          token: 0
+        };
+
+        const caCache = { fontA: null, fontB: null };
+
+        const naechsterTick = () => new Promise(r => setTimeout(r, 0));
+
+        const UNICODE_BLOECKE = [
+          { name: 'Basic Latin', from: 0x0020, to: 0x007F },
+          { name: 'Latin-1 Supplement', from: 0x00A0, to: 0x00FF },
+          { name: 'Latin Extended-A', from: 0x0100, to: 0x017F },
+          { name: 'Latin Extended-B', from: 0x0180, to: 0x024F },
+          { name: 'IPA Extensions', from: 0x0250, to: 0x02AF },
+          { name: 'Modifier Letters', from: 0x02B0, to: 0x02FF },
+          { name: 'Combining Diacritical Marks', from: 0x0300, to: 0x036F },
+          { name: 'Greek and Coptic', from: 0x0370, to: 0x03FF },
+          { name: 'Cyrillic', from: 0x0400, to: 0x04FF },
+          { name: 'Cyrillic Supplement', from: 0x0500, to: 0x052F },
+          { name: 'Latin Extended Additional', from: 0x1E00, to: 0x1EFF },
+          { name: 'General Punctuation', from: 0x2000, to: 0x206F },
+          { name: 'Super- & Subscripts', from: 0x2070, to: 0x209F },
+          { name: 'Currency Symbols', from: 0x20A0, to: 0x20CF },
+          { name: 'Letterlike Symbols', from: 0x2100, to: 0x214F },
+          { name: 'Number Forms', from: 0x2150, to: 0x218F },
+          { name: 'Arrows', from: 0x2190, to: 0x21FF },
+          { name: 'Mathematical Operators', from: 0x2200, to: 0x22FF },
+          { name: 'Box Drawing', from: 0x2500, to: 0x257F },
+          { name: 'Geometric Shapes', from: 0x25A0, to: 0x25FF },
+          { name: 'Miscellaneous Symbols', from: 0x2600, to: 0x26FF },
+          { name: 'Dingbats', from: 0x2700, to: 0x27BF },
+          { name: 'Private Use Area', from: 0xE000, to: 0xF8FF },
+          { name: 'Alphabetic Presentation Forms', from: 0xFB00, to: 0xFB4F },
+          { name: 'Emoji & Symbole', from: 0x1F300, to: 0x1FAFF }
+        ];
+
+        // -----------------------------------------------------------------
+        // 15a) GLYPHEN-INDEX
+        // -----------------------------------------------------------------
+        /**
+         * Baut je Font einmalig eine flache Glyphenliste (GID, Codepoint, Name).
+         * Die Schleife gibt regelmäßig an den Event-Loop ab, damit auch CJK-Fonts
+         * mit zehntausenden Glyphen die Oberfläche nicht blockieren.
+         */
+        async function baueGlyphIndex(slot) {
+          const rec = state[slot];
+          const font = rec.font;
+          if (!font) return null;
+
+          const cache = caCache[slot];
+          if (cache && cache.font === font) return cache;
+
+          const gidZuCp = new Map();
+          const cpSet = new Set();
+          const zeichensatz = safeRead(() => font.characterSet, []) || [];
+          for (let i = 0; i < zeichensatz.length; i++) {
+            const cp = zeichensatz[i];
+            cpSet.add(cp);
+            const g = safeRead(() => font.glyphForCodePoint(cp), null);
+            if (g && g.id && !gidZuCp.has(g.id)) gidZuCp.set(g.id, cp);
+            if (i % CA_YIELD_ALLE === 0 && i > 0) await naechsterTick();
+          }
+
+          const anzahl = safeRead(() => font.numGlyphs, 0) || 0;
+          const eintraege = [];
+          for (let gid = 0; gid < anzahl; gid++) {
+            if (gid > 0 && gid % CA_YIELD_ALLE === 0) await naechsterTick();
+            eintraege.push({
+              gid: gid,
+              cp: gidZuCp.has(gid) ? gidZuCp.get(gid) : null,
+              name: safeRead(() => font.getGlyph(gid).name, null) || ('glyph' + gid)
+            });
+          }
+
+          const neu = { font: font, eintraege: eintraege, cpSet: cpSet, ligaturen: null, sprachen: null };
+          caCache[slot] = neu;
+          return neu;
+        }
+
+        function cpHex(cp) {
+          return 'U+' + cp.toString(16).toUpperCase().padStart(4, '0');
+        }
+
+        function blockVon(cp) {
+          for (const b of UNICODE_BLOECKE) if (cp >= b.from && cp <= b.to) return b.name;
+          return null;
+        }
+
+        /** Einheitliche Zeichenfläche für alle Kacheln, damit Größen vergleichbar bleiben. */
+        function emViewBox(font) {
+          const upm = safeRead(() => font.unitsPerEm, 1000) || 1000;
+          const asc = Math.abs(safeRead(() => font.ascent, null) || Math.round(upm * 0.8));
+          const desc = Math.abs(safeRead(() => font.descent, null) || Math.round(upm * 0.2));
+          return { upm: upm, asc: asc, desc: desc, x: -upm * 0.15, w: upm * 1.3, h: asc + desc };
+        }
+
+        function glyphKachelSvg(font, gid, box) {
+          const glyph = safeRead(() => font.getGlyph(gid), null);
+          const d = glyph ? (safeRead(() => glyph.path.toSVG(), '') || '') : '';
+          if (!d) return '<span class="text-[9px] font-mono text-[var(--c-text-tertiary)]">leer</span>';
+          return '<svg viewBox="' + box.x.toFixed(0) + ' ' + (-box.asc).toFixed(0) + ' ' + box.w.toFixed(0) + ' ' + box.h.toFixed(0) + '" ' +
+            'width="100%" height="42" preserveAspectRatio="xMidYMid meet" aria-hidden="true">' +
+            '<g transform="scale(1,-1)"><path d="' + d + '" fill="currentColor"/></g></svg>';
+        }
+
+        function filtereGlyphen(index) {
+          const q = caState.suche.trim().toLowerCase();
+          let cpGesucht = null;
+          if (q) {
+            const m = q.match(/^u\+?([0-9a-f]{2,6})$/i) || q.match(/^0x([0-9a-f]{2,6})$/i) || q.match(/^([0-9a-f]{4,6})$/i);
+            if (m) cpGesucht = parseInt(m[1], 16);
+            else if ([...q].length === 1) cpGesucht = q.codePointAt(0);
+          }
+
+          const block = caState.block === 'alle' ? null
+            : (caState.block === 'ohne' ? 'ohne' : UNICODE_BLOECKE[Number(caState.block)]);
+
+          return index.eintraege.filter(e => {
+            if (block === 'ohne') { if (e.cp !== null) return false; }
+            else if (block) { if (e.cp === null || e.cp < block.from || e.cp > block.to) return false; }
+
+            if (!q) return true;
+            if (cpGesucht !== null && e.cp === cpGesucht) return true;
+            if (e.name && e.name.toLowerCase().includes(q)) return true;
+            if (e.cp !== null && cpHex(e.cp).toLowerCase().includes(q)) return true;
+            return false;
+          });
+        }
+
+        function renderGlyphPanel(index) {
+          const grid = $('caGrid'), more = $('caMore'), zaehler = $('caGlyphCount');
+
+          if (!index) {
+            grid.innerHTML = '';
+            more.innerHTML = '';
+            zaehler.textContent = '';
+            grid.insertAdjacentHTML('beforeend', caLeerHinweis('Keine Schrift in Slot ' + SLOT_KEY[caState.slot] + ' geladen.'));
+            return;
+          }
+
+          const treffer = caState.treffer;
+          const zeige = treffer.slice(0, caState.sichtbar);
+          const box = emViewBox(index.font);
+
+          zaehler.textContent = treffer.length + ' von ' + index.eintraege.length + ' Glyphen'
+            + (zeige.length < treffer.length ? ' · ' + zeige.length + ' angezeigt' : '');
+
+          grid.innerHTML = zeige.map(e =>
+            '<button type="button" data-gid="' + e.gid + '" ' +
+            'class="ca-glyph group flex flex-col items-center justify-between gap-1 p-2 rounded-xl border border-[var(--c-border)] bg-[var(--c-surface)] hover:border-blue-500 hover:bg-[var(--c-surface-alt)] shadow-2xs transition text-[var(--c-text)] cursor-pointer" ' +
+            'title="' + (e.name || '') + (e.cp !== null ? ' · ' + cpHex(e.cp) : '') + '">' +
+            '<span class="flex items-center justify-center h-[42px] w-full overflow-hidden">' + glyphKachelSvg(index.font, e.gid, box) + '</span>' +
+            '<span class="text-[9px] font-mono text-[var(--c-text-secondary)] group-hover:text-blue-600 truncate w-full text-center font-medium">' +
+            (e.cp !== null ? cpHex(e.cp) : 'GID ' + e.gid) +
+            '</span>' +
+            '</button>'
+          ).join('');
+
+          if (!treffer.length) {
+            grid.innerHTML = caLeerHinweis('Keine Glyphe passt zu Suche oder Block-Filter.');
+          }
+
+          more.innerHTML = zeige.length < treffer.length
+            ? '<button id="caMoreBtn" type="button" class="ui-btn">' +
+            'Weitere ' + Math.min(CA_CHUNK, treffer.length - zeige.length) + ' Glyphen laden</button>'
+            : '';
+
+          const btn = $('caMoreBtn');
+          if (btn) btn.addEventListener('click', () => {
+            caState.sichtbar += CA_CHUNK;
+            renderGlyphPanel(index);
+          });
+        }
+
+        function caLeerHinweis(text) {
+          return '<div class="col-span-full py-10 text-center text-xs text-[var(--c-text-tertiary)] font-mono">' + text + '</div>';
+        }
+
+        // -----------------------------------------------------------------
+        // 15b) GLYPHEN-DETAIL
+        // -----------------------------------------------------------------
+        function zeigeGlyphDetail(gid) {
+          const index = caCache[caState.slot];
+          if (!index) return;
+          const font = index.font;
+          const eintrag = index.eintraege[gid];
+          const glyph = safeRead(() => font.getGlyph(gid), null);
+          if (!glyph || !eintrag) return;
+
+          const upm = safeRead(() => font.unitsPerEm, 1000) || 1000;
+          const m = metricsOf(caState.slot) || {};
+          const asc = Math.abs(m.usedAsc || Math.round(upm * 0.8));
+          const desc = Math.abs(m.usedDesc || Math.round(upm * 0.2));
+          const xh = m.xHeight || Math.round(upm * 0.5);
+          const cap = m.capHeight || Math.round(upm * 0.7);
+
+          const adv = safeRead(() => glyph.advanceWidth, 0) || 0;
+          const bbox = safeRead(() => glyph.bbox, null);
+          const d = safeRead(() => glyph.path.toSVG(), '') || '';
+          const punkte = safeRead(() => glyph.path.commands.length, null);
+
+          const lsb = bbox && isFinite(bbox.minX) ? Math.round(bbox.minX) : null;
+          const rsb = bbox && isFinite(bbox.maxX) ? Math.round(adv - bbox.maxX) : null;
+
+          const pad = upm * 0.18;
+          const vx = Math.min(0, lsb === null ? 0 : lsb) - pad;
+          const vw = Math.max(adv, bbox && isFinite(bbox.maxX) ? bbox.maxX : adv) - vx + pad;
+          const vy = -(asc + pad * 0.6);
+          const vh = asc + desc + pad * 1.2;
+
+          // Heller Halo, damit Beschriftungen auch über der Glyphe lesbar bleiben
+          const halo = ' stroke="#ffffff" stroke-width="' + (upm / 90) + '" stroke-linejoin="round" style="paint-order:stroke fill"';
+
+          const linie = (y, farbe, beschriftung, gestrichelt) =>
+            '<line x1="' + vx + '" y1="' + (-y) + '" x2="' + (vx + vw) + '" y2="' + (-y) + '" stroke="' + farbe +
+            '" stroke-width="' + (upm / 400) + '"' + (gestrichelt ? ' stroke-dasharray="' + (upm / 100) + ',' + (upm / 100) + '"' : '') + '/>' +
+            '<text x="' + (vx + upm * 0.02) + '" y="' + (-y - upm / 60) + '" fill="' + farbe + '" font-size="' + (upm / 18) +
+            '" font-family="monospace"' + halo + '>' + beschriftung + '</text>';
+
+          // Die vier Senkrechten werden gestaffelt beschriftet, sonst überlagern
+          // sich ihre Labels am unteren Rand.
+          const senkrechte = (x, farbe, beschriftung, reihe) =>
+            '<line x1="' + x + '" y1="' + vy + '" x2="' + x + '" y2="' + (vy + vh) + '" stroke="' + farbe +
+            '" stroke-width="' + (upm / 500) + '" stroke-dasharray="' + (upm / 120) + ',' + (upm / 120) + '"/>' +
+            '<text x="' + (x + upm * 0.015) + '" y="' + (vy + vh - upm * 0.03 - (reihe || 0) * (upm / 13)) + '" fill="' + farbe +
+            '" font-size="' + (upm / 20) + '" font-family="monospace"' + halo + '>' + beschriftung + '</text>';
+
+          const svg =
+            '<svg viewBox="' + vx.toFixed(0) + ' ' + vy.toFixed(0) + ' ' + vw.toFixed(0) + ' ' + vh.toFixed(0) + '" ' +
+            'class="w-full" style="max-height:340px" preserveAspectRatio="xMidYMid meet">' +
+            // Glyphe zuerst, Hilfslinien und Beschriftungen darüber - sonst
+            // verdeckt die Zeichenfläche die Labels.
+            '<g transform="scale(1,-1)"><path d="' + d + '" fill="#1A1D23"/></g>' +
+            linie(asc, '#0284c7', 'Ascender ' + Math.round(asc), true) +
+            linie(cap, '#7c3aed', 'Cap ' + Math.round(cap), false) +
+            linie(xh, '#059669', 'x-Height ' + Math.round(xh), false) +
+            linie(0, '#dc2626', 'Baseline 0', false) +
+            linie(-desc, '#d97706', 'Descender -' + Math.round(desc), true) +
+            senkrechte(0, '#94a3b8', 'x=0', 0) +
+            senkrechte(adv, '#94a3b8', 'Advance ' + Math.round(adv), 1) +
+            (lsb !== null ? senkrechte(lsb, '#0284c7', 'LSB ' + lsb, 2) : '') +
+            (bbox && isFinite(bbox.maxX) ? senkrechte(bbox.maxX, '#0284c7', 'RSB ' + rsb, 3) : '') +
+            '</svg>';
+
+          const zeile = (label, wert) =>
+            '<div class="flex justify-between gap-4 py-1.5 border-b border-[var(--c-border)]">' +
+            '<span class="text-[var(--c-text-secondary)]">' + label + '</span>' +
+            '<span class="text-[var(--c-text)] font-mono text-right break-all font-medium">' + wert + '</span></div>';
+
+          const zeichen = eintrag.cp !== null ? String.fromCodePoint(eintrag.cp) : null;
+
+          $('glyphModalContent').innerHTML =
+            '<div class="flex items-start justify-between gap-4 mb-4">' +
+            '<div>' +
+            '<h3 class="text-lg font-semibold text-[var(--c-text)]">' + (eintrag.name || 'glyph' + gid) + '</h3>' +
+            '<p class="text-xs text-[var(--c-text-secondary)] font-mono">' +
+            (eintrag.cp !== null ? cpHex(eintrag.cp) + ' · dezimal ' + eintrag.cp : 'ohne Unicode-Zuordnung') +
+            ' · GID ' + gid + '</p>' +
+            '</div>' +
+            '<button id="glyphModalClose" type="button" class="ui-btn-icon rounded-full border border-[var(--c-border)] bg-[var(--c-surface-alt)] hover:bg-[var(--c-hover)] text-[var(--c-text-secondary)] hover:text-[var(--c-text)] transition cursor-pointer" aria-label="Schließen">' +
+            '<svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>' +
+            '</button>' +
+            '</div>' +
+            '<div class="grid grid-cols-1 md:grid-cols-2 gap-6">' +
+            '<div class="bg-[var(--c-surface-alt)] rounded-xl border border-[var(--c-border)] p-3 flex items-center justify-center">' + svg + '</div>' +
+            '<div class="text-xs">' +
+            zeile('Glyph-Name', eintrag.name || '—') +
+            zeile('Zeichen', zeichen ? '<span class="text-base font-medium">' + escapeHtml(zeichen) + '</span>' : '—') +
+            zeile('Unicode', eintrag.cp !== null ? cpHex(eintrag.cp) : '—') +
+            zeile('Dezimal', eintrag.cp !== null ? String(eintrag.cp) : '—') +
+            zeile('Glyph-Index (GID)', String(gid)) +
+            zeile('Advance Width', adv + ' u (' + (adv / upm).toFixed(3) + ' em)') +
+            zeile('Bounding Box', bbox ? [Math.round(bbox.minX), Math.round(bbox.minY), Math.round(bbox.maxX), Math.round(bbox.maxY)].join(' / ') : '—') +
+            zeile('Left / Right Side Bearing', (lsb === null ? '—' : lsb) + ' / ' + (rsb === null ? '—' : rsb)) +
+            zeile('Pfad-Kommandos', punkte === null ? '—' : String(punkte)) +
+            zeile('Unicode-Block', eintrag.cp !== null ? (blockVon(eintrag.cp) || 'unbekannt') : '—') +
+            '<div class="flex gap-2 mt-4">' +
+            (zeichen ? '<button id="caCopyChar" type="button" class="ui-btn">Copy Character</button>' : '') +
+            (eintrag.cp !== null ? '<button id="caCopyUni" type="button" class="ui-btn">Copy Unicode (Hex)</button>' : '') +
+            '</div>' +
+            '</div>' +
+            '</div>';
+
+          $('glyphModal').classList.remove('hidden');
+          $('glyphModalClose').addEventListener('click', schliesseGlyphDetail);
+
+          const cChar = $('caCopyChar');
+          if (cChar) cChar.addEventListener('click', async (e) => {
+            const ok = await copyText(zeichen);
+            e.currentTarget.textContent = ok ? 'Kopiert' : 'Fehlgeschlagen';
+            setTimeout(() => { e.currentTarget.textContent = 'Copy Character'; }, 1400);
+          });
+          const cUni = $('caCopyUni');
+          if (cUni) cUni.addEventListener('click', async (e) => {
+            const ok = await copyText(cpHex(eintrag.cp));
+            e.currentTarget.textContent = ok ? 'Kopiert' : 'Fehlgeschlagen';
+            setTimeout(() => { e.currentTarget.textContent = 'Copy Unicode (Hex)'; }, 1400);
+          });
+        }
+
+        function schliesseGlyphDetail() {
+          $('glyphModal').classList.add('hidden');
+          $('glyphModalContent').innerHTML = '';
+        }
+
+        function escapeHtml(s) {
+          return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+        }
+
+        // -----------------------------------------------------------------
+        // 15b-2) GLYPH CONTEXT MENU (macOS / iOS Style)
+        // -----------------------------------------------------------------
+        function oeffneGlyphContextMenu(e, gid) {
+          const index = caCache[caState.slot];
+          if (!index) return;
+          const eintrag = index.eintraege && index.eintraege[gid];
+          if (!eintrag) return;
+
+          const zeichen = eintrag.cp !== null ? String.fromCodePoint(eintrag.cp) : null;
+          const uniHex = eintrag.cp !== null ? cpHex(eintrag.cp) : null;
+          const glyphName = eintrag.name || ('glyph' + gid);
+
+          const menu = $('glyphContextMenu');
+          if (!menu) return;
+
+          menu.innerHTML =
+            '<div class="px-2.5 py-2 mb-1 flex items-center gap-2.5 border-b border-[var(--c-border-light)] bg-black/[0.02] rounded-xl">' +
+              '<div class="w-7 h-7 shrink-0 rounded-lg bg-[var(--c-surface-alt)] border border-[var(--c-border)] flex items-center justify-center font-medium text-sm text-[var(--c-text)] overflow-hidden font-mono">' +
+                (zeichen ? escapeHtml(zeichen) : '<span class="text-[10px] text-[var(--c-text-tertiary)]">GID</span>') +
+              '</div>' +
+              '<div class="min-w-0 flex-1">' +
+                '<div class="font-semibold text-[var(--c-text)] truncate text-xs leading-tight">' + escapeHtml(glyphName) + '</div>' +
+                '<div class="text-[10px] font-mono text-[var(--c-text-secondary)] truncate">' + (uniHex ? uniHex + ' · ' : '') + 'GID ' + gid + '</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="space-y-0.5">' +
+              '<button type="button" id="ctxBtnCopyChar" ' +
+                'class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-[10px] text-[var(--c-text)] hover:bg-[#007AFF] hover:text-white transition-colors cursor-pointer group ' +
+                (!zeichen ? 'opacity-40 pointer-events-none' : '') + '">' +
+                '<span class="flex items-center gap-2">' +
+                  '<svg class="w-3.5 h-3.5 text-[var(--c-text-secondary)] group-hover:text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                    '<rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>' +
+                    '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>' +
+                  '</svg>' +
+                  '<span class="font-medium text-[12px]">Copy Character</span>' +
+                '</span>' +
+                '<span class="font-mono text-[11px] text-[var(--c-text-tertiary)] group-hover:text-white/90 shrink-0 font-medium">' +
+                  (zeichen ? escapeHtml(zeichen) : '—') +
+                '</span>' +
+              '</button>' +
+              '<button type="button" id="ctxBtnCopyUnicode" ' +
+                'class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-[10px] text-[var(--c-text)] hover:bg-[#007AFF] hover:text-white transition-colors cursor-pointer group ' +
+                (!uniHex ? 'opacity-40 pointer-events-none' : '') + '">' +
+                '<span class="flex items-center gap-2">' +
+                  '<svg class="w-3.5 h-3.5 text-[var(--c-text-secondary)] group-hover:text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                    '<polyline points="16 18 22 12 16 6"></polyline>' +
+                    '<polyline points="8 6 2 12 8 18"></polyline>' +
+                  '</svg>' +
+                  '<span class="font-medium text-[12px]">Copy Unicode</span>' +
+                '</span>' +
+                '<span class="font-mono text-[10px] text-[var(--c-text-tertiary)] group-hover:text-white/90 shrink-0">' +
+                  (uniHex || '—') +
+                '</span>' +
+              '</button>' +
+              '<button type="button" id="ctxBtnCopyName" ' +
+                'class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-[10px] text-[var(--c-text)] hover:bg-[#007AFF] hover:text-white transition-colors cursor-pointer group">' +
+                '<span class="flex items-center gap-2">' +
+                  '<svg class="w-3.5 h-3.5 text-[var(--c-text-secondary)] group-hover:text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                    '<path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path>' +
+                    '<line x1="7" y1="7" x2="7.01" y2="7"></line>' +
+                  '</svg>' +
+                  '<span class="font-medium text-[12px]">Copy Name</span>' +
+                '</span>' +
+                '<span class="font-mono text-[10px] text-[var(--c-text-tertiary)] group-hover:text-white/90 truncate max-w-[84px] shrink-0">' +
+                  escapeHtml(glyphName) +
+                '</span>' +
+              '</button>' +
+              '<div class="h-px bg-[var(--c-border-light)] my-1 mx-1"></div>' +
+              '<button type="button" id="ctxBtnInspect" ' +
+                'class="w-full flex items-center justify-between px-2.5 py-1.5 rounded-[10px] text-[var(--c-text)] hover:bg-[#007AFF] hover:text-white transition-colors cursor-pointer group">' +
+                '<span class="flex items-center gap-2">' +
+                  '<svg class="w-3.5 h-3.5 text-[var(--c-text-secondary)] group-hover:text-white shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+                    '<circle cx="11" cy="11" r="8"></circle>' +
+                    '<line x1="21" y1="21" x2="16.65" y2="16.65"></line>' +
+                    '<line x1="11" y1="8" x2="11" y2="14"></line>' +
+                    '<line x1="8" y1="11" x2="14" y2="11"></line>' +
+                  '</svg>' +
+                  '<span class="font-medium text-[12px]">Inspect Details...</span>' +
+                '</span>' +
+                '<span class="text-[10px] text-[var(--c-text-tertiary)] group-hover:text-white/80 shrink-0">↵</span>' +
+              '</button>' +
+            '</div>';
+
+          const btnChar = $('ctxBtnCopyChar');
+          if (btnChar && zeichen) {
+            btnChar.addEventListener('click', async (ev) => {
+              ev.stopPropagation();
+              await copyText(zeichen);
+              btnChar.innerHTML =
+                '<span class="flex items-center gap-2 text-emerald-600 group-hover:text-white font-medium text-[12px]">' +
+                  '<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>' +
+                  '<span>Copied!</span>' +
+                '</span>';
+              setTimeout(schliesseContextMenu, 240);
+            });
+          }
+
+          const btnUni = $('ctxBtnCopyUnicode');
+          if (btnUni && uniHex) {
+            btnUni.addEventListener('click', async (ev) => {
+              ev.stopPropagation();
+              await copyText(uniHex);
+              btnUni.innerHTML =
+                '<span class="flex items-center gap-2 text-emerald-600 group-hover:text-white font-medium text-[12px]">' +
+                  '<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>' +
+                  '<span>Copied!</span>' +
+                '</span>';
+              setTimeout(schliesseContextMenu, 240);
+            });
+          }
+
+          const btnName = $('ctxBtnCopyName');
+          if (btnName) {
+            btnName.addEventListener('click', async (ev) => {
+              ev.stopPropagation();
+              await copyText(glyphName);
+              btnName.innerHTML =
+                '<span class="flex items-center gap-2 text-emerald-600 group-hover:text-white font-medium text-[12px]">' +
+                  '<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>' +
+                  '<span>Copied!</span>' +
+                '</span>';
+              setTimeout(schliesseContextMenu, 240);
+            });
+          }
+
+          const btnInspect = $('ctxBtnInspect');
+          if (btnInspect) {
+            btnInspect.addEventListener('click', (ev) => {
+              ev.stopPropagation();
+              schliesseContextMenu();
+              zeigeGlyphDetail(gid);
+            });
+          }
+
+          menu.classList.remove('hidden');
+          menu.classList.remove('ctx-menu-enter');
+          void menu.offsetWidth;
+          menu.classList.add('ctx-menu-enter');
+
+          const menuRect = menu.getBoundingClientRect();
+          const w = menuRect.width || 220;
+          const h = menuRect.height || 170;
+
+          let posX = e.clientX;
+          let posY = e.clientY;
+
+          if (posX + w > window.innerWidth - 10) {
+            posX = Math.max(10, window.innerWidth - w - 10);
+          }
+          if (posY + h > window.innerHeight - 10) {
+            posY = Math.max(10, window.innerHeight - h - 10);
+          }
+
+          menu.style.left = posX + 'px';
+          menu.style.top = posY + 'px';
+        }
+
+        function schliesseContextMenu() {
+          const menu = $('glyphContextMenu');
+          if (menu && !menu.classList.contains('hidden')) {
+            menu.classList.add('hidden');
+            menu.innerHTML = '';
+          }
+        }
+
+        // -----------------------------------------------------------------
+        // 15c) LIGATUREN-INSPEKTOR (GSUB)
+        // -----------------------------------------------------------------
+        /** Coverage-Tabelle in die Glyphenliste in Coverage-Index-Reihenfolge auflösen. */
+        function coverageGlyphen(coverage) {
+          if (!coverage) return [];
+          if (coverage.glyphs) return Array.from(coverage.glyphs);
+          const bereiche = coverage.rangeRecords || coverage.ranges || [];
+          const out = [];
+          for (const r of bereiche) {
+            const start = r.start !== undefined ? r.start : r.startGlyphID;
+            const ende = r.end !== undefined ? r.end : r.endGlyphID;
+            for (let g = start; g <= ende; g++) out.push(g);
+          }
+          return out;
+        }
+
+        /** Lookups liegen teils in Extension-Subtables (Typ 7) - hier vereinheitlicht. */
+        function subTabellen(lookup) {
+          const raus = [];
+          if (!lookup || !lookup.subTables) return raus;
+          for (const st of lookup.subTables) {
+            if (lookup.lookupType === 7 && st) {
+              const innererTyp = st.extensionLookupType !== undefined ? st.extensionLookupType : st.lookupType;
+              const inneres = st.extension || st.extensionSubTable;
+              if (inneres) { raus.push({ typ: innererTyp, tabelle: inneres }); continue; }
+            }
+            raus.push({ typ: lookup.lookupType, tabelle: st });
+          }
+          return raus;
+        }
+
+        /** Kontextuelle Lookups (Typ 5/6) verweisen auf weitere Lookups - rekursiv einsammeln. */
+        function verweisteLookups(objekt, gesammelt, tiefe) {
+          if (!objekt || typeof objekt !== 'object' || (tiefe || 0) > 6) return gesammelt;
+          if (Array.isArray(objekt)) {
+            for (const eintrag of objekt) verweisteLookups(eintrag, gesammelt, (tiefe || 0) + 1);
+            return gesammelt;
+          }
+          for (const schluessel of Object.keys(objekt)) {
+            if (schluessel === 'lookupListIndex') {
+              const v = objekt[schluessel];
+              if (typeof v === 'number') gesammelt.add(v);
+            } else {
+              const wert = safeRead(() => objekt[schluessel], null);
+              if (wert && typeof wert === 'object') verweisteLookups(wert, gesammelt, (tiefe || 0) + 1);
+            }
+          }
+          return gesammelt;
+        }
+
+        function leseLigaturen(slot) {
+          const index = caCache[slot];
+          if (!index) return [];
+          if (index.ligaturen) return index.ligaturen;
+
+          const font = index.font;
+          const gsub = safeRead(() => font.GSUB, null);
+          if (!gsub || !gsub.lookupList || !gsub.featureList) { index.ligaturen = []; return index.ligaturen; }
+
+          const ll = gsub.lookupList;
+          const holeLookup = (i) => safeRead(() => (typeof ll.get === 'function' ? ll.get(i) : ll[i]), null);
+          const anzahl = safeRead(() => ll.length, 0) || 0;
+
+          // Lookup-Index -> Feature-Tags (inklusive indirekt über Kontext-Lookups)
+          const tagsProLookup = new Map();
+          const merke = (idx, tag) => {
+            if (idx < 0 || idx >= anzahl) return;
+            if (!tagsProLookup.has(idx)) tagsProLookup.set(idx, new Set());
+            tagsProLookup.get(idx).add(tag);
+          };
+
+          for (const eintrag of (safeRead(() => gsub.featureList, []) || [])) {
+            const tag = eintrag && eintrag.tag;
+            const idxs = eintrag && eintrag.feature && eintrag.feature.lookupListIndexes;
+            if (!tag || !idxs) continue;
+            for (const i of idxs) {
+              merke(i, tag);
+              const L = holeLookup(i);
+              if (L && (L.lookupType === 5 || L.lookupType === 6)) {
+                const weitere = verweisteLookups(safeRead(() => L.subTables, null), new Set(), 0);
+                weitere.forEach(j => merke(j, tag));
+              }
+            }
+          }
+
+          const namen = (gid) => (index.eintraege[gid] && index.eintraege[gid].name) || ('glyph' + gid);
+          const ergebnis = [];
+          const gesehen = new Set();
+
+          for (let i = 0; i < anzahl; i++) {
+            const L = holeLookup(i);
+            if (!L) continue;
+            for (const st of subTabellen(L)) {
+              if (st.typ !== 4 || !st.tabelle) continue;
+              const glyphen = coverageGlyphen(st.tabelle.coverage);
+              const sets = st.tabelle.ligatureSets;
+              if (!sets) continue;
+              const setLen = safeRead(() => sets.length, 0) || 0;
+
+              for (let k = 0; k < Math.min(setLen, glyphen.length); k++) {
+                const set = safeRead(() => (typeof sets.get === 'function' ? sets.get(k) : sets[k]), null);
+                if (!set) continue;
+                for (const lig of set) {
+                  if (!lig || typeof lig.glyph !== 'number') continue;
+                  const folge = [glyphen[k]].concat(Array.from(lig.components || []));
+                  const schluessel = folge.join(',') + '>' + lig.glyph;
+                  if (gesehen.has(schluessel)) continue;
+                  gesehen.add(schluessel);
+                  ergebnis.push({
+                    features: Array.from(tagsProLookup.get(i) || new Set(['—'])),
+                    zielGid: lig.glyph,
+                    zielName: namen(lig.glyph),
+                    komponenten: folge.map(g => ({ gid: g, name: namen(g), cp: index.eintraege[g] ? index.eintraege[g].cp : null }))
+                  });
+                }
+              }
+            }
+          }
+
+          const rang = { liga: 0, clig: 1, dlig: 2, hlig: 3, calt: 4, rlig: 5 };
+          ergebnis.sort((a, b) => {
+            const ra = rang[a.features[0]] !== undefined ? rang[a.features[0]] : 9;
+            const rb = rang[b.features[0]] !== undefined ? rang[b.features[0]] : 9;
+            if (ra !== rb) return ra - rb;
+            return a.komponenten.length - b.komponenten.length || a.zielName.localeCompare(b.zielName);
+          });
+
+          index.ligaturen = ergebnis;
+          return ergebnis;
+        }
+
+        function renderLigaturPanel(index) {
+          const host = $('caPanelLigatures');
+          if (!index) {
+            host.innerHTML = caLeerHinweis('Keine Schrift in Slot ' + SLOT_KEY[caState.slot] + ' geladen.');
+            return;
+          }
+
+          const ligaturen = leseLigaturen(caState.slot);
+          if (!ligaturen.length) {
+            const hatGsub = !!safeRead(() => index.font.GSUB, null);
+            host.innerHTML =
+              '<div class="py-12 text-center">' +
+              '<div class="text-3xl mb-3 text-[var(--c-text-tertiary)]">—</div>' +
+              '<p class="text-sm font-medium text-[var(--c-text)]">Keine Ligaturen im OpenType GSUB-Table gefunden.</p>' +
+              '<p class="text-xs text-[var(--c-text-secondary)] mt-1">' +
+              (hatGsub ? 'Die Schrift besitzt eine GSUB-Tabelle, aber keine Ligature-Substitution (Lookup-Typ 4).'
+                : 'Diese Schrift enthält gar keine GSUB-Tabelle.') +
+              '</p>' +
+              '</div>';
+            return;
+          }
+
+          const box = emViewBox(index.font);
+          const gruppen = new Map();
+          for (const l of ligaturen) {
+            const tag = l.features[0] || '—';
+            if (!gruppen.has(tag)) gruppen.set(tag, []);
+            gruppen.get(tag).push(l);
+          }
+
+          const beschreibung = {
+            liga: 'Standard-Ligaturen (standardmäßig aktiv)',
+            clig: 'Kontextabhängige Ligaturen',
+            dlig: 'Optionale Ligaturen (bewusst zuschaltbar)',
+            hlig: 'Historische Ligaturen',
+            calt: 'Kontextuelle Alternativen',
+            rlig: 'Erforderliche Ligaturen'
+          };
+
+          let html = '<p class="text-xs text-[var(--c-text-secondary)] mb-4">' + ligaturen.length + ' Ligatur-Substitutionen in ' +
+            gruppen.size + ' Feature' + (gruppen.size === 1 ? '' : 's') + ' gefunden.</p>';
+
+          for (const [tag, liste] of gruppen) {
+            // Grosse Gruppen (Inter bringt z. B. 633 calt-Substitutionen mit) würden
+            // sonst tausende SVG-Knoten erzeugen - deshalb hier dieselbe
+            // Nachlade-Logik wie im Glyphen-Raster.
+            const limit = caState.ligLimit[tag] || LIG_CHUNK;
+            const sichtbar = liste.slice(0, limit);
+            html += '<div class="mb-6">' +
+              '<div class="flex items-center gap-2 mb-3">' +
+              '<span class="px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200 text-[11px] font-mono font-semibold">' + tag + '</span>' +
+              '<span class="text-[11px] text-[var(--c-text-secondary)]">' + (beschreibung[tag] || 'OpenType-Feature') + ' · ' + liste.length +
+              (sichtbar.length < liste.length ? ' (' + sichtbar.length + ' angezeigt)' : '') + '</span>' +
+              '</div>' +
+              '<div class="grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));">';
+
+            for (const l of sichtbar) {
+              const teile = l.komponenten.map(k =>
+                '<span class="inline-flex items-center justify-center min-w-[30px] h-[30px] px-1 rounded-lg border border-[var(--c-border)] bg-[var(--c-surface)] text-[var(--c-text)] shadow-2xs" title="' + escapeHtml(k.name) + '">' +
+                glyphKachelSvgKlein(index.font, k.gid, box) +
+                '</span>').join('<span class="text-[var(--c-text-tertiary)] text-xs">+</span>');
+
+              html += '<div class="flex items-center gap-2 p-3 rounded-xl border border-[var(--c-border)] bg-[var(--c-surface)] shadow-2xs">' +
+                '<div class="flex items-center gap-1 flex-wrap">' + teile + '</div>' +
+                '<span class="text-[var(--c-text-tertiary)]">&rarr;</span>' +
+                '<button type="button" data-gid="' + l.zielGid + '" class="ca-glyph flex items-center justify-center h-[46px] min-w-[46px] px-2 rounded-xl border border-[var(--c-border)] bg-[var(--c-surface-alt)] hover:border-blue-500 hover:bg-[var(--c-surface)] transition text-[var(--c-text)] cursor-pointer" title="Details zu ' + escapeHtml(l.zielName) + '">' +
+                glyphKachelSvg(index.font, l.zielGid, box) +
+                '</button>' +
+                '<span class="text-[10px] font-mono text-[var(--c-text-secondary)] truncate ml-auto font-medium" title="' + escapeHtml(l.zielName) + '">' + escapeHtml(l.zielName) + '</span>' +
+                '</div>';
+            }
+            html += '</div>';
+            if (sichtbar.length < liste.length) {
+              html += '<div class="mt-3">' +
+                '<button data-ligmore="' + tag + '" type="button" class="ca-ligmore ui-btn">' +
+                'Weitere ' + Math.min(LIG_CHUNK, liste.length - sichtbar.length) + ' von ' + (liste.length - sichtbar.length) + ' anzeigen</button></div>';
+            }
+            html += '</div>';
+          }
+
+          host.innerHTML = html;
+        }
+
+        function glyphKachelSvgKlein(font, gid, box) {
+          const glyph = safeRead(() => font.getGlyph(gid), null);
+          const d = glyph ? (safeRead(() => glyph.path.toSVG(), '') || '') : '';
+          if (!d) return '<span class="text-[9px] font-mono text-[var(--c-text-tertiary)]">·</span>';
+          return '<svg viewBox="' + box.x.toFixed(0) + ' ' + (-box.asc).toFixed(0) + ' ' + box.w.toFixed(0) + ' ' + box.h.toFixed(0) + '" ' +
+            'width="24" height="24" preserveAspectRatio="xMidYMid meet" aria-hidden="true">' +
+            '<g transform="scale(1,-1)"><path d="' + d + '" fill="currentColor"/></g></svg>';
+        }
+
+        // -----------------------------------------------------------------
+        // 15d) SPRACHABDECKUNG
+        //
+        //     Kuratierte Referenz statt vollständigem CLDR: Für jede Sprache
+        //     stehen die Buchstaben ihrer Orthografie. Lateinschriftliche
+        //     Sprachen setzen auf dem Grundalphabet A-Z/a-z auf (bewusste
+        //     Vereinfachung - fast jeder Font liefert es vollständig mit),
+        //     kyrillische und griechische Sprachen sind vollständig notiert.
+        //     Ziffern und Interpunktion bleiben aussen vor, sie sind nicht
+        //     sprachbestimmend.
+        // -----------------------------------------------------------------
+        const LAT = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+        const KYR_RU = 'АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнопрстуфхцчшщъыьэюя';
+
+        const SPRACHEN = [
+          // ---------- Lateinschrift ----------
+          { name: 'Deutsch', code: 'de', script: 'Latein', extra: 'ÄÖÜäöüß' },
+          { name: 'Englisch', code: 'en', script: 'Latein', extra: '' },
+          { name: 'Französisch', code: 'fr', script: 'Latein', extra: 'ÀÂÆÇÉÈÊËÎÏÔŒÙÛÜŸàâæçéèêëîïôœùûüÿ' },
+          { name: 'Spanisch', code: 'es', script: 'Latein', extra: 'ÁÉÍÑÓÚÜáéíñóúü¡¿' },
+          { name: 'Portugiesisch', code: 'pt', script: 'Latein', extra: 'ÀÁÂÃÇÉÊÍÓÔÕÚàáâãçéêíóôõú' },
+          { name: 'Italienisch', code: 'it', script: 'Latein', extra: 'ÀÈÉÌÎÒÓÙàèéìîòóù' },
+          { name: 'Niederländisch', code: 'nl', script: 'Latein', extra: 'ÁÄÉËÍÏÓÖÚÜáäéëíïóöúü' },
+          { name: 'Dänisch', code: 'da', script: 'Latein', extra: 'ÆØÅæøå' },
+          { name: 'Norwegisch', code: 'no', script: 'Latein', extra: 'ÆØÅæøå' },
+          { name: 'Schwedisch', code: 'sv', script: 'Latein', extra: 'ÅÄÖåäö' },
+          { name: 'Finnisch', code: 'fi', script: 'Latein', extra: 'ÅÄÖŠŽåäöšž' },
+          { name: 'Isländisch', code: 'is', script: 'Latein', extra: 'ÁÐÉÍÓÚÝÞÆÖáðéíóúýþæö' },
+          { name: 'Färöisch', code: 'fo', script: 'Latein', extra: 'ÁÐÍÓÚÝÆØáðíóúýæø' },
+          { name: 'Polnisch', code: 'pl', script: 'Latein', extra: 'ĄĆĘŁŃÓŚŹŻąćęłńóśźż' },
+          { name: 'Tschechisch', code: 'cs', script: 'Latein', extra: 'ÁČĎÉĚÍŇÓŘŠŤÚŮÝŽáčďéěíňóřšťúůýž' },
+          { name: 'Slowakisch', code: 'sk', script: 'Latein', extra: 'ÁÄČĎÉÍĹĽŇÓÔŔŠŤÚÝŽáäčďéíĺľňóôŕšťúýž' },
+          { name: 'Slowenisch', code: 'sl', script: 'Latein', extra: 'ČŠŽčšž' },
+          { name: 'Kroatisch', code: 'hr', script: 'Latein', extra: 'ČĆĐŠŽčćđšž' },
+          { name: 'Bosnisch', code: 'bs', script: 'Latein', extra: 'ČĆĐŠŽčćđšž' },
+          { name: 'Serbisch (lat.)', code: 'sr-Latn', script: 'Latein', extra: 'ČĆĐŠŽčćđšž' },
+          { name: 'Ungarisch', code: 'hu', script: 'Latein', extra: 'ÁÉÍÓÖŐÚÜŰáéíóöőúüű' },
+          { name: 'Rumänisch', code: 'ro', script: 'Latein', extra: 'ĂÂÎȘȚăâîșț' },
+          { name: 'Türkisch', code: 'tr', script: 'Latein', extra: 'ÇĞİÖŞÜçğıöşü' },
+          { name: 'Aserbaidschanisch', code: 'az', script: 'Latein', extra: 'ÇƏĞİÖŞÜçəğıöşü' },
+          { name: 'Lettisch', code: 'lv', script: 'Latein', extra: 'ĀČĒĢĪĶĻŅŠŪŽāčēģīķļņšūž' },
+          { name: 'Litauisch', code: 'lt', script: 'Latein', extra: 'ĄČĘĖĮŠŲŪŽąčęėįšųūž' },
+          { name: 'Estnisch', code: 'et', script: 'Latein', extra: 'ÄÖÕÜŠŽäöõüšž' },
+          { name: 'Maltesisch', code: 'mt', script: 'Latein', extra: 'ĊĠĦŻċġħżÀÈÌÒÙàèìòù' },
+          { name: 'Walisisch', code: 'cy', script: 'Latein', extra: 'ÂÊÎÔÛŴŶÁÉÍÓÚÀÈÌÒÙÄËÏÖÜŸâêîôûŵŷáéíóúàèìòùäëïöüÿ' },
+          { name: 'Irisch', code: 'ga', script: 'Latein', extra: 'ÁÉÍÓÚáéíóú' },
+          { name: 'Schottisch-Gälisch', code: 'gd', script: 'Latein', extra: 'ÀÈÌÒÙàèìòù' },
+          { name: 'Katalanisch', code: 'ca', script: 'Latein', extra: 'ÀÇÈÉÍÏÒÓÚÜàçèéíïòóúü·' },
+          { name: 'Baskisch', code: 'eu', script: 'Latein', extra: 'Ññ' },
+          { name: 'Galicisch', code: 'gl', script: 'Latein', extra: 'ÁÉÍÑÓÚÜáéíñóúü' },
+          { name: 'Esperanto', code: 'eo', script: 'Latein', extra: 'ĈĜĤĴŜŬĉĝĥĵŝŭ' },
+          { name: 'Vietnamesisch', code: 'vi', script: 'Latein', extra: 'ĂÂĐÊÔƠƯăâđêôơưÀÁẢÃẠàáảãạẰẮẲẴẶằắẳẵặẦẤẨẪẬầấẩẫậÈÉẺẼẸèéẻẽẹỀẾỂỄỆềếểễệÌÍỈĨỊìíỉĩịÒÓỎÕỌòóỏõọỒỐỔỖỘồốổỗộỜỚỞỠỢờớởỡợÙÚỦŨỤùúủũụỪỨỬỮỰừứửữựỲÝỶỸỴỳýỷỹỵ' },
+          { name: 'Albanisch', code: 'sq', script: 'Latein', extra: 'ÇËçë' },
+          { name: 'Afrikaans', code: 'af', script: 'Latein', extra: 'ÁÂÄÈÉÊËÍÎÏÔÖÛÜáâäèéêëíîïôöûü' },
+          { name: 'Suaheli', code: 'sw', script: 'Latein', extra: '' },
+          { name: 'Indonesisch', code: 'id', script: 'Latein', extra: '' },
+          { name: 'Malaiisch', code: 'ms', script: 'Latein', extra: '' },
+          { name: 'Filipino', code: 'tl', script: 'Latein', extra: 'Ññ' },
+          { name: 'Zulu', code: 'zu', script: 'Latein', extra: '' },
+          { name: 'Xhosa', code: 'xh', script: 'Latein', extra: '' },
+          { name: 'Somali', code: 'so', script: 'Latein', extra: '' },
+          { name: 'Hausa', code: 'ha', script: 'Latein', extra: 'ƁƊƘɓɗƙʼ' },
+          { name: 'Yoruba', code: 'yo', script: 'Latein', extra: 'ẸỌṢẹọṣÁÀÉÈÍÌÓÒÚÙáàéèíìóòúù' },
+          { name: 'Igbo', code: 'ig', script: 'Latein', extra: 'ỊỌỤṄịọụṅ' },
+          { name: 'Luxemburgisch', code: 'lb', script: 'Latein', extra: 'ÄËÉÖÜäëéöü' },
+          { name: 'Westfriesisch', code: 'fy', script: 'Latein', extra: 'ÂÊÔÛÚäëïöüâêôûú' },
+          { name: 'Nordsamisch', code: 'se', script: 'Latein', extra: 'ÁČĐŊŠŦŽáčđŋšŧž' },
+          { name: 'Grönländisch', code: 'kl', script: 'Latein', extra: 'ÅÆØåæø' },
+          { name: 'Turkmenisch', code: 'tk', script: 'Latein', extra: 'ÄÇÑÖŞÜÝŽäçñöşüýž' },
+          { name: 'Usbekisch (lat.)', code: 'uz', script: 'Latein', extra: 'ʻʼ' },
+          { name: 'Kurdisch (lat.)', code: 'ku', script: 'Latein', extra: 'ÇÊÎŞÛçêîşû' },
+          { name: 'Hawaiianisch', code: 'haw', script: 'Latein', extra: 'ĀĒĪŌŪāēīōūʻ' },
+          { name: 'Maori', code: 'mi', script: 'Latein', extra: 'ĀĒĪŌŪāēīōū' },
+          { name: 'Samoanisch', code: 'sm', script: 'Latein', extra: 'ĀĒĪŌŪāēīōūʻ' },
+          { name: 'Tongaisch', code: 'to', script: 'Latein', extra: 'ĀĒĪŌŪāēīōūʻ' },
+          { name: 'Tahitianisch', code: 'ty', script: 'Latein', extra: 'ĀĒĪŌŪāēīōūʻ' },
+          { name: 'Fidschi', code: 'fj', script: 'Latein', extra: '' },
+          { name: 'Bretonisch', code: 'br', script: 'Latein', extra: 'ÂÊÎÔÛÙÜÑÇâêîôûùüñç' },
+          { name: 'Okzitanisch', code: 'oc', script: 'Latein', extra: 'ÀÁÇÈÉÍÒÓÚÜàáçèéíòóúü·' },
+          { name: 'Korsisch', code: 'co', script: 'Latein', extra: 'ÀÈÌÒÙàèìòù' },
+          { name: 'Sardisch', code: 'sc', script: 'Latein', extra: 'ÀÈÌÒÙàèìòù' },
+          { name: 'Rätoromanisch', code: 'rm', script: 'Latein', extra: 'ÀÈÉÌÒÙàèéìòù' },
+          { name: 'Kaschubisch', code: 'csb', script: 'Latein', extra: 'ÁÃÉËÊÒÓÔÙŻáãéëêòóôùż' },
+          { name: 'Obersorbisch', code: 'hsb', script: 'Latein', extra: 'ČĆĚŁŃÓŘŠŹŽčćěłńóřšźž' },
+          { name: 'Kinyarwanda', code: 'rw', script: 'Latein', extra: '' },
+          { name: 'Chichewa', code: 'ny', script: 'Latein', extra: '' },
+          { name: 'Tswana', code: 'tn', script: 'Latein', extra: '' },
+          { name: 'Wolof', code: 'wo', script: 'Latein', extra: 'ÀÉËÑÓŊàéëñóŋ' },
+          { name: 'Lingala', code: 'ln', script: 'Latein', extra: 'ÁÉÊÍÓÔÚáéêíóôúƐɛƆɔ' },
+          { name: 'Akan / Twi', code: 'ak', script: 'Latein', extra: 'ƐɛƆɔ' },
+          { name: 'Ewe', code: 'ee', script: 'Latein', extra: 'ƉɖƐɛƑƒƔɣƆɔÑñ' },
+          { name: 'Madagassisch', code: 'mg', script: 'Latein', extra: '' },
+          { name: 'Javanisch (lat.)', code: 'jv', script: 'Latein', extra: '' },
+          { name: 'Cebuano', code: 'ceb', script: 'Latein', extra: '' },
+          { name: 'Haitianisch', code: 'ht', script: 'Latein', extra: 'ÈÒèò' },
+          { name: 'Guaraní', code: 'gn', script: 'Latein', extra: 'ÃẼĨÕŨỸÑãẽĩõũỹñʼ' },
+          { name: 'Quechua', code: 'qu', script: 'Latein', extra: '' },
+          { name: 'Aymara', code: 'ay', script: 'Latein', extra: '' },
+          { name: 'Tetum', code: 'tet', script: 'Latein', extra: '' },
+
+          // ---------- Kyrillisch ----------
+          { name: 'Russisch', code: 'ru', script: 'Kyrillisch', alphabet: KYR_RU },
+          { name: 'Ukrainisch', code: 'uk', script: 'Kyrillisch', alphabet: 'АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯабвгґдеєжзиіїйклмнопрстуфхцчшщьюя' },
+          { name: 'Belarussisch', code: 'be', script: 'Kyrillisch', alphabet: 'АБВГДЕЁЖЗІЙКЛМНОПРСТУЎФХЦЧШЫЬЭЮЯабвгдеёжзійклмнопрстуўфхцчшыьэюя' },
+          { name: 'Bulgarisch', code: 'bg', script: 'Kyrillisch', alphabet: 'АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЬЮЯабвгдежзийклмнопрстуфхцчшщъьюя' },
+          { name: 'Serbisch (kyr.)', code: 'sr', script: 'Kyrillisch', alphabet: 'АБВГДЂЕЖЗИЈКЛЉМНЊОПРСТЋУФХЦЧЏШабвгдђежзијклљмнњопрстћуфхцчџш' },
+          { name: 'Mazedonisch', code: 'mk', script: 'Kyrillisch', alphabet: 'АБВГДЃЕЖЗЅИЈКЛЉМНЊОПРСТЌУФХЦЧЏШабвгдѓежзѕијклљмнњопрстќуфхцчџш' },
+          { name: 'Kasachisch', code: 'kk', script: 'Kyrillisch', alphabet: KYR_RU + 'ӘҒҚҢӨҰҮҺІәғқңөұүһі' },
+          { name: 'Kirgisisch', code: 'ky', script: 'Kyrillisch', alphabet: 'АБВГДЕЁЖЗИЙКЛМНҢОӨПРСТУҮФХЦЧШЩЪЫЬЭЮЯабвгдеёжзийклмнңоөпрстуүфхцчшщъыьэюя' },
+          { name: 'Tadschikisch', code: 'tg', script: 'Kyrillisch', alphabet: 'АБВГҒДЕЁЖЗИӢЙКҚЛМНОПРСТУӮФХҲЧҶШЪЭЮЯабвгғдеёжзиӣйкқлмнопрстуӯфхҳчҷшъэюя' },
+          { name: 'Mongolisch', code: 'mn', script: 'Kyrillisch', alphabet: KYR_RU + 'ӨҮөү' },
+          { name: 'Tatarisch', code: 'tt', script: 'Kyrillisch', alphabet: KYR_RU + 'ӘӨҮҖҢҺәөүҗңһ' },
+          { name: 'Baschkirisch', code: 'ba', script: 'Kyrillisch', alphabet: KYR_RU + 'ӘҒҘҠҢӨҪҮҺәғҙҡңөҫүһ' },
+          { name: 'Tschuwaschisch', code: 'cv', script: 'Kyrillisch', alphabet: KYR_RU + 'ӐӖҪҮӑӗҫү' },
+          { name: 'Jakutisch', code: 'sah', script: 'Kyrillisch', alphabet: KYR_RU + 'ҔҤӨҮҺҕҥөүһ' },
+          { name: 'Ossetisch', code: 'os', script: 'Kyrillisch', alphabet: KYR_RU + 'Ӕӕ' },
+
+          // ---------- Griechisch ----------
+          { name: 'Griechisch', code: 'el', script: 'Griechisch', alphabet: 'ΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩαβγδεζηθικλμνξοπρστυφχψωςΆΈΉΊΌΎΏΪΫάέήίόύώϊϋΐΰ' }
+        ];
+
+        function pflichtZeichen(sprache) {
+          const quelle = sprache.alphabet ? sprache.alphabet : (LAT + sprache.extra);
+          return Array.from(new Set(Array.from(quelle)));
+        }
+
+        function berechneSprachen(slot) {
+          const index = caCache[slot];
+          if (!index) return null;
+          if (index.sprachen) return index.sprachen;
+
+          const cpSet = index.cpSet;
+          const liste = SPRACHEN.map(sprache => {
+            const noetig = pflichtZeichen(sprache);
+            const fehlend = [];
+            let vorhanden = 0;
+            for (const zeichen of noetig) {
+              if (cpSet.has(zeichen.codePointAt(0))) vorhanden++;
+              else fehlend.push(zeichen);
+            }
+            const quote = noetig.length ? (vorhanden / noetig.length) * 100 : 0;
+            return {
+              name: sprache.name, code: sprache.code, script: sprache.script,
+              noetig: noetig.length, vorhanden: vorhanden, fehlend: fehlend,
+              quote: quote
+            };
+          });
+
+          liste.sort((a, b) => b.quote - a.quote || a.name.localeCompare(b.name, 'de'));
+          index.sprachen = liste;
+          return liste;
+        }
+
+        function renderSprachPanel(index) {
+          const host = $('caPanelLanguages');
+          if (!index) {
+            host.innerHTML = caLeerHinweis('Keine Schrift in Slot ' + SLOT_KEY[caState.slot] + ' geladen.');
+            return;
+          }
+
+          const liste = berechneSprachen(caState.slot) || [];
+          const schwelle = caState.schwelle;
+          const voll = liste.filter(l => l.quote >= 99.999);
+          const teil = liste.filter(l => l.quote < 99.999 && l.quote >= schwelle);
+          const keine = liste.filter(l => l.quote < schwelle);
+
+          const aktiv = caState.sprachTab === 'voll' ? voll : (caState.sprachTab === 'teil' ? teil : keine);
+
+          const tabKnopf = (schluessel, label, anzahl) => {
+            const isAktiv = caState.sprachTab === schluessel;
+            return '<button data-sprachtab="' + schluessel + '" type="button" class="ca-langtab ui-segmented-btn' +
+              (isAktiv ? ' active' : '') + '">' +
+              label + ' <span class="font-mono font-medium ml-1">(' + anzahl + ')</span></button>';
+          };
+
+          let html =
+            '<div class="flex flex-wrap items-center gap-4 mb-5">' +
+            '<div class="px-4 py-3 rounded-xl border border-emerald-200 bg-emerald-50">' +
+            '<div class="text-xl font-bold text-emerald-700">' + voll.length + ' Sprachen</div>' +
+            '<div class="text-[11px] text-emerald-600 font-medium">vollständig unterstützt (100 % Abdeckung)</div>' +
+            '</div>' +
+            '<div class="text-xs text-[var(--c-text-secondary)] leading-relaxed">' +
+            'Geprüft gegen ' + SPRACHEN.length + ' Orthografien (Latein, Kyrillisch, Griechisch).<br>' +
+            '<span class="text-[var(--c-text-tertiary)]">Teilweise unterstützt: ' + teil.length + ' · nicht unterstützt: ' + keine.length + '</span>' +
+            '</div>' +
+            '<label class="ml-auto text-[11px] text-[var(--c-text-secondary)] font-medium flex items-center gap-2">Schwelle „teilweise"' +
+            '<select id="caSchwelle" class="ui-select h-8 text-xs">' +
+            [50, 60, 70, 80, 90].map(v => '<option value="' + v + '"' + (v === schwelle ? ' selected' : '') + '>&ge; ' + v + ' %</option>').join('') +
+            '</select>' +
+            '</label>' +
+            '</div>' +
+            '<div class="ui-segmented mb-4 inline-flex">' +
+            tabKnopf('voll', 'Vollständig (100 %)', voll.length) +
+            tabKnopf('teil', 'Teilweise', teil.length) +
+            tabKnopf('keine', 'Nicht unterstützt', keine.length) +
+            '</div>';
+
+          if (!aktiv.length) {
+            html += caLeerHinweis('Keine Sprache in dieser Kategorie.');
+          } else {
+            html += '<div class="grid gap-2" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));">';
+            for (const l of aktiv) {
+              const farbe = l.quote >= 99.999 ? 'bg-emerald-500' : (l.quote >= schwelle ? 'bg-amber-500' : 'bg-red-500');
+              const offen = caState.sprachDetail === l.code;
+              html += '<div class="rounded-xl border ' + (offen ? 'border-blue-500 ring-1 ring-blue-500' : 'border-[var(--c-border)]') + ' bg-[var(--c-surface)] shadow-2xs overflow-hidden">' +
+                '<button type="button" data-sprache="' + l.code + '" class="ca-lang w-full text-left p-3 hover:bg-[var(--c-surface-alt)] transition cursor-pointer">' +
+                '<div class="flex items-baseline justify-between gap-2">' +
+                '<span class="text-sm font-semibold text-[var(--c-text)]">' + l.name + '</span>' +
+                '<span class="text-[11px] font-mono font-medium ' + (l.quote >= 99.999 ? 'text-emerald-600' : 'text-[var(--c-text-secondary)]') + '">' + l.quote.toFixed(1) + ' %</span>' +
+                '</div>' +
+                '<div class="flex items-center gap-2 mt-1">' +
+                '<span class="text-[10px] font-mono text-[var(--c-text-tertiary)]">' + l.code + ' · ' + l.script + '</span>' +
+                '<span class="text-[10px] font-mono text-[var(--c-text-secondary)] ml-auto font-medium">' + l.vorhanden + '/' + l.noetig + '</span>' +
+                '</div>' +
+                '<div class="mt-2 h-1.5 rounded-full bg-[var(--c-surface-alt)] border border-[var(--c-border-light)] overflow-hidden">' +
+                '<div class="h-full rounded-full ' + farbe + '" style="width:' + l.quote.toFixed(1) + '%"></div>' +
+                '</div>' +
+                '</button>';
+
+              if (offen) {
+                html += '<div class="px-3 pb-3 text-[11px] space-y-2 border-t border-[var(--c-border-light)] bg-[var(--c-surface-alt)] pt-2">' +
+                  (l.fehlend.length
+                    ? '<div><span class="text-[var(--c-text-secondary)]">Fehlende Zeichen (' + l.fehlend.length + '):</span> ' +
+                    '<span class="font-mono text-red-600 font-medium break-all">' + escapeHtml(l.fehlend.join(' ')) + '</span></div>'
+                    : '<div class="text-emerald-600 font-medium">Alle benötigten Zeichen vorhanden.</div>') +
+                  '<div><span class="text-[var(--c-text-secondary)]">Vorhanden:</span> <span class="font-mono text-emerald-600 font-medium">' + l.vorhanden + ' von ' + l.noetig + '</span></div>' +
+                  '</div>';
+              }
+              html += '</div>';
+            }
+            html += '</div>';
+          }
+
+          host.innerHTML = html;
+
+          const sel = $('caSchwelle');
+          if (sel) sel.addEventListener('change', (e) => {
+            caState.schwelle = Number(e.target.value);
+            renderSprachPanel(index);
+          });
+        }
+
+        // -----------------------------------------------------------------
+        // 15e) STEUERUNG
+        // -----------------------------------------------------------------
+        async function renderCharAnalysis() {
+          const marke = ++caState.token;
+          const index = await baueGlyphIndex(caState.slot);
+          if (marke !== caState.token) return;   // zwischenzeitlich umgeschaltet
+
+          if (caState.tab === 'glyphs') {
+            caState.treffer = index ? filtereGlyphen(index) : [];
+            renderGlyphPanel(index);
+          } else if (caState.tab === 'ligatures') {
+            renderLigaturPanel(index);
+          } else {
+            renderSprachPanel(index);
+          }
+        }
+
+        function setzeCaTab(tab) {
+          caState.tab = tab;
+          document.querySelectorAll('.ca-tab').forEach(b => {
+            b.classList.toggle('active', b.dataset.catab === tab);
+          });
+          $('caPanelGlyphs').classList.toggle('hidden', tab !== 'glyphs');
+          $('caPanelLigatures').classList.toggle('hidden', tab !== 'ligatures');
+          $('caPanelLanguages').classList.toggle('hidden', tab !== 'languages');
+          renderCharAnalysis();
+        }
+
+        function setzeCaSlot(slot) {
+          caState.slot = slot;
+          caState.sichtbar = CA_CHUNK;
+          caState.sprachDetail = null;
+          caState.ligLimit = {};
+          const a = slot === 'fontA';
+          $('caSlotA').classList.toggle('active', a);
+          $('caSlotB').classList.toggle('active', !a);
+          renderCharAnalysis();
+        }
+
+        (function initCharAnalysis() {
+          const blockSelect = $('caBlock');
+          blockSelect.innerHTML =
+            '<option value="alle">Alle Unicode-Blöcke</option>' +
+            UNICODE_BLOECKE.map((b, i) => '<option value="' + i + '">' + b.name + ' (' + cpHex(b.from) + '–' + cpHex(b.to) + ')</option>').join('') +
+            '<option value="ohne">Ohne Unicode-Zuordnung</option>';
+
+          $('caSlotA').addEventListener('click', () => setzeCaSlot('fontA'));
+          $('caSlotB').addEventListener('click', () => setzeCaSlot('fontB'));
+
+          document.querySelectorAll('.ca-tab').forEach(b => {
+            b.addEventListener('click', () => setzeCaTab(b.dataset.catab));
+          });
+
+          let suchTimer = null;
+          $('caSearch').addEventListener('input', (e) => {
+            clearTimeout(suchTimer);
+            const wert = e.target.value;
+            suchTimer = setTimeout(() => {
+              caState.suche = wert;
+              caState.sichtbar = CA_CHUNK;
+              renderCharAnalysis();
+            }, 160);
+          });
+
+          blockSelect.addEventListener('change', (e) => {
+            caState.block = e.target.value;
+            caState.sichtbar = CA_CHUNK;
+            renderCharAnalysis();
+          });
+
+          // Contextmenu (Rechtsklick) auf Glyphen-Kacheln abfangen
+          document.addEventListener('contextmenu', (e) => {
+            const kachel = e.target.closest && e.target.closest('.ca-glyph');
+            if (kachel && kachel.dataset.gid !== undefined) {
+              e.preventDefault();
+              oeffneGlyphContextMenu(e, Number(kachel.dataset.gid));
+            } else {
+              schliesseContextMenu();
+            }
+          });
+
+          // Klicks auf Glyphen-Kacheln und Sprachkarten gebündelt abfangen
+          document.addEventListener('click', (e) => {
+            if (!e.target.closest || !e.target.closest('#glyphContextMenu')) {
+              schliesseContextMenu();
+            }
+            const kachel = e.target.closest && e.target.closest('.ca-glyph');
+            if (kachel && kachel.dataset.gid !== undefined) {
+              zeigeGlyphDetail(Number(kachel.dataset.gid));
+              return;
+            }
+            const sprache = e.target.closest && e.target.closest('.ca-lang');
+            if (sprache) {
+              const code = sprache.dataset.sprache;
+              caState.sprachDetail = (caState.sprachDetail === code) ? null : code;
+              renderSprachPanel(caCache[caState.slot]);
+              return;
+            }
+            const ligmore = e.target.closest && e.target.closest('.ca-ligmore');
+            if (ligmore) {
+              const tag = ligmore.dataset.ligmore;
+              caState.ligLimit[tag] = (caState.ligLimit[tag] || LIG_CHUNK) + LIG_CHUNK;
+              renderLigaturPanel(caCache[caState.slot]);
+              return;
+            }
+            const langtab = e.target.closest && e.target.closest('.ca-langtab');
+            if (langtab) {
+              caState.sprachTab = langtab.dataset.sprachtab;
+              caState.sprachDetail = null;
+              renderSprachPanel(caCache[caState.slot]);
+            }
+          });
+
+          window.addEventListener('scroll', () => {
+            schliesseContextMenu();
+          }, { passive: true });
+
+          function schliesseAlleModals() {
+            schliesseContextMenu();
+            $('shortcutsModal').classList.add('hidden');
+            $('infoModal').classList.add('hidden');
+            if (!$('glyphModal').classList.contains('hidden')) schliesseGlyphDetail();
+          }
+
+          $('btnOpenShortcuts').addEventListener('click', () => {
+            $('shortcutsModal').classList.remove('hidden');
+          });
+          $('btnCloseShortcuts').addEventListener('click', () => {
+            $('shortcutsModal').classList.add('hidden');
+          });
+          $('shortcutsModal').addEventListener('click', (e) => {
+            if (e.target === $('shortcutsModal')) $('shortcutsModal').classList.add('hidden');
+          });
+
+          $('btnOpenInfo').addEventListener('click', () => {
+            $('infoModal').classList.remove('hidden');
+          });
+          $('btnCloseInfo').addEventListener('click', () => {
+            $('infoModal').classList.add('hidden');
+          });
+          $('infoModal').addEventListener('click', (e) => {
+            if (e.target === $('infoModal')) $('infoModal').classList.add('hidden');
+          });
+
+          $('glyphModalBackdrop').addEventListener('click', schliesseGlyphDetail);
+
+          document.addEventListener('keydown', (e) => {
+            const tag = (e.target && e.target.tagName) || '';
+            const isEditing = tag === 'INPUT' || tag === 'TEXTAREA' || (e.target && e.target.isContentEditable);
+
+            if (e.key === 'Escape') {
+              schliesseAlleModals();
+              return;
+            }
+
+            if (isEditing) return;
+
+            if (e.key === '?' || (e.key === '/' && e.shiftKey)) {
+              e.preventDefault();
+              $('shortcutsModal').classList.toggle('hidden');
+            } else if (e.key === 'g' || e.key === 'G') {
+              $('btnToggleAnatomy').click();
+            } else if (e.key === 'v' || e.key === 'V') {
+              if (state.viewMode === 'split') $('btnViewOverlay').click();
+              else $('btnViewSplit').click();
+            } else if (e.key === 'x' || e.key === 'X') {
+              $('btnSwapFonts').click();
+            }
+          });
+        })();
+
+        // =====================================================================
+        // 14) INIT
+        // =====================================================================
+        setupDropZone('dropZoneA', 'fileInputA', 'fontA');
+        setupDropZone('dropZoneB', 'fileInputB', 'fontB');
+        renderAll();
+
+        // Die WASM-Laufzeit des Fallback-Decoders startet asynchron. Sobald sie steht,
+        // die Diagnoseleiste einmal auffrischen, damit dort nicht dauerhaft
+        // "startet noch" stehen bleibt.
+        warteAufWoff2Decoder(15000).then(function () {
+          try { renderStatusStrip(); } catch (err) { /* Anzeige darf nie werfen */ }
+        });
+
+        // Kleiner Debug-/Automatisierungs-Hook (z. B. für Tests ohne Drag & Drop)
+        window.FontStudio = {
+          state: state,
+          loadFont: handleFontFile,
+          metricsOf: metricsOf,
+          report: generateFullReport,
+          entpackeWoff2: entpackeWoff2,        // WOFF2 -> SFNT über wawoff2
+          decoderBereit: woff2DecoderBereit,
+          parserPfad: parserPfad
+        };
+      })();
+  </script>
+</body>
+
+</html>
