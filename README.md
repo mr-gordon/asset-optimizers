@@ -12,7 +12,7 @@ A modern, high-performance web tooling suite and Turborepo monorepo featuring **
 
 - **Image Compressor (v1.8.0):** [https://image.christopherwinker.de/](https://image.christopherwinker.de/)
 - **SVG Optimizer (v1.6.5):** [https://svg.christopherwinker.de/](https://svg.christopherwinker.de/)
-- **Font Checker (v1.5.1):** [https://font.christopherwinker.de/](https://font.christopherwinker.de/)
+- **Font Checker (v1.5.1):** [https://fonts.christopherwinker.de/](https://fonts.christopherwinker.de/)
 
 <img src="https://www.christopherwinker.de/tools/data/screen-image-compressor.png" alt="Vorschau Image Compressor" width="100%">
 
