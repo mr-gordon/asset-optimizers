@@ -15,9 +15,9 @@ A modern, high-performance web tooling suite and Turborepo monorepo featuring **
 - **Font Checker (v1.5.1):** [https://fonts.christopherwinker.de/](https://fonts.christopherwinker.de/)
 
 <div style="float: left;">
-<img src="https://www.christopherwinker.de/tools/data/screen-image-compressor.png" alt="Vorschau Image Compressor" width="33%">
-<img src="https://www.christopherwinker.de/tools/data/screen-svg-optimizer.jpg" alt="Vorschau Image Compressor" width="33%">
-<img src="https://www.christopherwinker.de/tools/data/screen-font-checker.jpg" alt="Vorschau Image Compressor" width="33%">
+<img src="https://www.christopherwinker.de/tools/data/screen-image-compressor.png" alt="Vorschau Image Compressor" width="32.5%">
+<img src="https://www.christopherwinker.de/tools/data/screen-svg-optimizer.jpg" alt="Vorschau Image Compressor" width="32.5%">
+<img src="https://www.christopherwinker.de/tools/data/screen-font-checker.jpg" alt="Vorschau Image Compressor" width="32.5%">
 </div>
 
 ---
