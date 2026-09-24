@@ -1,15 +1,17 @@
 # Asset Optimizers
 
-[![Version](https://img.shields.io/badge/version-v1.9.0-blue.svg)](https://github.com/mr-gordon/asset-optimizers)
+[![Version](https://img.shields.io/badge/version-v2.0.0-blue.svg)](https://github.com/mr-gordon/asset-optimizers)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![React](https://img.shields.io/badge/React-19-blue)](https://react.dev/)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.8-blue)](https://www.typescriptlang.org/)
 [![Vite](https://img.shields.io/badge/Vite-6.4-purple)](https://vitejs.dev/)
 [![TurboRepo](https://img.shields.io/badge/Monorepo-Turborepo-ef4444)](https://turbo.build/)
 [![100% Client-Side](https://img.shields.io/badge/Privacy-100%25%20Client--Side-emerald)](https://github.com/mr-gordon/asset-optimizers)
 
-A modern, high-performance web tooling suite and Turborepo monorepo featuring **Image Compressor v1.8.0**, **SVG Optimizer v1.6.5**, and **Font Checker v1.5.1**. Designed for designers and web engineers who value precision, speed, and privacy.
+A modern, high-performance web tooling suite and Turborepo monorepo featuring **Universal Icon Studio v1.0.0**, **Image Compressor v1.8.0**, **SVG Optimizer v1.6.5**, and **Font Checker v1.5.1**. Designed for designers and web engineers who value precision, speed, and privacy.
 
+- **Universal Icon Studio (v1.0.0):** [https://icon.christopherwinker.de/](https://icon.christopherwinker.de/)
 - **Image Compressor (v1.8.0):** [https://image.christopherwinker.de/](https://image.christopherwinker.de/)
 - **SVG Optimizer (v1.6.5):** [https://svg.christopherwinker.de/](https://svg.christopherwinker.de/)
 - **Font Checker (v1.5.1):** [https://fonts.christopherwinker.de/](https://fonts.christopherwinker.de/)
@@ -26,6 +28,7 @@ A modern, high-performance web tooling suite and Turborepo monorepo featuring **
 
 This project is structured as a Turborepo monorepo:
 
+- **[`apps/icon-studio`](./apps/icon-studio)** (v1.0.0): Universal Icon Studio for cross-platform app icons (iOS, Android, macOS, Windows 11, Web & Favicon). Features real-time system mockups, safe-zone linter, stepped downsampling, native bitstream `.ico` and `.icns` generators, and structured ZIP bulk export. Built with Next.js (App Router), React 19, TypeScript, and Tailwind CSS v4.
 - **[`apps/image-compressor`](./apps/image-compressor)** (v1.8.0): Batch image compression, format conversion (JPEG, PNG, WebP, AVIF, GIF, SVG), split slider comparison, 2.5× loupe magnifier, EXIF policy controls, and ZIP bulk export. Built with React 19, TypeScript, and Vite.
 - **[`apps/svg-optimizer`](./apps/svg-optimizer)** (v1.6.5): SVG vector icon minification, recoloring (`currentColor` / custom hex), transparent PNG generation (1x–8x), dimension presets (`20, 24, 32, 48, 64, 96px`), and combined SVG + PNG ZIP export. Built with React 19, TypeScript, and Vite.
 - **[`apps/font-checker`](./apps/font-checker)** (v1.5.1): Precision WebFont Inspector, Binary Metric Analyzer & Side-by-Side Comparison Studio ("Font Studio Pro"). Embedded fontkit + wawoff2 parser for `.woff2`, `.woff`, `.ttf`, `.otf`, `.ttc`. Features typographic anatomy guides, OS/2 `fsSelection` bit audit, UI stress testing, glyph/ligature inspectors, 80+ language coverage analysis, and zero-CLS `@font-face` compensation CSS generation. Operates both as a Vite web app and a 100% offline standalone HTML file.
@@ -37,7 +40,7 @@ This project is structured as a Turborepo monorepo:
 ## Key Features
 
 ### 1. 100% Private & Client-Side Processing
-All image, SVG, and font binary operations happen 100% locally in your browser. **Your files are never uploaded to any external server or third-party cloud.**
+All image, SVG, font binary, and icon operations happen 100% locally in your browser. **Your files are never uploaded to any external server or third-party cloud.**
 
 ### 2. Consistent Corporate Design System
 - **Unified Look & Feel:** Glassmorphic navigation headers, card-based layouts, and refined neutral typography.
@@ -45,7 +48,14 @@ All image, SVG, and font binary operations happen 100% locally in your browser. 
 - **Minimalist Floating Actions:** Bottom-right floating group containing an App Info Modal and Keyboard Shortcuts Dialog (`?`).
 - **Complete Favicon & PWA Suite:** Multi-resolution favicons, Apple touch icons, Microsoft Windows tiles, and web app manifests across apps.
 
-### 3. Font Checker Highlights
+### 3. Universal Icon Studio Highlights
+- **Cross-Platform Target Suite:** Single-source generation for iOS (App Store & Home Screen squircle), Android (Adaptive Icon with foreground/background layers, legacy & circular shapes), macOS (Liquid squircle with realistic depth/lighting), Windows 11 (App list & Start tiles), and Web / PWA favicon suite.
+- **Native Bitstream Generation:** Generates binary multi-resolution `.ico` (16, 32, 48, 64, 128, 256px) and Apple icon bitstream `.icns` (16 to 1024px @2x) directly in the browser via native binary packers without third-party CLI or server dependencies.
+- **Stepped Downsampling & Edge Sharpening:** High-fidelity multi-stage downsampling (`canvas` bicubic stepping + unsharp mask sharpening filter) prevents pixel blur and contrast loss on tiny resolutions (16×16, 32×32).
+- **Interactive System Mockups & Safe-Zone Linter:** Live preview in realistic OS chrome (macOS Dock, iOS Home Screen, Android Launchers, Windows Start Menu, Browser Tab) with integrated Apple squircle, Android circle/squircle safe-zone guidelines and contrast warnings.
+- **PWA Manifest & HTML Meta Generator:** Visual `manifest.json` editor with dynamic category toggles and one-click copyable HTML `<head>` meta tags.
+
+### 4. Font Checker Highlights
 - **Dual Engine Pipeline:** Embedded `fontkit` reads raw SFNT binary tables, supported by an embedded `wawoff2` WebAssembly fallback decoder for robust WOFF2 parsing. Parallel native `FontFace` registration ensures pixel-accurate browser rendering.
 - **Typographic Anatomy Guides:** Interactive SVG overlays displaying Ascender, Cap Height, Waist (x-Height), Baseline, and Descender lines calculated directly from font binary tables.
 - **OS/2 & Windows-Bounds Audit:** Bit-level inspection of `fsSelection` Bit 7 (`USE_TYPO_METRICS` / `0x80`), comparing `sTypo*`, `usWin*`, and `hhea` metrics to diagnose line-height discrepancy across operating systems.
@@ -53,7 +63,7 @@ All image, SVG, and font binary operations happen 100% locally in your browser. 
 - **Glyph & OpenType Ligature Inspection:** Interactive glyph browser with pan/zoom detail modal and GSUB lookup inspection (`liga`, `clig`, `dlig`, `calt`).
 - **Language Coverage & Zero-CLS Compensation:** Curated orthographic evaluation across 80+ languages, plus automatic `@font-face` fallback CSS generation (`size-adjust`, `ascent-override`, `descent-override`).
 
-### 4. Image & SVG Optimizer Highlights
+### 5. Image & SVG Optimizer Highlights
 - **Distortion-Free 2.5× Loupe Zoom:** Pixel-accurate magnifier loupe in Inspector Modal preserving natural aspect ratios for both Original and Compressed images.
 - **Transparent Multi-Density PNG Generation:** Export vector SVGs directly to transparent PNGs at 1× through 8× density or standard icon sizes.
 - **Combined ZIP Bundling:** Export all optimized assets together with one click.
@@ -63,6 +73,13 @@ All image, SVG, and font binary operations happen 100% locally in your browser. 
 ## Changelog
 
 ### Release Highlights
+
+#### Universal Icon Studio (v1.0.0)
+- **Monorepo Suite Addition:** Added Next.js 15 & React 19 Universal Icon Studio to Turborepo workspace with dev task on port 3003.
+- **Unified Design Alignment:** Full integration with `@repo/ui` glassmorphic design system tokens, diamond branding (`StudioDiamondIcon`), unified compact dropzone, and keyboard shortcuts modal (`?`).
+- **Comprehensive Platform Engines:** iOS, Android Adaptive, macOS Dock, Windows 11, Web & Favicon generators.
+- **Binary Bitstream Packaging:** Native client-side byte packing for multi-density `.ico` and macOS `.icns` files.
+- **Standardized Card Previews:** High-resolution preview pods, platform-specific segmented control switches, and one-click structured ZIP export.
 
 #### Font Checker (v1.5.1)
 - **Monorepo Integration:** Added to Turborepo workspace with dedicated dev (`port 3002`) and build tasks.
@@ -114,6 +131,9 @@ All image, SVG, and font binary operations happen 100% locally in your browser. 
    npm run dev
 
    # Or run individual applications:
+   # Universal Icon Studio (port 3003)
+   npm run dev --filter=@repo/icon-studio
+
    # Image Compressor (port 3000)
    npm run dev --filter=@repo/image-compressor
 

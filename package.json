@@ -1,12 +1,18 @@
 {
   "name": "asset-optimizers-monorepo",
-  "version": "1.9.0",
-  "description": "Modern, 100% client-side batch image compressor, SVG vector optimizer & WebFont inspector suite (React 19, TypeScript, Vite, Turborepo).",
+  "version": "2.0.0",
+  "description": "Modern, 100% client-side batch image compressor, SVG vector optimizer, WebFont inspector & universal icon studio suite (React 19, TypeScript, Vite, Next.js, Turborepo).",
   "private": true,
   "keywords": [
     "image-compressor",
     "svg-optimizer",
     "font-checker",
+    "icon-studio",
+    "universal-icon-studio",
+    "app-icon-generator",
+    "favicon-generator",
+    "icns-generator",
+    "ico-generator",
     "webfont-inspector",
     "font-analysis",
     "svg-minifier",
@@ -19,6 +25,7 @@
     "react19",
     "typescript",
     "vite",
+    "nextjs",
     "monorepo",
     "turborepo"
   ],

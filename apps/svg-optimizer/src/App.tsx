@@ -250,6 +250,20 @@ export default function App() {
     }
   };
 
+  // Keyboard shortcut: Cmd+S / Ctrl+S to download all files
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        if (items.length > 0 && !isProcessing) {
+          handleDownloadAllZip();
+        }
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [items, isProcessing, handleDownloadAllZip]);
+
   return (
     <div className="min-h-screen flex flex-col bg-[var(--c-bg)] text-[var(--c-text)]">
       {/* Header Component */}

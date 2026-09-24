@@ -1,0 +1,30 @@
+{
+  "name": "@repo/icon-studio",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev -p 3003",
+    "build": "next build && rm -rf dist && cp -r out dist",
+    "start": "next start -p 3003",
+    "lint": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@repo/ui": "*",
+    "jszip": "^3.10.1",
+    "lucide-react": "^0.546.0",
+    "next": "^15.2.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@repo/tsconfig": "*",
+    "@tailwindcss/postcss": "^4.1.14",
+    "@types/node": "^22.14.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.1.14",
+    "typescript": "~5.8.2"
+  }
+}

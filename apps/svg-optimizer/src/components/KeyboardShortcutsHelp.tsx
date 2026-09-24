@@ -169,7 +169,7 @@ export const KeyboardShortcutsHelp: React.FC = () => {
                   boxShadow: '0 8px 24px rgba(0, 0, 0, 0.18)',
                 }}
               >
-                <Sparkles className="w-10 h-10 text-white" />
+                <Sparkles className="w-12 h-12 text-white" />
               </div>
             </div>
 
