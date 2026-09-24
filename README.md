@@ -11,7 +11,7 @@
 
 A modern, high-performance web tooling suite and Turborepo monorepo featuring **Universal Icon Studio v1.0.0**, **Image Compressor v1.8.0**, **SVG Optimizer v1.6.5**, and **Font Checker v1.5.1**. Designed for designers and web engineers who value precision, speed, and privacy.
 
-- **Universal Icon Studio (v1.0.0):** [https://app-icon.christopherwinker.de/](https://app-icon.christopherwinker.de/)
+- **Universal Icon Studio (v1.0.0):** [https://app-icons.christopherwinker.de/](https://app-icons.christopherwinker.de/)
 - **Image Compressor (v1.8.0):** [https://image.christopherwinker.de/](https://image.christopherwinker.de/)
 - **SVG Optimizer (v1.6.5):** [https://svg.christopherwinker.de/](https://svg.christopherwinker.de/)
 - **Font Checker (v1.5.1):** [https://fonts.christopherwinker.de/](https://fonts.christopherwinker.de/)
